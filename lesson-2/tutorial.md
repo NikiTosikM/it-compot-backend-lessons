@@ -45,23 +45,26 @@
 Даем ученикам самим поприменять классы, подсказываем.<br>
 По итогу должно получиться примерно это.
 >Естественно, если _**easy**_ убираем сложные поля, свойства. Это версия для _**Hard**_.
-> 
+
 ![form](https://raw.githubusercontent.com/Artasov/itcompot-backend-lessons/main/lesson-2/imgs/form.png)
 
 ```html
 <!-- Я знаю, что нужно использовать label, но им это не нужно сейчас. -->
+<body class="bg-dark">
 <div class="mt-5">
     <h1 class="text-center text-light my-3">Регистрация</h1>
     <form class="d-flex flex-column gap-2 mx-auto"
           style="max-width: 300px;">
-        <input class="form-control" type="text" 
+        <input class="form-control" type="text"
                placeholder="Имя" name="name">
-        <input class="form-control" type="email" 
+        <input class="form-control" type="email"
                placeholder="Почта" name="email">
-        <input class="form-control" type="password" 
+        <input class="form-control" type="password"
                placeholder="Пароль" name="password">
-        <input class="form-control" type="password" 
+        <input class="form-control" type="password"
                placeholder="Повторите пароль" name="password_repeat">
+        <input class="form-control" type="number"
+               placeholder="Возраст" name="age" min="10" max="200">
 
         <div class="text-secondary d-flex gap-2 justify-content-center">
             <span>Мужчина</span>
@@ -80,27 +83,39 @@
         </button>
     </form>
 </div>
+</body>
 ```
 
 ## Загружаем на git.
 > Если не успеем ничего страшного, мы это будем делать почти на каждом уроке.
 > Каждый пункт желательно объяснять.
-1. Создаем новый репозиторий.
-2. В терминале инициализируем git.
+1. Скачиваем **[GitBash](https://github.com/git-for-windows/git/releases/download/v2.42.0.windows.2/Git-2.42.0.2-64-bit.exe)**.
+2. Создаем новый репозиторий.
+3. Рассказываем зачем **[.gitignore](https://github.com/Artasov/itcompot-methods/blob/main/.gitignore)**
+и отправляем им ссылку на скачивание.
+4. В терминале инициализируем git.
     
    `git init`
-3. Добавляем в отслеживание все файлы в директории рекурсивно.
+5. Добавляем в отслеживание все файлы в директории рекурсивно.
     
    `git add .`
-4. Создаем commit(как в игре сохранение, только его еще повторно нужно сохранить через push)
+6. Создаем commit(как в игре сохранение, только его еще повторно нужно сохранить через push)
     
    `git commit -m "first commit"`
-5. Переключаемся на главную ветку в локальном репозитории.
+7. Переключаемся на главную ветку в локальном репозитории.
     
    `git branch -M main`
-6. Подключаемся к нашему созданному репозиторию.
+8. Подключаемся к нашему созданному репозиторию.
     
    `git remote add origin https://github.com/nickname/repo.git`
-7. Пушим
+9. Пушим
     
    `git push -u origin main`
+
+>В дальнейшем мы будем использовать следующую связку.
+> ```git
+> Открываем git bash правой кнопкой в папке с проектом(там где .git).
+> git add .
+> git commit -m "commit_name"
+> git push
+>```
