@@ -106,5 +106,5 @@
 > [готовый html](https://raw.githubusercontent.com/Artasov/itcompot-backend-lessons/main/lesson-1/template/index.html) 
 > со стилями, чтобы они вставили его себе и было красиво.
 
-Если время осталось ребята могут подключить свой проект с frontend курса. Помогаем с тэгом `<style>`.
+## Если осталось время начинаем работу с Git по гайду в конце второго урока.
 
