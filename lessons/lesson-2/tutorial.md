@@ -89,26 +89,29 @@
 ## Загружаем на git.
 > Если не успеем ничего страшного, мы это будем делать почти на каждом уроке.
 > Каждый пункт желательно объяснять.
-1. Скачиваем **[GitBash](https://github.com/git-for-windows/git/releases/download/v2.42.0.windows.2/Git-2.42.0.2-64-bit.exe)**.
-2. Создаем новый репозиторий.
-3. Рассказываем зачем **[.gitignore](https://github.com/Artasov/itcompot-methods/blob/main/.gitignore)**
-и отправляем им ссылку на скачивание.
-4. В терминале инициализируем git.
+### 1. Скачиваем [GitBash](https://code.visualstudio.com/) и запускаем установщик.
+   ![](imgs/gitdownload.png)
+### 2. Нажимаем Next пока не произойдет установка и *не трогаем никакие настройки*.
+### 3. После установки добаляем `bash` терминал в `VSCode` и далее пишем _ВСЕГДА_ в нём.
+   ![](imgs/gitterminal.png)
+### 4. Создаем новый репозиторий.
+### 5. Рассказываем зачем **[.gitignore](https://github.com/Artasov/itcompot-methods/blob/main/.gitignore)** и отправляем им ссылку на скачивание.
+### 6. В терминале инициализируем git.
     
-   `git init`
-5. Добавляем в отслеживание все файлы в директории рекурсивно.
+###   `git init`
+### 7. Добавляем в отслеживание все файлы в директории рекурсивно.
     
-   `git add .`
-6. Создаем commit(как в игре сохранение, только его еще повторно нужно сохранить через push)
+###    `git add .`
+### 8. Создаем commit(как в игре сохранение, только его еще повторно нужно сохранить через push)
     
-   `git commit -m "first commit"`
-7. Переключаемся на главную ветку в локальном репозитории.
+###    `git commit -m "first commit"`
+### 9. Переключаемся на главную ветку в локальном репозитории.
     
-   `git branch -M main`
-8. Подключаемся к нашему созданному репозиторию.
+###    `git branch -M main`
+### 10. Подключаемся к нашему созданному репозиторию.
     
-   `git remote add origin https://github.com/nickname/repo.git`
-9. Пушим
+###    `git remote add origin https://github.com/nickname/repo.git`
+### 11. Пушим
     
    `git push -u origin main`
 

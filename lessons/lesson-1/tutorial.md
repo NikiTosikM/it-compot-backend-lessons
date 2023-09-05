@@ -14,6 +14,33 @@
 простой сайт с backend'ом.
 
 ## Устанавливаем [VSCode](https://code.visualstudio.com/), [Python](https://www.python.org/downloads/). 
+>Естественно объясняем зачем и что такое python, vscode.
+### 1. Скачиваем [VSCode](https://code.visualstudio.com/) и запускаем установщик.
+   ![](imgs/downloadVSCode.png)
+### 2. Принимаем пользовательское соглашение.
+   ![](imgs/acceptVSCode.png)
+### 3. Нажимаем `Далее` и `Установить`
+### 4. После установки закрываем окно.
+
+
+
+
+
+### 5. Скачиваем [Python](https://www.python.org/downloads/) и запускаем установщик.
+   ![](imgs/downloadpy.png)
+### 6. Добавляем путь до python в переменные среды и нажимаем установить.
+   ![](imgs/addtopathpy.png)
+### 7. После установки закрываем окно.
+
+
+
+
+
+### 6. Запускаем VSCode. Создаем где удобно папку для будущего проекта и открываем ее в VSCode.
+   ![](imgs/openfolder.png)
+### Открываем терминал и рассказываем что это.
+   ![](imgs/terminal.png)
+### Расскажите о базовых командах (*ls | cd .. | cd some/path*)
 
 ## Старт проекта
 
@@ -36,7 +63,7 @@
    `django-admin startproject project_name`
 
 5. Переходим в директорию созданного проекта.<br> 
-   Рассказываем про базовые команды навигации (**cd .. | cd some/path**).
+   Рассказываем про базовые команды навигации .
    
    `cd ./project_name`
 
@@ -62,12 +89,11 @@
 
 ```python
     # app_name/views.py
-    ...
     def example(request):
         return render(request, 'app_name/some_template_name.html')
-
+```
+```python
     # project_name/urls.py
-    ...
     from app_name.views import example  # импортируем функцию
     
     urlpatterns = [
