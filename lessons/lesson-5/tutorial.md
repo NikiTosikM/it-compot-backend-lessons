@@ -1,11 +1,11 @@
-# Шаблонизация
+# ORM, for, if в шаблонах
 
 ### Продолжаем 'Личный блог'.<br>
 >Можете если хотите показать что примерно мы будем делать.<br><br>
 ![result.png](imgs/result.png)
 ## Header, Footer и карточка товара.
 
-1. Создаем страницу где будут отображаться все посты.
+1. Создаем страницу, где будут отображаться все посты.
    ```python
     # blog/views.py
     def posts_list(request):
@@ -16,16 +16,18 @@
    from blog.views import posts_list  # импортируем функцию
    
    urlpatterns = [
-       path('posts_list/', posts_list),  # связываем маршрут и функцию
+       path('blog/posts_list/', posts_list),  # связываем маршрут и функцию
    ]
    ```
-2. Показываем ребятам **[документацию Bootstrap](https://getbootstrap.com/docs/5.3/components/card/)**, 
-   а именно раздел где есть разные готовые элементы.<br>
-   Возьмем оттуда header и карточку поста.
+2. Показываем ребятам документацию **Bootstrap**, 
+   а именно разделы ниже с готовыми элементами.<br>
+   Возьмем оттуда 
+   **[header](https://getbootstrap.com/docs/5.3/components/navbar/)**
+   и 
+   **[карточку](https://getbootstrap.com/docs/5.3/components/card/#images)**
+   для поста.
    Лучше брать без кнопки карточку и сделать её потом ссылкой.
-   > Лучше взять карточку без кнопки, чтобы потом сделать всю ее ссылкой. Не забываем подключить `bootstrap.min.css`
-
-   ![post-card.png](imgs/post-card.png)
+   > Лучше взять карточку без кнопки. Не забываем подключить `bootstrap.min.css`, как делали на прошлых уроках.
    ```html
    <header>
        <nav class="navbar navbar-expand-lg bg-body-tertiary">
