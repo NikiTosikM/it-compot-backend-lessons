@@ -50,7 +50,7 @@
 
 
 
-3. ## Создадим модель `Video`, где будет храниться название видео и ссылка для его встраивания в `iframe`.
+3. ## Создадим модель `Video`, где будут храниться название видео и ссылка для его встраивания в `iframe`.
    ```python
    # playlist/models.py
    from django.db import models
@@ -63,7 +63,9 @@
        def __str__(self):
            return self.title
    ```
-   #### Мигрируем модель в db<br>`python manage.py makemigrations`<br>`python manage.py migrate`
+   #### Мигрируем модель в db
+   `python manage.py makemigrations`<br>
+   `python manage.py migrate`
 
 5. ## Зарегистрируем модель в `admin.py` для управления через административную панель.
    ```python
