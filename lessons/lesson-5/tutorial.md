@@ -1,6 +1,6 @@
 # ORM, for, if в шаблонах
 
-### Продолжаем 'Личный блог'.<br>
+### Продолжаем 'Блог'.<br>
 >Можете если хотите показать что примерно мы будем делать.<br><br>
 ![result.png](imgs/result.png)
 ## Header, Footer и карточка товара.
@@ -27,8 +27,19 @@
    **[карточку](https://getbootstrap.com/docs/5.3/components/card/#images)**
    для поста.
    Лучше брать без кнопки карточку и сделать её потом ссылкой.
-   > Лучше взять карточку без кнопки. Не забываем подключить `bootstrap.min.css`, как делали на прошлых уроках.
+   > Лучше взять карточку без кнопки. Не забываем подключить `bootstrap.min.css`, 
+   > как делали на прошлых уроках.
+   > ```html
+   > {% load static %}
+   > <head>
+   >     <link rel="stylesheet" href="{% static 'app1/css/bootstrap.min.css' %}"> 
+   > </head>
+   >```
+   
+   > Шапку делаем не под `Блог`, а под все приложение. 
+   > То есть в дальнейшем мы будем эту шапку использовать в других местах сайта.
    ```html
+   <!-- blog/posts_list.html -->
    <header>
        <nav class="navbar navbar-expand-lg bg-body-tertiary">
            ...
@@ -62,6 +73,8 @@
    
 4. Рассказываем как отобразить этот 1 пост.
    ```html
+   <!-- blog/posts_list.html -->
+   ...
    <div class="card" style="width: 250px;">
        <img src="..." class="card-img-top" alt="...">
        <div class="card-body">
@@ -69,6 +82,7 @@
            <p class="card-text">{{ post.text }}</p>
        </div>
    </div>
+   ...
    ```
 5. Пусть сами попробуют по примеру в шпаргалке <br>
    [Использование условий и циклов](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)
@@ -83,6 +97,7 @@
        return render(request, 'blog/posts_list.html', {'posts': posts})
    ```
    ```html
+   <!-- blog/posts_list.html -->
    <main>
        <h1 class="text-light text-center fw-bold">Посты</h1>
        <div class="posts_container d-flex gap-3 flex-wrap justify-content-center mx-auto" 
@@ -102,6 +117,7 @@
 6. Пусть ученики добавят проверку доступности поста по той же шпаргалке.
    Тогда будут отображаться только опубликованные посты.
    ```html
+   <!-- blog/posts_list.html -->
    <main>
        <h1 class="text-light text-center fw-bold">Посты</h1>
        <div class="posts_container d-flex gap-3 flex-wrap justify-content-center mx-auto" 
