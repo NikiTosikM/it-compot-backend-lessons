@@ -35,6 +35,7 @@
    
    @admin.register(Post)
    class PostAdmin(admin.ModelAdmin):
+       # Тут указываем в кортеже те поля которые будут видны при групповом отображении.
        list_display = ('title', 'text')
    ```
 8. Создайте staff пользователя и откройте административную панель.
@@ -84,7 +85,7 @@
     ]
     #  На сервере media обслуживает серверная служба, 
     #  а не django, поэтому только при debug мы включаем 
-    #  обслуживание на стороне django, добавляя адреса media.
+    #  обслуживание на стороне django, добавляя адреса для media.
     if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     ```
@@ -94,13 +95,14 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Комментарии'
-
-    def __str__(self):
-        return self.post.title
 ```
-
+   ```python
+   # blog/admin.py
+   from django.contrib import admin
+   from .models import Post, Comment
+   
+   @admin.register(Comment)
+   class CommentAdmin(admin.ModelAdmin):
+       list_display = ('post', 'text')
+   ```
 ># git push...

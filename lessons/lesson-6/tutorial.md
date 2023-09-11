@@ -9,36 +9,13 @@
 
    `python manage.py startapp playlist`
 2. ## Показываем как можно встроить видео с YouTube.
-   - **Открываем видео, нажимаем поделиться.**<br>
+   - ### Открываем видео, нажимаем поделиться.<br>
       ![result.png](imgs/resend.png) <br><br>
-   
 
-
-
-
-
-
-
-
-
-
-
-
-   - **Нажимаем встроить.**<br>
+   - ### Нажимаем встроить.<br>
       ![result.png](imgs/insert.png)<br><br>
-   
 
-
-
-
-
-
-
-
-
-
-
-   - **Объясняем, что такое `iframe`, и что нужно будет хранить в базе данных только `embed code`.**<br><br>
+   - ### Объясняем, что такое `iframe`, и что нужно будет хранить в базе данных только `embed code`.<br><br>
       ![result.png](imgs/iframe.png) <br><br>
 
 
@@ -76,6 +53,7 @@
    admin.site.register(Video)
    ```
 6. ## Создадим представление, которое будет отображать все видео из плейлиста.
+   > Используем print при недопонимании.
    ```python
    # playlist/views.py
    from django.shortcuts import render
@@ -83,6 +61,7 @@
    
    def video_list(request):
        videos = Video.objects.all()
+       # print(videos) если нужно...
        return render(request, 'playlist/video_list.html', {'videos': videos})
    ```
 7. ## Свяжем `video_list()` с адресом `playlist/video_list/`.

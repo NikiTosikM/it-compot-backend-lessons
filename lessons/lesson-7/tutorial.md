@@ -9,6 +9,20 @@
 
 1. ## Создаем страничку с формой для добавления видео
    >Ученики должны справиться сами.
+   ```python
+   # project_name/urls.py
+   from playlist.views import video_create
+   urlpatterns = [
+       ...
+       path('video/new/', video_create),
+   ]
+   ```
+   ```python
+   # playlist/views.py
+   from .models import Video
+   def video_create(request):
+       return render(request, 'playlist/video_create.html')
+   ```
    ```html
    <!-- playlist/templates/playlist/video_create.html -->
    {% include 'playlist/includes/header.html' %}
@@ -26,20 +40,6 @@
        </button>
    </form>
    {% include 'playlist/includes/footer.html' %}
-   ```
-   ```python
-   # project_name/urls.py
-   from . views import video_create
-   urlpatterns = [
-       ...
-       path('video/new/', video_create, name='video_new'),
-   ]
-   ```
-   ```python
-   # playlist/views.py
-   from .models import Video
-   def video_create(request):
-       return render(request, 'playlist/video_create.html')
    ```
 2. ## Создание view для добавления видео
 
@@ -135,7 +135,7 @@
    * Показываем пример наследования / расширения шаблона и начинаем переделывать
      все странички(`все посты`, `все видео`, `добавление видео`), ученики должны хорошо понять принцып этой логики.
      ```html
-     <!-- Например страница со всеми постами blog/posts_list.html -->
+     <!-- Например страница со всеми постами blog/posts_list.html теперь будет выглядеть так.-->
      {% extends 'base.html' %}
 
      {% block title %}Блог | Все посты{% endblock %}

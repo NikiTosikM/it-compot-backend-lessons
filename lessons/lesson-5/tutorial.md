@@ -7,9 +7,9 @@
 
 1. Создаем страницу, где будут отображаться все посты.
    ```python
-    # blog/views.py
-    def posts_list(request):
-        return render(request, 'blog/posts_list.html')
+   # blog/views.py
+   def posts_list(request):
+       return render(request, 'blog/posts_list.html')
    ```
    ```python
    # project_name/urls.py
@@ -36,7 +36,7 @@
    > </head>
    >```
    
-   > Шапку делаем не под `Блог`, а под все приложение. 
+   > Шапку делаем не под `Блог`, а под всё приложение. 
    > То есть в дальнейшем мы будем эту шапку использовать в других местах сайта.
    ```html
    <!-- blog/posts_list.html -->
@@ -63,6 +63,7 @@
 3. Когда доверстали, даем подумать как можно передать в товар с `id=1` (можно подсмотреть в 
    шпаргалке [ORM Django](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#orm)).<br> 
    Находим `objects.get(id=1)`, вспоминаем как мы передавали переменные в шаблон. Желательно чтобы ученики сами додумались.
+   >Напоминаем, что можно использовать print для лучшего понимания.
    ```python
    # blog/views.py
    from .models import Post
