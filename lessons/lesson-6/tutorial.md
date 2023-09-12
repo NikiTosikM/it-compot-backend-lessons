@@ -71,7 +71,7 @@
    from . import views
    
    urlpatterns = [
-       path('playlist/video_list/', views.video_list, name='video_list'),
+       path('playlist/video_list/', views.video_list),
    ]
    ```
 
