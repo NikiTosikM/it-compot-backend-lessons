@@ -8,22 +8,24 @@
    `python manage.py startapp shop`
 
 2. ## Создание моделей
-   Перейдем к созданию моделей в файле models.py вашего нового приложения.
-   Пусть ученики продумают, какие поля будут в их моделях.
+   Перейдем к созданию моделей в файле models.py вашего нового приложения.<br>
+   Пусть ученики продумают, какие поля будут в их моделях.<br><br>
 
+   Заказ должен относится к определенному товару, поэтому мы будем использовать <br>
+   специальное поле (`ForeignKey / Внешний ключ`) которое будет `ссылаться` на определенный объект модели `Product`.<br>
+   В действительности в базе данных в этом поле будет лежать `primary_key`(в нашем случае `id`) связанного объекта.
    ```python
    # shop/models.py
    class Product(models.Model):
        name = models.CharField(max_length=100)
        desc = models.TextField()
        price = models.FloatField()
-       rating = models.PositiveIntegerField(max_digits=1)
-       stock = models.PositiveIntegerField()
+       rating = models.PositiveIntegerField()
+       stock = models.PositiveIntegerField()  # в наличии
+       is_available = models.BooleanField(default=True)
    
-   # Заказ должен относится к определенному товару, поэтому мы будем использовать 
-   # специальное поле которое будет ссылаться на определенный объект модели Product.
    class Order(models.Model):
-       product = models.ForeignKey(Product, on_delete=models.CASCADE)
+       product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
        delivery_address = models.CharField(max_length=255)
        created_at = models.DateTimeField(auto_now_add=True)
    ```
