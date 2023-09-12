@@ -21,7 +21,7 @@
        desc = models.TextField()
        price = models.FloatField()
        rating = models.PositiveIntegerField()
-       stock = models.PositiveIntegerField()  # в наличии
+       stock = models.PositiveIntegerField()  # в наличии кол-во
        is_available = models.BooleanField(default=True)
    
    class Order(models.Model):
@@ -43,12 +43,15 @@
      ```python
      # shop/views.py
      def catalog(request):
+         # <h1>Каталог товаров</h1>
          return render(request, 'shop/catalog.html')
      
      def orders(request):
+         # <h1>Заказы</h1>
          return render(request, 'shop/orders.html')
      
      def order_create(request):
+         # <h1>Заказать</h1>
          return render(request, 'shop/order_create.html')
      ```
     
