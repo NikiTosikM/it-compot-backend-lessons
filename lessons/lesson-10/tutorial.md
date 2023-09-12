@@ -67,14 +67,18 @@
            path('order_create/', order_create, name='order_create'),
        ]
        ```
-       ####  Теперь, когда у нас есть свой файл urls.py для приложения,<br>мы можем включить его в корневой файл urls.py проекта с помощью функции include.
+       ####  Теперь, когда у нас есть свой файл shop/urls.py для приложения,<br>мы можем включить его в корневой файл urls.py проекта с помощью функции `include`.
        ```python
        # project_name/urls.py
        from django.urls import path, include
        urlpatterns = [
            ...
-           path('', include('shop.urls')),  # включаем URL-адреса приложения shop
+           path('shop/', include('shop.urls')),  # включаем URL-адреса приложения shop
        ]
+       # По итогу мы получим следующие адреса:
+       # http://127.0.0.1:8000/shop/catalog/
+       # http://127.0.0.1:8000/shop/orders/
+       # http://127.0.0.1:8000/shop/order_create/
        ```
        >Здесь мы используем include для включения URL-адресов приложения shop в общие URL-адреса проекта, что позволяет нам организовывать URL-адреса более структурированно и читаемо.
 
