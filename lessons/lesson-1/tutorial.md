@@ -126,7 +126,7 @@
 Познакомьте учеников со [шпаргалкой](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md)
 Пусть ученики попробуют сами создать страничку и связать её с адресом по их желанию.<br>
 Как только получилось скидываем 
-**[готовый html](https://raw.githubusercontent.com/Artasov/itcompot-backend-lessons/main/lesson-1/template/index.html)**
+**[готовый html](https://raw.githubusercontent.com/Artasov/itcompot-backend-lessons/main/lessons/lesson-1/template/index.html)**
 со стилями, чтобы они вставили его себе и было красиво.
 
 ## Если осталось время начинаем работу с Git по гайду в конце второго урока.
