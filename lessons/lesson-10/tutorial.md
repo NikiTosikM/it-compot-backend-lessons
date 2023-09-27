@@ -13,12 +13,16 @@
    Заказ должен относится к определенному товару, поэтому мы будем использовать <br>
    специальное поле (`ForeignKey / Внешний ключ`) которое будет `ссылаться` на определенный объект модели `Product`.<br>
    В действительности в базе данных в этом поле будет лежать `primary_key`(в нашем случае `id`) связанного объекта.
+   >Посмотрите как мы отображаем рейтинг на следующем занятии, 
+   > это для слабых учеников будет сложно, поэтому чем слабее ученики тем меньше полей будет в их модели.
    ```python
    # shop/models.py
    class Product(models.Model):
        name = models.CharField(max_length=100)
+       image = models.ImageField(upload_to='images/Product/')
        desc = models.TextField()
        price = models.FloatField()
+       discount = models.PositiveIntegerField(default=0)
        rating = models.PositiveIntegerField()
        stock = models.PositiveIntegerField()  # в наличии кол-во
        is_available = models.BooleanField(default=True)
@@ -30,14 +34,29 @@
    ```
    >Не забываем про миграции
 
-3. ## Создание представлений, шаблонов и маршрутов.
+3. ## Пропишим маршруты к media
+    ```python
+    # project_name/settings.py
+    ...
+    MEDIA_URL = '/media/'  # адрес по которому будут доступные media.
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # локальный адрес хранения media.
+    ...
+    ```
+    ```python
+    # project_name/urls.py
+    urlpatterns = [
+        ...,
+    ]
+    if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ```
+
+4. ## Создание представлений, шаблонов и маршрутов.
    Продумайте какие адреса и страницы у вас будут.
    * ### Создание шаблонов
       Cоздадим пока что пустые шаблоны HTML для каждой страницы. 
       ```sh
-      shop/templates/shop/catalog.html
-      shop/templates/shop/orders.html
-      shop/templates/shop/order_create.html
+      ы
       ```
      
    * ### Создание представлений (views)
@@ -86,9 +105,9 @@
        ```
        >Здесь мы используем include для включения URL-адресов приложения shop в общие URL-адреса проекта, что позволяет нам организовывать URL-адреса более структурированно и читаемо.
 
-4. ## Не забываем протестировать, что всё работает.
+5. ## Не забываем протестировать, что всё работает.
 
-5. ## Сделайте базовый шаблон, шапку и футер по аналогии со старым проектом.
+6. ## Сделайте базовый шаблон, шапку и футер по аналогии со старым проектом.
 > Если не успеете ничего страшного, следующее занятии по большей части верстка, там и сделаете.
 
 ># git push...
