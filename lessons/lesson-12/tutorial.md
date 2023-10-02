@@ -34,8 +34,8 @@
          style="width: 250px; box-shadow: 0 0 5px #00000022;">
         <img src="{{ product.image.url }}" 
              class="card-img-top rounded-4 mt-3" alt="{{ product.name }}">
-        <div class="card-body d-flex flex-column justify-content-center">
-            <span class="card-text align-items-start d-flex">
+        <div class="card-body d-flex flex-column">
+            <span class="card-text d-flex mt-auto">
                 <span class="fs-2 fw-bold">{{ product.price }} ₽</span>
                 <!-- Можно добавить условие для отображения скидки -->
                 {% if product.discount %}

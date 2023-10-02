@@ -45,13 +45,14 @@
     {% block title %}SHOP | Catalog{% endblock %}
     {% block content %}
         <h1 class="text-dark text-center fw-bold mb-4">Каталог</h1>
-        <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto" style="max-width: 800px;">
+        <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto" 
+             style="max-width: 800px;">
             <div class="card border-0 rounded-4" style="width: 250px; box-shadow: 0 0 5px #00000022">
                 <!-- Пусть вспомнят как картинку из интернета вставить -->
                 <img src="https://pmdn.sokolov.io/pics/57/22/0B4B478942231CAD8F4E1163EB69.jpg"
                      class="card-img-top rounded-4 mt-3" alt="...">
-                <div class="card-body d-flex flex-column justify-content-center">
-                    <span class="card-text align-items-start d-flex">
+                <div class="card-body d-flex flex-column">
+                    <span class="card-text d-flex mt-auto">
                         <span class="fs-2 fw-bold">12 000 ₽</span>
                         <span class="text-danger fs-6">-50%</span>
                     </span>
