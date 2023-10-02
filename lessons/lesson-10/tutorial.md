@@ -4,7 +4,12 @@
 Для закрепления процесса создания проекта, сделаем новый проект.
 
 1. ## Создание нового проекта и приложения `shop`
-   Пусть ученики сами сделают это используя шпаргалку ([Старт проекта](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0))
+    Проект желательно называть `config`, так папка с <br>
+    настройками синхронного, асинхронного серверов и <br>
+    настройками проекта будет в папке с корретным названием `config`.<br>
+    Приложение назовем `shop`.<br><br>
+   
+    Пусть ученики сами сделают это используя шпаргалку ([Старт проекта](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0))
 
 2. ## Создание моделей
    Перейдем к созданию моделей в файле models.py вашего нового приложения.<br>
@@ -85,7 +90,7 @@
        from .views import * # импортируем все из файла
        
        urlpatterns = [
-           path('catalog/', catalog, name='catalog'),
+           path('', catalog, name='catalog'),
            path('orders/', orders, name='orders'),
            path('order_create/', order_create, name='order_create'),
        ]
@@ -99,7 +104,7 @@
            path('shop/', include('shop.urls')),  # включаем URL-адреса приложения shop
        ]
        # По итогу мы получим следующие адреса:
-       # http://127.0.0.1:8000/shop/catalog/
+       # http://127.0.0.1:8000/shop/
        # http://127.0.0.1:8000/shop/orders/
        # http://127.0.0.1:8000/shop/order_create/
        ```

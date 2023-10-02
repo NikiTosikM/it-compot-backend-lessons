@@ -1,0 +1,19 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %}Shop | ORDERS{% endblock %}
+
+{% block content %}
+    <h1 class="text-dark text-center fw-bold mb-4">Заказы</h1>
+    <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto"
+         style="max-width: 800px;">
+        {% for order in orders %}
+            <div class="d-flex flex-column text-center border-0 rounded-4 text-nowrap px-4 py-2"
+                 style="width: min-content; box-shadow: 0 0 5px #00000022;">
+                <span class="align-self-start fw-bold fs-5">{{ order.id }}</span>
+                <span>{{ order.product.name }}</span>
+                <span>{{ order.delivery_address|truncatewords:6 }}</span>
+                <span>{{ order.created_at }}</span>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
