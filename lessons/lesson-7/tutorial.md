@@ -26,7 +26,7 @@
    ```html
    <!-- playlist/templates/playlist/video_create.html -->
    {% include 'playlist/includes/header.html' %}
-   <h1 class="text-light text-center fw-bold my-4">Новое видео</h1>
+   <h1 class="text-center fw-bold my-4">Новое видео</h1>
    <form class="d-flex flex-column gap-2 mx-auto"
          style="max-width: 300px;">
        <input class="form-control" type="text"
