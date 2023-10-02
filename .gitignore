@@ -37,6 +37,30 @@ media
 .idea/**/gradle.xml
 .idea/**/libraries
 
+projects/shop/.idea
+projects/shop/.idea/**/workspace.xml
+projects/shop/.idea/**/tasks.xml
+projects/shop/.idea/**/usage.statistics.xml
+projects/shop/.idea/**/dictionaries
+projects/shop/.idea/**/shelf
+# AWS User-specific
+projects/shop/.idea/**/aws.xml
+# Generated files
+projects/shop/.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+projects/shop/.idea/**/dataSources/
+projects/shop/.idea/**/dataSources.ids
+projects/shop/.idea/**/dataSources.local.xml
+projects/shop/.idea/**/sqlDataSources.xml
+projects/shop/.idea/**/dynamic.xml
+projects/shop/.idea/**/uiDesigner.xml
+projects/shop/.idea/**/dbnavigator.xml
+
+# Gradle
+projects/shop/.idea/**/gradle.xml
+projects/shop/.idea/**/libraries
+
 # File-based project format
 *.iws
 
