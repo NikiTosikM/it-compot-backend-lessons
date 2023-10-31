@@ -8,7 +8,7 @@
 
 ## Оценки на видео
 * ### Вспоминаем как мы отправляем данные на сервер. 
-  Покажите на примере шпаргалки ([Обмен данными</u> `клиент <--> сервер`](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82----%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80)).
+  Покажите на примере шпаргалки ([Обмен данными</u> клиент <--> сервер](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82----%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80)).
 
 * ### Вместе думаем, как мы можем сделать функциональность лайков.
      * Где будем хранить количество лайков? _В модели **Post** в поле **likes**._<br>

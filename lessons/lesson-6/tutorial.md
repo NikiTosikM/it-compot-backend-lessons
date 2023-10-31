@@ -74,7 +74,7 @@
    >Используем Bootstrap, header, footer берем с предыдущей страницы. 
 
    **`Когда сделаете`**, обратите внимание, что часть кода (*header, footer*) дублируется. 
-   Применим `include` для `повторного использования` header и footer.
+   Применим `include` для `повторного использования` header и footer.<br>
    Подробно об `include` в [шпаргалке](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#Include-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0%D1%85)
    , если группа сильная можете дать как самостоятельное задание.
       > Создайте в папке с шаблонами новую папку `includes` 

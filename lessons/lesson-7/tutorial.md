@@ -43,7 +43,8 @@
    ```
 2. ## Создание view для добавления видео
 
-   * Показываем ученикам как создавать объекты в базе данных.<br>
+   * Показываем ученикам как создавать объекты в базе данных 
+     [шпаргалка ORM Django метод create](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm).<br>
    * Вспоминаем как получать данные из `request.POST`.<br>
    * Вспоминаем под какими именами мы передаем данные (*имена input в форме*). <br>
    * Даем время ученикам попробовать самим доделать view, 
@@ -82,7 +83,7 @@
            <meta name="viewport" content="width=device-width, initial-">
            <meta charset="utf-8"/>
            <link type="text/css" rel="stylesheet"
-                 href="{% static 'app1/css/bootstrap.min.css'%}"/>
+                 href="{% static 'core/css/bootstrap.min.css'%}"/>
            <title>Artasov</title>
        </head>
        <body class="bg-dark d-flex flex-column" style="min-height: 100vh;">
@@ -96,6 +97,8 @@
    </html>
    ```
 4. ## Углубление в шаблонизацию
+   Рекомендую вместе с учениками по демонстрации почитать, что написано в 
+   [шпаргалке про наследование шаблонов](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%B8%D0%B5%D0%BD%D0%B0%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%BE%D0%B2).
    Рассказываем, что есть возможность сделать `базовый шаблон`,
    куда мы можем `вынести эти повторящиеся части`, а дальше просто `расширять` 
    этот `базовый шаблон` другими фрагментами кода.
@@ -103,12 +106,12 @@
    структура страницы, которую затем можно расширять 
    и переопределять в основных шаблонах.
    
-   * Добавляем `project_root/app1/templates/app1/base.html`
+   * Добавляем `project_root/core/templates/core/base.html`
      >Помним, что bootstrap у нас лежит в самом первом приложении. 
       Давайте там же добавим базовый шаблон.
    * Напишем структуру объясняя и задавая вопросы.
      ```html
-     <!-- Базовый шаблон project_root/app1/templates/base.html -->
+     <!-- Базовый шаблон project_root/core/templates/core/base.html -->
      {% load static %}
      <!DOCTYPE html>
      <html lang="ru">
@@ -117,7 +120,7 @@
          <meta name="viewport" content="width=device-width, initial-">
          <meta charset="utf-8"/>
          <link type="text/css" rel="stylesheet"
-               href="{% static 'app1/css/bootstrap.min.css'%}"/>
+               href="{% static 'core/css/bootstrap.min.css'%}"/>
          <title>{% block title %}Artasov{% endblock %}</title>
      </head>
      <body class="bg-dark d-flex flex-column" style="min-height: 100vh;">
@@ -133,10 +136,10 @@
       мы сможем переопределять по надобности при расширении шаблона.<br><br>
    
    * Показываем пример наследования / расширения шаблона и начинаем переделывать
-     все странички(`все посты`, `все видео`, `добавление видео`), ученики должны хорошо понять принцып этой логики.
+     все странички(`все посты`, `все видео`, `добавление видео`), ученики должны хорошо понять принцип наследования.
      ```html
      <!-- Например страница со всеми постами blog/posts_list.html теперь будет выглядеть так.-->
-     {% extends 'app1/base.html' %}
+     {% extends 'core/base.html' %}
 
      {% block title %}Блог | Все посты{% endblock %}
      

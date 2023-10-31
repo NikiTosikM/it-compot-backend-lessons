@@ -68,7 +68,7 @@
           return render(request, 'playlist/video_create.html')
       ```
       ```html
-      <!-- app1/templates/app1/includes/header.html -->
+      <!-- core/templates/core/includes/header.html -->
       ...
       <ul class="navbar-nav mb-2 mb-lg-0">
           <li class="nav-item">

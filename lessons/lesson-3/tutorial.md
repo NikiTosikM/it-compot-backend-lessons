@@ -31,10 +31,10 @@
     
     Кто-нибудь спросит куда нужно сохранять этот файл.<br>
     Рассказываем про то, как устроено хранение статических файлов в django.<br>
-     ┣-📂app1 `Приложение app1`<br>
+     ┣-📂core `Приложение core`<br>
      ┃    ┣-📂migrations `Файлы миграций`<br>
      ┃    ┣-📂static `Статические файлы`<br>
-     ┃    ┃    ┣-📂app1 `Статические файлы app1 приложения`<br>
+     ┃    ┃    ┣-📂core `Статические файлы core приложения`<br>
      ┃    ┃    ┃    ┣-📂css<br>
      ┃    ┃    ┃    ┃    ┗-📜bootstrap.min.css<br>
      ┃    ┃    ┃    ┣-📂img<br>
@@ -42,14 +42,14 @@
      ┃    ┣-📜__init__.py<br>
      ┃    ┣-📜apps.py<br>
      ┃    ┣-📜admin.py `Управление админкой`<br>
-     ┃    ┣-📜models.py `Модели приложения app1`<br>
-     ┃    ┣-📜urls.py `Маршруты приложения app1`<br>
-     ┗    ┗-📜views.py `Функции приложения app1 для отображения страниц`<br>
+     ┃    ┣-📜models.py `Модели приложения core`<br>
+     ┃    ┣-📜urls.py `Маршруты приложения core`<br>
+     ┗    ┗-📜views.py `Функции приложения core для отображения страниц`<br>
     Подключаем .css файл в html.
     ```html
     {% load static %}
     <head>
-        <link rel="stylesheet" href="{% static 'app1/css/bootstrap.min.css' %}"> 
+        <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}"> 
     </head>
     ```
     Дальше пусть ученики сделают оформление формы (минуты 3-6).

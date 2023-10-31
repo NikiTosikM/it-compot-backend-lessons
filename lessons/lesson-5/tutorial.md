@@ -39,7 +39,7 @@
    > ...
    > <head>
    >     ...
-   >     <link rel="stylesheet" href="{% static 'app1/css/bootstrap.min.css' %}"> 
+   >     <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}"> 
    > </head>
    >```
    
