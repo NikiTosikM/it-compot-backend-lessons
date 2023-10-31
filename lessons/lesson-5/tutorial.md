@@ -30,10 +30,10 @@
    и 
    **[карточку](https://getbootstrap.com/docs/5.3/components/card/#images)**
    для поста.
-   Лучше брать без кнопки карточку и сделать её потом ссылкой.
    > Лучше взять карточку без кнопки. Не забываем подключить `bootstrap.min.css`, 
    > как делали на прошлых уроках.
    > ```html
+   > <!-- blog/posts_list.html -->
    > {% load static %}
    > <head>
    >     <link rel="stylesheet" href="{% static 'app1/css/bootstrap.min.css' %}"> 
@@ -67,7 +67,7 @@
 3. Когда доверстали, даем подумать как можно передать в товар с `id=1` (можно подсмотреть в 
    шпаргалке [ORM Django](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#orm)).<br> 
    Находим `objects.get(id=1)`, вспоминаем как мы передавали переменные в шаблон. Желательно чтобы ученики сами додумались.
-   >Напоминаем, что можно использовать print для лучшего понимания.
+   > Можно использовать print для лучшего понимания.
    ```python
    # blog/views.py
    from .models import Post

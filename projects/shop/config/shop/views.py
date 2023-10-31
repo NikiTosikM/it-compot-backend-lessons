@@ -14,3 +14,8 @@ def orders(request):
 
 def order_create(request):
     return render(request, 'shop/order_create.html')
+
+
+def product_detail(request, id):
+    product = Product.objects.get(id=id)
+    return render(request, 'shop/product_detail.html', {'product': product})

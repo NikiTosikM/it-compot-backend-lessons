@@ -44,29 +44,28 @@
 
 9. Создайте объекты постов через административную панель, чтобы убедиться, что ваша <br>
    модель функционирует.
-10. Постепенно добавляйте новые поля и связи между моделями, повторяя процесс миграции, <br>
-    чтобы продемонстрировать изменения в базе данных.
-11. Доделываем до такого вида, постепенно обновляя уже созданные объекты.
+
+10. Доделываем до такого вида, постепенно обновляя уже созданные объекты. <br>
+    **Если easy уровень то 2-3 поля на первый раз более чем достаточно. class Meta и __str_\_ можно им тоже не показывать.**
+
     ```python
     class Post(models.Model):
         title = models.CharField(max_length=70)
+        image = models.ImageField(upload_to='images/')
         text = models.TextField()
         likes = models.IntegerField(blank=True)
         rating = models.FloatField(blank=True)
-        image = models.ImageField(upload_to='images/')
         is_published = models.BooleanField(default=True)
         created_at = models.DateTimeField(auto_now_add=True)
-        
-        class Meta:
-            verbose_name = 'Пост'
-            verbose_name_plural = 'Посты'
-    
-        def __str__(self):
-            return self.title
     ```
-12. Рассказываем, что для корректного использования медиафайлов(картинок через imagefield),<br>
+    > Не забываем создать и выполнить миграции
+
+    Скорее всего при миграция будет ошибка о нехватке Pillow для использования ImageField<br>
+    Установите эту библиотеку `pip install Pillow`<br><br>
+
+11. Рассказываем, что для корректного использования медиафайлов(картинок через imagefield),<br>
     нужно определить определить адреса для этих медиафайлов.
-13. Отредактируем `settings.py` и `корневые urlpatterns`
+12. Отредактируем `settings.py` и `корневые urlpatterns`
     ```python
     # project_name/settings.py
     ...
@@ -89,20 +88,6 @@
     if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     ```
-#### Если осталось время обьясните, что такое <br> связи в базах данных и сделайте модель Comment, <br> которая будет ссылаться на пост. Отобразите ее в админке.
-```python
-class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    text = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-```
-   ```python
-   # blog/admin.py
-   from django.contrib import admin
-   from .models import Post, Comment
-   
-   @admin.register(Comment)
-   class CommentAdmin(admin.ModelAdmin):
-       list_display = ('post', 'text')
-   ```
+#### Если осталось время доделывайте git с прошлого занятия.
+
 ># git push...

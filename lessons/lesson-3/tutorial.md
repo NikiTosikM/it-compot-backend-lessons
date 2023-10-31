@@ -121,7 +121,7 @@
         if user_guess == random_number:
             result = "Поздравляем, вы угадали число!"
         else:
-            result = f"К сожалению, загаданное число было {random_number}. Попробуйте ещё раз."
+            result = f"К сожалению, было загаданно число {random_number}. Попробуйте ещё раз."
             
         return render(request, 'app_name/magic_number.html', {'result': number})
     ```
@@ -136,19 +136,20 @@
     from django.shortcuts import render
     import random
     
-    def guess_number(request):
+    def magic_number(request):
         # Если POST
         if request.method == 'POST':
-            user_guess = int(request.POST['user_guess'])
-            if user_guess == random.randint(1, 5):
+            number = int(request.POST['number'])
+            random_number = random.randint(1, 5)
+            if magic_number == random_number:
                 result = "Поздравляем, вы угадали число!"
             else:
                 result = f"К сожалению, загаданное число было {random_number}. Попробуйте ещё раз."
             
-            return render(request, 'guess_number.html', {'result': result})
+            return render(request, 'magic_number.html', {'result': result})
         
         # Если GET
-        return render(request, 'guess_number.html')
+        return render(request, 'magic_number.html')
     ```
     
 Проверяем радуемся.

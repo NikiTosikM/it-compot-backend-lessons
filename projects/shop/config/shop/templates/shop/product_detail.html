@@ -1,0 +1,37 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %}Shop | {{ product.name }} {% endblock %}
+
+{% block content %}
+    <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto"
+         style="max-width: 300px;">
+        <div class="d-flex flex-column align-items-start text-center border-0 rounded-4 text-nowrap px-4 py-4"
+             style="width: min-content; box-shadow: 0 0 5px #00000022;">
+            <h1 class="text-wrap">{{ product.name }}</h1>
+            <img src="{{ product.image.url }}" alt="">
+            <span class="d-flex mt-auto">
+                <span class="fs-2 fw-bold">{{ product.price }} ₽</span>
+                {% if product.discount %}
+                    <span class="text-danger fs-6">-{{ product.discount }}%</span>
+                {% endif %}
+            </span>
+            <div class="d-flex gap-1 mb-2">
+                {% for star in "Mda.." %}
+                    {% if forloop.counter <= product.rating %}
+                        <img width="20" height="20"
+                             src="{% static 'shop/img/rating_star.png' %}"
+                             alt="star">
+                    {% else %}
+                        <img width="20" height="20"
+                             src="{% static 'shop/img/rating_star.png' %}"
+                             style="filter: grayscale(1);"
+                             alt="star">
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <span class="fs-5">В наличии: {{ product.stock }}</span>
+            <span class="fs-5">{{ product.desc }}</span>
+            <button class="btn fs-4 btn-outline-secondary w-100 mt-3">Оформить заказ</button>
+        </div>
+    </div>
+{% endblock %}

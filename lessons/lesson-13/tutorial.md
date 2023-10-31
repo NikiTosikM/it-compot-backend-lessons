@@ -9,36 +9,39 @@
 если хотите.**
 
 1.  ## Создание URL для отображения конкретного товара
+    Мы хотим добиться поведения при котором по запросу<br>
+    `GET http://127.0.0.1:8000/shop/product/1/` выводилась<br> 
+    бы информация о товаре с `id = 1`. То есть цифра в конце адреса<br>
+    в данном случае обозначает id того товара, который мы хотим получить.<br><br>
+
     Для начала, необходимо определить URL-путь для страницы товара в urls.py:
     
     ```python
     # shop/urls.py
-    from django.urls import path
-    from . import views
-    
     urlpatterns = [
-        path('product/<int:id>/', views.product_detail, name='product_detail'),
+        ...
+        path('product/<int:id>/', views.product_detail),
     ]
     ```
     Здесь `<int:id>` – это динамическая часть URL, 
     которая передает id товара в виде целого числа в 
-    функцию указанное представление `product_detail`.
+    функцию указанного представления `product_detail`.
 
 2.  ## Создадим представление `product_detail`
     ```python
     # shop/views.py
-    from django.shortcuts import get_object_or_404, render
-    from .models import Product
-    
     def product_detail(request, id):  # В переменную id попадет <int:id>.
-        # http://127.0.0.1:8000/shop/product/1/
-        # Тогда id будет равный 1.
+        # Если GET http://127.0.0.1:8000/shop/product/1/
+        # Тогда id будет равен 1.
         product = Product.objects.get(id=id)
+        # Взяли продукт с id=1 и передаем его в шаблон
         return render(request, 'shop/product_detail.html', {'product': product})
     ```
 
 3.  ## Создадим шаблон `product_detail`
-
+    Можем частично скопировать с каталога и немного изменить.
+    Обратите внимание, что в примере ниже название 
+    вкладки содержит название товара.
     ```html
     <!-- shop/product_detail.html  -->
     {% extends 'shop/base.html' %}
@@ -46,54 +49,107 @@
     {% block title %}Shop | {{ product.name }} {% endblock %}
     
     {% block content %}
-        <h1 class="text-dark text-center fw-bold mb-4">
-            {{ product.name }}
-        </h1>
         <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto"
-             style="max-width: 800px;">
-            <div class="d-flex flex-column text-center border-0 rounded-4 text-nowrap px-4 py-2"
+             style="max-width: 300px;">
+            <div class="d-flex flex-column align-items-start text-center border-0 rounded-4 text-nowrap px-4 py-4"
                  style="width: min-content; box-shadow: 0 0 5px #00000022;">
-                <span class="align-self-start fw-bold fs-5">{{ order.id }}</span>
-                <span>{{ order.product.name }}</span>
-                {# обрезаем 10 слов #}
-                <span>{{ order.delivery_address|truncatewords:6 }}</span>
-                <span>{{ order.created_at }}</span>
+                <h1 class="text-wrap">{{ product.name }}</h1>
+                <img src="{{ product.image.url }}" alt="">
+                <span class="d-flex mt-auto">
+                    <span class="fs-2 fw-bold">{{ product.price }} ₽</span>
+                    {% if product.discount %}
+                        <span class="text-danger fs-6">-{{ product.discount }}%</span>
+                    {% endif %}
+                </span>
+                <div class="d-flex gap-1 mb-2">
+                    {% for star in "*****" %}
+                        {% if forloop.counter <= product.rating %}
+                            <img width="20" height="20"
+                                 src="{% static 'shop/img/rating_star.png' %}"
+                                 alt="star">
+                        {% else %}
+                            <img width="20" height="20"
+                                 src="{% static 'shop/img/rating_star.png' %}"
+                                 style="filter: grayscale(1);"
+                                 alt="star">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <span class="fs-5">В наличии: {{ product.stock }}</span>
+                <span class="fs-5">{{ product.desc }}</span>
+                <button class="btn fs-4 btn-outline-secondary w-100 mt-3">Оформить заказ</button>
             </div>
         </div>
     {% endblock %}
     ```
+    **Проверьте, что все работает**
 
-Рендер URL в шаблоне
-Для того чтобы создать ссылку на страницу товара в другом шаблоне, используем тег {% url %}:
 
-html
-Copy code
-<!-- shop/templates/shop/catalog.html -->
-{% for product in products %}
-    <a href="{% url 'product_detail' id=product.id %}">{{ product.name }}</a>
-{% endfor %}
-Здесь 'product_detail' – это имя URL-пути, который мы определили в urls.py, и id=product.id передает id каждого товара в этот URL-путь.
+4.  ## Рендер URL в шаблоне
+    Нам бы хотелось переходить на страницу товара из 
+    каталога, это более удобно.<br>
+    Используем тег `{% url 'pattern_name' %}`.<br>
+    Данный тэг после рендера шаблона (выполнении функции `render()` во views) 
+    заменится на маршрут соответствующий `name=pattern_name`.
+    Вспоминаем, что такое 
+    **[имена маршрутов](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%A4%D0%BE%D1%80%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D0%B5%D0%BD%D0%BD%D0%B8%D1%85-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%BE%D0%B2-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)**
+    делаем каждый товар в каталоге ссылкой на просмотр 
+    подробной информации о товаре.
+    
+    ```html
+    <!-- shop/catalog.html -->
+    ...
+    {% for product in products %}
+        <!-- Генерируем ссылку с указанием id данного товара.-->
+        <a href="{% url 'product_detail' id=product.id %}"
+           class="card border-0 rounded-4"
+           style="width: 250px; box-shadow: 0 0 5px #00000022;">
+            ...
+        </a>
+    {% endfor %}
+    ...
+    ```
+    Здесь `product_detail` – это имя URL-паттерна, 
+    который мы определили в urls.py, и id=product.id 
+    передает id каждого товара в этот URL-путь. 
+    Теперь при нажатии на товар в каталоге пользователя 
+    будет перенаправлять на страницу подробного просмотра товара.<br><br>
+    
+    Текст на товаре станет подчеркнутым. Я думаю стоит ученикам самим
+    попробовать загуглить и найти нужный класс.
+    По первой ссылке stackover по запросу `Как убрать подчеркивание bootstrap`  
+    правильный вариант. Добавляем найденный класс к ссылке.
+    ```html
+    <!-- shop/catalog.html -->
+    ...
+    <a href="{% url 'product_detail' id=product.id %}"
+       class="card border-0 rounded-4 text-decoration-none"
+       style="width: 250px; box-shadow: 0 0 5px #00000022;">
+        ...
+    </a>
+    ```
 
-Самостоятельная работа: Страница заказа
-Теперь попробуйте сделать то же самое для страницы заказа:
+5.  ## Добавляем ссылку на товар в заказы.
+    Сейчас в заказе отображается только имя товара.<br>
+    Пусть ученики сделают сами, чтобы <br>
+    при нажатии на имя товара на странице заказов, <br>
+    пользователя перенаправляло на страницу товара.
+    
+    ```html
+    {% for order in orders %}
+        <div class="d-flex flex-column text-center border-0 rounded-4 text-nowrap px-4 py-2"
+             style="width: min-content; box-shadow: 0 0 5px #00000022;">
+            <span class="align-self-start fw-bold fs-5">{{ order.id }}</span>
+    
+            <a href="{% url 'product_detail' id=order.product.id %}">
+                {{ order.product.name }}
+            </a>
+    
+            <span>{{ order.delivery_address|truncatewords:6 }}</span>
+            <span>{{ order.created_at }}</span>
+        </div>
+    {% endfor %}
+    ```
 
-Определите URL-путь в urls.py.
-
-Создайте представление order_detail в views.py.
-
-Создайте шаблон order_detail.html.
-
-Рендерите ссылки на страницу заказа в другом шаблоне, используя тег {% url %}.
-
-Если у вас возникли трудности, обратитесь к примеру с товаром выше.
-
-Дополнительное задание: Ссылка на связанный товар на странице заказа
-Если у вас еще осталось время, попробуйте добавить на страницу заказа ссылку на связанный с этим заказом товар.
-
-В order_detail.html:
-
-html
-Copy code
-<!-- shop/templates/shop/order_detail.html -->
-<a href="{% url 'product_detail' id=order.product.id %}">Подробнее о товаре</a>
-Это позволяет пользователю переходить от заказа к связанному с ним товару, улучшая навигацию по сайту.
+Если осталось время, переделайте шапку чтобы в навигации 
+были ссылки на заказы и каталог.
