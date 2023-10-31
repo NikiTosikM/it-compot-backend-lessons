@@ -85,7 +85,7 @@
             return render(request, 'app_name/magic_number.html', {'result': 'Победа'})
         ```
         Можно показать 
-        **[шпаргалку](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D1%8C-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0)**.
+        **[шпаргалку](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D1%8C-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0)**.
 
         
 4.  ## Передача данных в шаблон.

@@ -6,9 +6,9 @@
 
 1. ## Отображение одного товара
    Вспоминаем как можно 
-   [передавать переменные в шаблон](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D1%8C-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0)
+   [передавать переменные в шаблон](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D1%8C-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0)
    и брать 
-   [объекты](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#orm)
+   [объекты](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)
    из базы данных.<br>
    Получаем 1 товар и отображаем его на странице.
    ```python
@@ -111,9 +111,9 @@
         </div>
     {% endblock %}
     ```
-3. ## Отобразим сразу несколько заказов используя [циклы в шаблонах](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5).
+3. ## Отобразим сразу несколько заказов используя [циклы в шаблонах](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5).
     Для начала нужно передавать в шаблон не 1 заказ, а несколько. Будем брать все.<br>
-    Возвращаемся к [ORM](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#orm).
+    Возвращаемся к [ORM](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm).
     ```python
     # shop/views.py
     def orders(request):

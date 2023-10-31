@@ -38,7 +38,7 @@
         >на данном этапе, это не так просто для понимания даже для hard уровня, но если
         >в учениках уверены можно и рассказать или если время останется в конце.
         
-    *   ### Отправьте ученикам [это](https://github.com/Artasov/itcompot-methods/blob/main/bootstrap-base.md)
+    *   ### Отправьте ученикам [это](https://github.com/xlartas/it-compot-backend-methods/blob/main/bootstrap-base.md)
         Отправьте **ссылку**, а не файл, так они будут видет красивое оформление markdown.<br><br>
 
         Обязательно рассказываем про часто используемые классы.
@@ -99,7 +99,7 @@
 3. ### После установки добаляем `bash` терминал в `VSCode` и далее пишем _ВСЕГДА_ в нём.
    ![](imgs/gitterminal.png)
 4. ### Создаем новый репозиторий.
-5. ### Рассказываем зачем **[.gitignore](https://github.com/Artasov/itcompot-methods/blob/main/.gitignore)** и отправляем им ссылку на скачивание.
+5. ### Рассказываем зачем **[.gitignore](https://github.com/xlartas/it-compot-backend-methods/blob/main/.gitignore)** и отправляем им ссылку на скачивание.
 6. ### В терминале инициализируем git.
    `git init`
 7. ### Добавляем в отслеживание все файлы в директории рекурсивно.

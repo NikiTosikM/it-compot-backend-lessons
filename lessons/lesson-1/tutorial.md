@@ -122,12 +122,14 @@
         path('example_url/', example),  # связываем маршрут и функцию
     ]
 ```
-## Завершение
-Познакомьте учеников со [шпаргалкой](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md)
-Пусть ученики попробуют сами создать страничку и связать её с адресом по их желанию.<br>
-Как только получилось скидываем 
-**[готовый html](https://raw.githubusercontent.com/Artasov/itcompot-backend-lessons/main/lessons/lesson-1/template/index.html)**
-со стилями, чтобы они вставили его себе и было красиво.
+
+## Познакомьте учеников со **[шпаргалкой](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md)**
+
+## Небольшая самостоятельная
+Пусть ученики попробуют сами связать 
+**[готовый html](https://raw.githubusercontent.com/Artasov/itcompot-backend-lessons/main/lessons/lesson-1/template/index.html)** 
+с адресом по их желанию.
+>Просто скиньте ссылку на файл в чат.
 
 ## Если осталось время начинаем работу с Git по гайду в конце второго урока.
 

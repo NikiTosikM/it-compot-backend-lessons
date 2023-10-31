@@ -9,7 +9,7 @@
     настройками проекта будет в папке с корретным названием `config`.<br>
     Приложение назовем `shop`.<br><br>
    
-    Пусть ученики сами сделают это используя шпаргалку ([Старт проекта](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0))
+    Пусть ученики сами сделают это используя шпаргалку ([Старт проекта](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0))
 
 2. ## Создание моделей
    Перейдем к созданию моделей в файле models.py вашего нового приложения.<br>

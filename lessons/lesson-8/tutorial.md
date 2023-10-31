@@ -8,13 +8,13 @@
 
 ## Оценки на видео
 * ### Вспоминаем как мы отправляем данные на сервер. 
-  Покажите на примере шпаргалки ([Обмен данными</u> `клиент <--> сервер`](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82----%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80)).
+  Покажите на примере шпаргалки ([Обмен данными</u> `клиент <--> сервер`](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82----%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80)).
 
 * ### Вместе думаем, как мы можем сделать функциональность лайков.
      * Где будем хранить количество лайков? _В модели **Post** в поле **likes**._<br>
      * Где будет кнопка отправки формы лайка? _В карточке поста._<br>
      * Мы же должны отправлять что-то, по чему мы сможем понять, <br>на какой пост был поставлен лайк. Что это? _post_id_<br>
-     * Какой тип input будет использоваться для передачи post_id? _**hidden** с **id** поста. <br>Скажите посмотреть шпаргалку_ ([Виды input](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%B2%D0%B8%D0%B4%D1%8B-%D0%BF%D0%BE%D0%BB%D0%B5%D0%B9-%D0%B2%D0%B2%D0%BE%D0%B4%D0%B0-input))<br>
+     * Какой тип input будет использоваться для передачи post_id? _**hidden** с **id** поста. <br>Скажите посмотреть шпаргалку_ ([Виды input](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B2%D0%B8%D0%B4%D1%8B-%D0%BF%D0%BE%D0%BB%D0%B5%D0%B9-%D0%B2%D0%B2%D0%BE%D0%B4%D0%B0-input))<br>
      * Что будет кнопкой отправки? _Кнопка like._<br>
 
 * ### Пусть ученики напишут сами.
@@ -52,7 +52,7 @@
     {% endfor %}
     ```
   * #### Добавим функцию обработчик лайка.
-    Смотрим шпаргалку ([Изменение полей объекта](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#orm))
+    Смотрим шпаргалку ([Изменение полей объекта](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm))
     > Используем принты если, что-то не получается.
     ```python
     # blog/views.py

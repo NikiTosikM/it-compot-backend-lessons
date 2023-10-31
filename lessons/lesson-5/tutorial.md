@@ -65,7 +65,7 @@
    ```
    
 3. Когда доверстали, даем подумать как можно передать в товар с `id=1` (можно подсмотреть в 
-   шпаргалке [ORM Django](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#orm)).<br> 
+   шпаргалке [ORM Django](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)).<br> 
    Находим `objects.get(id=1)`, вспоминаем как мы передавали переменные в шаблон. Желательно чтобы ученики сами додумались.
    > Можно использовать print для лучшего понимания.
    ```python
@@ -90,9 +90,9 @@
    ...
    ```
 5. Пусть сами попробуют по примеру в шпаргалке <br>
-   [Использование условий и циклов](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)
+   [Использование условий и циклов](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)
    и
-   [ORM Django](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#orm)
+   [ORM Django](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)
    сделать отображение всех постов.
    ```python
    # blog/views.py

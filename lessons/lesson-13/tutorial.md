@@ -5,7 +5,7 @@
 Сначала сделаем вместе один пример, затем вы сделаете то же самое на другом примере сами.
 
 **Можете показать раздел в 
-[шпаргалке](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D1%8B),
+[шпаргалке](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D1%8B),
 если хотите.**
 
 1.  ## Создание URL для отображения конкретного товара
@@ -92,7 +92,7 @@
     Данный тэг после рендера шаблона (выполнении функции `render()` во views) 
     заменится на маршрут соответствующий `name=pattern_name`.
     Вспоминаем, что такое 
-    **[имена маршрутов](https://github.com/Artasov/itcompot-methods/blob/main/django-base.md#%D0%A4%D0%BE%D1%80%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D0%B5%D0%BD%D0%BD%D0%B8%D1%85-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%BE%D0%B2-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)**
+    **[имена маршрутов](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%A4%D0%BE%D1%80%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D0%B5%D0%BD%D0%BD%D0%B8%D1%85-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%BE%D0%B2-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)**
     делаем каждый товар в каталоге ссылкой на просмотр 
     подробной информации о товаре.
     
