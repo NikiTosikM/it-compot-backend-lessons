@@ -14,7 +14,7 @@
    from playlist.views import video_create
    urlpatterns = [
        ...
-       path('video/new/', video_create),
+       path('playlist/video_create/', video_create),
    ]
    ```
    ```python

@@ -50,7 +50,7 @@
       urlpatterns = [
           ...
           path('playlist/video_list/', views.video_list, name='video_list'),
-          path('video/new/', video_create, name='video_create'),
+          path('playlist/video_create/', video_create, name='video_create'),
           path('blog/posts_list/', posts_list, name='posts_list'),
           ...
       ]
