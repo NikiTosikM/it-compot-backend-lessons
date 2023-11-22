@@ -1,117 +1,115 @@
 # Шаблонизация вывода товаров и заказов
 
-Сегодня мы седлаем вывод всех товаров и заказов на отдельных страницах.
+Сегодня мы сделаем вывод всех товаров и заказов на отдельных страницах.
 Перед началом создайте несколько товаров и заказов через админку.
 > По 3 штуки достаточно.
 
 1. ## Отображение одного товара и заказа
-   ## Товар
-   Вспоминаем как можно 
-   [передавать переменные в шаблон](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D1%8C-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0)
-   и брать 
-   [объекты](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)
-   из базы данных.<br>
-   Получаем 1 товар и отображаем его на странице.
-   ```python
-   # shop/views.py
-   from .models import Product
-   
-   
-   def catalog(request):
-       product = Product.objects.get(id=0)
-       # или 
-       product = Product.objects.first()
-       # или 
-       product = Product.objects.last()
-       return render(request, 'shop/catalog.html', {'product': product})
-   ```
-   
-   Используем переданную переменную в шаблоне.
-    > Отображайте меньше полей если понимаете, что ученики не успеют.
-    ```html
-    <!-- shop/catalog.html  -->
-   ...
-    <div class="card border-0 rounded-4" 
-         style="width: 250px; box-shadow: 0 0 5px #00000022;">
-        <img src="{{ product.image.url }}" 
-             class="card-img-top rounded-4 mt-3" alt="{{ product.name }}">
-        <div class="card-body d-flex flex-column">
-            <span class="card-text d-flex mt-auto">
-                <span class="fs-2 fw-bold">{{ product.price }} ₽</span>
-                <!-- Можно добавить условие для отображения скидки -->
-                {% if product.discount %}
-                    <span class="text-danger fs-6">-{{ product.discount }}%</span>
-                {% endif %}
-            </span>
-            <h3 class="card-title fs-6">{{ product.name }}</h3>
-            <div class="d-flex gap-1 mb-3">
-                <!-- Используйте рейтинг товара для отображения звезд.
-                     Делаем цикл в кавычках пишем ЛЮБУЮ строку из 5 символов.  
-                     Таким образом мы просто делаем цикл из 5 итераций 
-                     т.к. максимальный рейтинг - 5, соответственно звезд 
-                     будет тоже не больше 5. -->
-                <!-- Если номер итерации меньше чем число рейтинга в 
-                     данном объекте продукта, добавляем картинку звездочки,
-                     иначе добавляем такую же картинку, но делаем её серой. -->
-                
-                {% for star in "Пять." %} 
-                    Картинку нужно скачать
-                    {% if forloop.counter <= product.rating %}
-                        <img width="20" height="20" 
-                             src="{% static 'shop/img/rating_star.png' %}" 
-                             alt="star">
-                    {% else %}
-                        <img width="20" height="20" 
-                             src="{% static 'shop/img/rating_star.png' %}"
-                             style="filter: grayscale(1);" 
-                             alt="star">
+   * ## Товар
+       Вспоминаем как можно 
+       [передавать переменные в шаблон](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B2%D0%BD%D1%83%D1%82%D1%80%D1%8C-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0)
+       и [брать объекты](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)
+       из базы данных.<br>
+       Получаем 1 товар и отображаем его на странице.
+       ```python
+       # shop/views.py
+       from .models import Product
+       
+       
+       def catalog(request):
+           product = Product.objects.get(id=0)
+           # или 
+           product = Product.objects.first()
+           # или 
+           product = Product.objects.last()
+           return render(request, 'shop/catalog.html', {'product': product})
+       ```
+       
+       Используем переданную переменную в шаблоне.
+        > Отображайте меньше полей если понимаете, что ученики не успеют.
+        ```html
+        <!-- shop/catalog.html  -->
+       ...
+        <div class="card border-0 rounded-4" 
+             style="width: 250px; box-shadow: 0 0 5px #00000022;">
+            <img src="{{ product.image.url }}" 
+                 class="card-img-top rounded-4 mt-3" alt="{{ product.name }}">
+            <div class="card-body d-flex flex-column">
+                <span class="card-text d-flex mt-auto">
+                    <span class="fs-2 fw-bold">{{ product.price }} ₽</span>
+                    <!-- Можно добавить условие для отображения скидки -->
+                    {% if product.discount %}
+                        <span class="text-danger fs-6">-{{ product.discount }}%</span>
                     {% endif %}
-                {% endfor %}
-            </div>
-            <!-- Условие для отображения кнопки -->
-            {% if product.is_available %}
-            <button class="btn btn-outline-secondary text-dark">В корзину</button>
-            {% else %}
-            <button class="btn btn-outline-secondary text-dark" disabled>Нет в наличии</button>
-            {% endif %}
-            <small class="text-black-50 mt-2">
-                <!-- Описание товара -->
-                {{ product.desc }}<br>
-            </small>
-        </div>
-    </div>
-    ```
-2. ## Заказ
-   ```python
-   from .models import Product, Order
-   
-   
-   def orders(request):
-         order = Order.objects.first()
-         return render(request, 'shop/orders.html', {'order': order})
-   ```
-   > Выводим любые поля, можно даже картинку из продукта хардам задать вывести.
-   ```html
-    <!-- shop/orders.html  -->
-    {% extends 'shop/base.html' %}
-    {% load static %}
-    {% block title %}Shop | ORDERS{% endblock %}
-    
-    {% block content %}
-        <h1 class="text-dark text-center fw-bold mb-4">Заказы</h1>
-        <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto"
-             style="max-width: 800px;">
-            <div class="d-flex flex-column text-center border-0 rounded-4 text-nowrap px-4 py-2"
-                 style="width: min-content; box-shadow: 0 0 5px #00000022;">
-                <span class="align-self-start fw-bold fs-5">{{ order.id }}</span>
-                <span>{{ order.product.name }}</span>
-                {# обрезаем 10 слов #}
-                <span>{{ order.delivery_address|truncatewords:6 }}</span>
-                <span>{{ order.created_at }}</span>
+                </span>
+                <h3 class="card-title fs-6">{{ product.name }}</h3>
+                <div class="d-flex gap-1 mb-3">
+                    <!-- Используйте рейтинг товара для отображения звезд.
+                         Делаем цикл, в кавычках пишем ЛЮБУЮ строку из 5 символов.  
+                         Таким образом мы просто делаем цикл из 5 итераций 
+                         т.к. максимальный рейтинг - 5, соответственно звезд 
+                         будет тоже 5. -->
+                    <!-- Если номер итерации меньше чем число рейтинга в 
+                         данном объекте продукта, добавляем картинку звездочки,
+                         иначе добавляем такую же картинку, но делаем её серой. -->
+                    
+                    {% for star in "Пять." %} 
+                        {% if forloop.counter <= product.rating %}
+                            <img width="20" height="20" 
+                                 src="{% static 'shop/img/rating_star.png' %}" 
+                                 alt="star">
+                        {% else %}
+                            <img width="20" height="20" 
+                                 src="{% static 'shop/img/rating_star.png' %}"
+                                 style="filter: grayscale(1);" 
+                                 alt="star">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <!-- Условие для отображения кнопки -->
+                {% if product.is_available %}
+                <button class="btn btn-outline-secondary text-dark">В корзину</button>
+                {% else %}
+                <button class="btn btn-outline-secondary text-dark" disabled>Нет в наличии</button>
+                {% endif %}
+                <small class="text-black-50 mt-2">
+                    <!-- Описание товара -->
+                    {{ product.desc }}<br>
+                </small>
             </div>
         </div>
-    {% endblock %}
-    ```
+        ```
+   * ## Заказ
+       ```python
+       from .models import Product, Order
+       
+       
+       def orders(request):
+             order = Order.objects.first()
+             return render(request, 'shop/orders.html', {'order': order})
+       ```
+       > Выводим любые поля, можно даже картинку из продукта хардам задать вывести.
+       ```html
+        <!-- shop/orders.html  -->
+        {% extends 'shop/base.html' %}
+        {% load static %}
+        {% block title %}Shop | ORDERS{% endblock %}
+        
+        {% block content %}
+            <h1 class="text-dark text-center fw-bold mb-4">Заказы</h1>
+            <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto"
+                 style="max-width: 800px;">
+                <div class="d-flex flex-column text-center border-0 rounded-4 text-nowrap px-4 py-2"
+                     style="width: min-content; box-shadow: 0 0 5px #00000022;">
+                    <span class="align-self-start fw-bold fs-5">{{ order.id }}</span>
+                    <span>{{ order.product.name }}</span>
+                    <!-- оставляем первые 6 слов -->
+                    <span>{{ order.delivery_address|truncatewords:6 }}</span>
+                    <span>{{ order.created_at }}</span>
+                </div>
+            </div>
+        {% endblock %}
+        ```
 3. ## Отобразим сразу несколько заказов используя [циклы в шаблонах](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5).
     Для начала нужно передавать в шаблон не 1 заказ, а несколько. Будем брать все.<br>
     Возвращаемся к [ORM](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm).
@@ -165,20 +163,7 @@
     ```
 ![](imgs/products.png)
 
-Если все успели, можете рассказать, что тему страницы с темной на белую в bootstrap 
-можно сменить парой слов. <br>
-Добавим в body атрибут data-bs-theme="dark" или "white".
-```html
-<body data-bs-theme="dark">...</body>
-<!--или-->
-<body data-bs-theme="white">...</body>
-```
-> В случае обратите внимание, что у дочерних элементов цвета 
-> не должны сливаться с фоном в той или иной теме, классы 
-> черно-белых цветов стоит удалить либо проследить, что они правильно заданы, 
-> иначе текст может начать сливаться с фоном в 
-> некоторых моментах.
 
-Так же можете добавить в шапку удобную навигацию к товарам и заказам. 
+### Так же можете добавить в шапку удобную навигацию к товарам и заказам. 
 
 ># git push...

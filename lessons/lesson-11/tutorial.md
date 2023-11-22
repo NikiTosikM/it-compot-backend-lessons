@@ -37,7 +37,8 @@
     Берём [шаблон карточки](https://getbootstrap.com/docs/5.3/components/card/) 
     и добавляем на него все необходимое:<br>
     * Изображение, название, цену, скидку, рейтинг, описание, кнопку
-    >Отображайте меньше полей если понимаете, что ученики не успеют.
+    >Отображайте меньше полей если понимаете, что ученики не успеют.<br>
+     Не отображайте рейтинг как в примере, если не уверены, что успеете. 
     ```html
     <!-- shop/catalog.html  -->
     {% load static %}
@@ -60,7 +61,8 @@
                     <div class="d-flex gap-1 mb-3">
                         <!-- Картинку нужно естественно найти по первой 
                              ссылке по запросу 'star icon' и поместить в 
-                             project_root/shop/static/shop/img/rating_star.png -->
+                             project_root/shop/static/shop/img/rating_star.png,
+                             вспомни заодно, что такое статические файлы -->
                         <img width="20" height="20" src="{% static 'shop/img/rating_star.png'%}" alt="">
                         <img width="20" height="20" src="{% static 'shop/img/rating_star.png'%}" alt="">
                         <img width="20" height="20" src="{% static 'shop/img/rating_star.png'%}" alt="">

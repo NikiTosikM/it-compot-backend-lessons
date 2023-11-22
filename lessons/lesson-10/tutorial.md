@@ -6,7 +6,7 @@
 1. ## Создание нового проекта и приложения `shop`
     Проект желательно называть `config`, так папка с <br>
     настройками синхронного, асинхронного серверов и <br>
-    настройками проекта будет в папке с корретным названием `config`.<br>
+    настройками проекта будет в папке с корректным названием `config`.<br>
     Приложение назовем `shop`.<br><br>
    
     Пусть ученики сами сделают это используя шпаргалку ([Старт проекта](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0))
@@ -41,22 +41,7 @@
 
 3. ## Пропишем маршруты к media
     > Вспоминаем, что и зачем.
-    > Подробное объяснение было на 4-ом занятии.
-    ```python
-    # project_name/settings.py
-    ...
-    MEDIA_URL = '/media/'  # адрес по которому будут доступные media.
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # локальный адрес хранения media.
-    ...
-    ```
-    ```python
-    # project_name/urls.py
-    urlpatterns = [
-        ...,
-    ]
-    if settings.DEBUG:
-        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    ```
+    ### Шпаргалка [MediaFiles](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#Media-Files)
 
 4. ## Создание представлений, шаблонов и маршрутов.
    Продумайте какие адреса и страницы у вас будут.
@@ -80,7 +65,7 @@
          return render(request, 'shop/orders.html')
      
      def order_create(request):
-         # <h1>Заказать</h1>
+         # <h1>Оформление заказа</h1>
          return render(request, 'shop/order_create.html')
      ```
     
@@ -91,7 +76,8 @@
     
        ```python
        # shop/urls.py
-       from .views import * # импортируем все из файла
+        # импортируем все из файла shop/views.py. Ученики в теории должны сами это смочь сделать.
+       from .views import * 
        
        urlpatterns = [
            path('', catalog, name='catalog'),
@@ -113,10 +99,8 @@
        # http://127.0.0.1:8000/shop/order_create/
        ```
        >Здесь мы используем include для включения URL-адресов приложения shop в общие URL-адреса проекта, что позволяет нам организовывать URL-адреса более структурированно и читаемо.
-
-5. ## Не забываем протестировать, что всё работает.
-
-6. ## Скопируйте базовый шаблон, шапку и футер по аналогии со старым проектом.
+     
+5. ## Скопируйте базовый шаблон, шапку и футер по аналогии со старым проектом.
 > Если не успеете ничего страшного, следующее занятие по большей части верстка, там и сделаете.
 
 ># git push...

@@ -69,16 +69,13 @@
     нужно определить адреса для этих медиафайлов. То есть сделать так, чтобы каждая картинка <br>
     или любой другой медиафайл были доступны по своему маршруту.<br><br>
 
-12. Отредактируем `settings.py` и `корневые urlpatterns`
+12. Настроем сохранение media файлов. Отредактируем `settings.py` и `корневые urlpatterns`<br>
+    Подробно о том, что такое media files есть в шпаргалке 
+    [Media Files](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#Media-Files).
     ```python
     # project_name/settings.py
     ...
-    # Адрес по которому будут доступные media.
-    # Вы можете проверить доступ после добавления первого поста перейдя по ссылке.
-    # http://127.0.0.1:8000/MEDIA_URL/images/IMAGE_NAME/
     MEDIA_URL = '/media/'
-    # Локальный адрес хранения media.
-    # Корневая папка проекта с manage.py файлом + 'media'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     ...
     ```
@@ -89,9 +86,6 @@
         ...,
         ...,
     ]
-    #  На сервере media обслуживает серверная служба, 
-    #  а не django, поэтому только при debug мы включаем 
-    #  обслуживание на стороне django, добавляя адреса для media.
     if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     ```
