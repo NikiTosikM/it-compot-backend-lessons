@@ -15,7 +15,7 @@ def orders(request):
 def order_create(request, product_id):
     if request.method == 'POST':
         Order.objects.create(
-            product=product_id,
+            product_id=product_id,
             delivery_address=request.POST.get('delivery_address')
         )
         return redirect('orders')
