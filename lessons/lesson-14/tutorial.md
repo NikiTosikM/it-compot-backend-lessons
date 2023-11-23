@@ -56,11 +56,11 @@
             <div class="d-flex flex-column align-items-start text-center border-0 rounded-4 text-nowrap px-4 py-4"
                  style="width: min-content; box-shadow: 0 0 5px #00000022;">
                 <h1 class="text-wrap">Заказ {{ product.name }}</h1>
-                <!-- Остальной код из дательного просмотра товара -->
+                <!-- Остальной код из детального просмотра продукта -->
                 <span class="fs-5">{{ product.desc }}</span>
-                <!-- Формируем динамический адрес до тойже страницы на
-                     которой мы сейчас, но отправлять будем уже post запрос.
-                     Адрес должен содержать id текущего продукта, не забываем. -->
+                <!-- Формируем динамический адрес до той же страницы, на
+                     которой мы сейчас находимся, но отправлять будем уже POST-запрос.
+                     Адрес должен содержать ID текущего продукта, не забываем об этом. -->
                 <form action="{% url 'order_create' product_id=product.id %}"
                       class="d-flex flex-column justify-content-center mx-auto mt-3"
                       method="post">{% csrf_token %}
