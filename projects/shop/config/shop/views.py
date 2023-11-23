@@ -19,9 +19,8 @@ def order_create(request, product_id):
             delivery_address=request.POST.get('delivery_address')
         )
         return redirect('orders')
-    product = Product.objects.get(id=product_id)
     return render(request, 'shop/order_create.html', {
-        'product': product
+        'product': Product.objects.get(id=product_id)
     })
 
 

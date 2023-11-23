@@ -145,7 +145,7 @@
 что в поле `product` модели `Order` хранится `цифра` - `id` связанного продукта,<br>
 а значит поле `product` можно заполнить `цифрой` `product_id` переданной через `URL`,<br>
 а значит объект продукта нужно получать только при рендеринге страницы заказа.<br>
-## 🙄 Проще говоря перемещаем получение объекта продукта после проверки `if POST`
+## 🙄 Проще говоря перемещаем получение объекта продукта сразу в render
 ```python
 # shop/views.py
 def order_create(request, product_id):
@@ -155,9 +155,8 @@ def order_create(request, product_id):
             delivery_address=request.POST.get('delivery_address')
         )
         return redirect('orders')
-    product = Product.objects.get(id=product_id)
     return render(request, 'shop/order_create.html', {
-        'product': product
+        'product': Product.objects.get(id=product_id)
     })
 ```    
 ># git push...
