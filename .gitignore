@@ -172,3 +172,5 @@ data
 *.css.map
 log.txt
 !/.gitignore
+/projects/shop/.idea/
+/projects/first_project/.idea/
