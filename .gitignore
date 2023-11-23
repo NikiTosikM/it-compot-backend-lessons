@@ -3,7 +3,6 @@
 *.pot
 *.pyc
 __pycache__
-db.sqlite3
 media
 
 # Backup files #
@@ -32,12 +31,15 @@ media
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+**/.idea/
 
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
 
 projects/shop/.idea
+projects/shop/.idea/
+projects/shop/.idea/*
 projects/shop/.idea/**/workspace.xml
 projects/shop/.idea/**/tasks.xml
 projects/shop/.idea/**/usage.statistics.xml
