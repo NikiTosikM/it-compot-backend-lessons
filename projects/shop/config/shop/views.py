@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Product, Order
 
 
@@ -12,10 +12,21 @@ def orders(request):
     return render(request, 'shop/orders.html', {'orders': orders_})
 
 
-def order_create(request):
-    return render(request, 'shop/order_create.html')
+def order_create(request, product_id):
+    if request.method == 'POST':
+        Order.objects.create(
+            product=product_id,
+            delivery_address=request.POST.get('delivery_address')
+        )
+        return redirect('orders')
+    product = Product.objects.get(id=product_id)
+    return render(request, 'shop/order_create.html', {
+        'product': product
+    })
 
 
-def product_detail(request, id):
-    product = Product.objects.get(id=id)
-    return render(request, 'shop/product_detail.html', {'product': product})
+def product_detail(request, product_id):
+    product = Product.objects.get(id=product_id)
+    return render(request, 'shop/product_detail.html', {
+        'product': product
+    })

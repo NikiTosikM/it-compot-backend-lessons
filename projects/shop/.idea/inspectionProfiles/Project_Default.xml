@@ -71,6 +71,7 @@
           <option value="N802" />
           <option value="N803" />
           <option value="N801" />
+          <option value="N812" />
         </list>
       </option>
     </inspection_tool>
@@ -98,6 +99,7 @@
           <option value="config.APP_University.management.commands.init_university_test_case.Core" />
           <option value="bool.x" />
           <option value="bool.y" />
+          <option value="config.config.urls.blog" />
         </list>
       </option>
     </inspection_tool>

@@ -10,7 +10,7 @@
             <div class="d-flex flex-column text-center border-0 rounded-4 text-nowrap px-4 py-2"
                  style="width: min-content; box-shadow: 0 0 5px #00000022;">
                 <span class="align-self-start fw-bold fs-5">{{ order.id }}</span>
-                <a href="{% url 'product_detail' id=order.product.id %}">
+                <a href="{% url 'product_detail' product_id=order.product.id %}">
                     {{ order.product.name }}
                 </a>
                 <span>{{ order.delivery_address|truncatewords:6 }}</span>

@@ -70,7 +70,7 @@
                         <img width="20" height="20" src="{% static 'shop/img/rating_star.png'%}" 
                              style="filter: grayscale(1);" alt=""> <!-- серая звездочка -->
                     </div>
-                    <button class="btn btn-outline-secondary text-dark">В корзину</button>
+                    <button class="btn btn-outline-secondary text-dark">Подробнее</button>
                     <small class="text-black-50 mt-2">
                         Жёлтое золото 585 пробы<br>
                         Примерный вес 1.5 г<br>

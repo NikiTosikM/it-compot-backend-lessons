@@ -40,3 +40,40 @@
             # Например, при выводе через print(объект поста),
             # Будет выводится более читабельная надпись.
     ```
+3. ## Начиная с проекта магазин заполнение шапки новыми ссылками даём как домашнее задание.
+4. ## У всех разная TimeZone, а по умолчанию UTC+0.
+   Изменять Timezone в django можно изменяя переменную `TIME_ZONE` в `settings.py`.<br>
+   Тогда даты будут отображаться учитывая timezone, а не по UTC+0
+   > Убедитесь, что `USE_TZ = True`
+
+   ### Значения для разных timezone
+   * UTC - Coordinated Universal Time (UTC+0)
+   * Europe/Moscow - Московское время (UTC+3)
+   * Europe/Kaliningrad - Восточноевропейское время (UTC+2)
+   * Europe/Samara - Самарское время (UTC+4)
+   * Asia/Yekaterinburg - Екатеринбургское время (UTC+5)
+   * Asia/Omsk - Омское время (UTC+6)
+   * Asia/Krasnoyarsk - Красноярское время (UTC+7)
+   * Asia/Irkutsk - Иркутское время (UTC+8)
+   * Asia/Yakutsk - Якутское время (UTC+9)
+   * Asia/Vladivostok - Владивостокское время (UTC+10)
+   * Asia/Magadan - Магаданское время (UTC+11)
+   * Asia/Kamchatka - Камчатское время (UTC+12)
+   * Europe/London - Великобритания (UTC+0, летом UTC+1)
+   * Europe/Paris - Центральноевропейское время (UTC+1, летом UTC+2)
+   * Europe/Berlin - Центральноевропейское время (UTC+1, летом UTC+2)
+   * Asia/Tokyo - Японское время (UTC+9)
+   * Asia/Shanghai - Китайское стандартное время (UTC+8)
+   * Asia/Dubai - Стандартное время ОАЭ (UTC+4)
+   * America/New_York - Восточное стандартное время (UTC-5, летом UTC-4)
+   * America/Chicago - Центральное стандартное время (UTC-6, летом UTC-5)
+   * America/Denver - Горное стандартное время (UTC-7, летом UTC-6)
+   * America/Los_Angeles - Тихоокеанское стандартное время (UTC-8, летом UTC-7)
+   * America/Sao_Paulo - Бразильское время (UTC-3, летом UTC-2)
+   * Australia/Sydney - Восточное стандартное время Австралии (UTC+10, летом UTC+11)
+   * Pacific/Auckland - Новозеландское время (UTC+12, летом UTC+13)
+   * Asia/Kolkata - Индийское стандартное время (UTC+5:30)
+   * Asia/Bangkok - Индокитайское время (UTC+7)
+   * Asia/Seoul - Корейское стандартное время (UTC+9)
+   * Asia/Singapore - Сингапурское стандартное время (UTC+8)
+   * Africa/Johannesburg - Южноафриканское стандартное время (UTC+2)

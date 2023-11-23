@@ -68,7 +68,7 @@
                 </div>
                 <!-- Условие для отображения кнопки -->
                 {% if product.is_available %}
-                <button class="btn btn-outline-secondary text-dark">В корзину</button>
+                <button class="btn btn-outline-secondary text-dark">Подробнее</button>
                 {% else %}
                 <button class="btn btn-outline-secondary text-dark" disabled>Нет в наличии</button>
                 {% endif %}
@@ -110,7 +110,7 @@
             </div>
         {% endblock %}
         ```
-3. ## Отобразим сразу несколько заказов используя [циклы в шаблонах](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5).
+2. ## Отобразим сразу несколько заказов используя [циклы в шаблонах](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5).
     Для начала нужно передавать в шаблон не 1 заказ, а несколько. Будем брать все.<br>
     Возвращаемся к [ORM](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm).
     ```python
@@ -134,8 +134,9 @@
     {% endfor %}
     ...
     ```
-![](imgs/orders.png)
-4. ## Просим учеников самим сделать то же самое с товарами.
+    ![](imgs/orders.png)
+
+3. ## Просим учеников самим сделать то же самое с товарами.
    ```python
     # shop/views.py
     def catalog(request):
