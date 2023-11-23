@@ -174,3 +174,5 @@ log.txt
 !/.gitignore
 /projects/shop/.idea/
 /projects/first_project/.idea/
+/projects/shop/.idea/inspectionProfiles/
+!/projects/shop/config/media/
