@@ -124,17 +124,17 @@
     # shop/views.py
     def order_create(request, product_id):
         product = Product.objects.get(id=product_id)
-        # Проверяем тип запроса и если пост то сохраняем продукт,
+        # Проверяем тип запроса, и если POST то сохраняем продукт,
         # заполняя нужные поля.
-        # created_at заполняется автоматически
+        # created_at заполняется автоматически...
         if request.method == 'POST':
             Order.objects.create(
                 product=product,
                 delivery_address=request.POST.get('delivery_address')
             )
-            # Редирект выполняем при POST запросе, когда создан новый заказ
+            # Редирект выполняем при POST запросе, когда создан новый заказ.
             return redirect('orders')
-        # А при GET просто рендерим страницу с созданием заказа
+        # А при GET просто рендерим страницу с оформлением заказа.
         return render(request, 'shop/order_create.html', {
             'product': product
         })
