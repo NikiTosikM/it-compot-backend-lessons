@@ -3,12 +3,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import signup, signin
+from .views import signup, signin, profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', signup, name='signup'),
     path('signin/', signin, name='signin'),
+    path('profile/', profile, name='profile'),
 
     path('shop/', include('shop.urls')),
 ]

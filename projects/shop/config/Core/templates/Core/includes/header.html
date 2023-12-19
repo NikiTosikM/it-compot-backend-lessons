@@ -1,3 +1,4 @@
+{% load static %}
 <header>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid justify-content-center" style="max-width: 800px">
@@ -11,26 +12,38 @@
             </button>
 
             <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Новое</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            Подборки
+                        <a class="nav-link py-0"
+                           href="{% url 'catalog' %}">
+                            Каталог
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"></a></li>
-                            <li><a class="dropdown-item" href="#"></a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#"></a></li>
-                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Профиль</a>
+                        <a class="nav-link py-0"
+                           href="{% url 'profile' %}">
+                            Профиль
+                        </a>
+                    </li>
+                    <li class="nav-item my-auto">
+                        <a class="btn btn-secondary py-0"
+                           href="{% url 'signin' %}">
+                            Вход
+                        </a>
+                    </li>
+                    <li class="nav-item my-auto">
+                        <a class="btn btn-secondary py-0"
+                           href="{% url 'signup' %}">
+                            Регистрация
+                        </a>
+                    </li>
+                    <li class="nav-item my-auto">
+                        <a class="py-0"
+                           href="{% url 'signup' %}">
+                            <img width="24" height="24"
+                                 style="filter: invert(0.75)"
+                                 src="{% static 'Core/img/logout.png' %}" alt="Выход">
+                        </a>
                     </li>
                 </ul>
             </div>

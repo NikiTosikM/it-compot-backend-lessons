@@ -1,5 +1,10 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+
+
+def profile(request):
+    return render(request, 'Core/auth/profile.html')
 
 
 def signup(request):
@@ -22,4 +27,17 @@ def signup(request):
 
 
 def signin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(
+            request, username=username, password=password
+        )
+        if user is not None:
+            login(request, user)
+            return redirect('catalog')
+        else:
+            return render(request, 'Core/auth/signup.html', {
+                'error': 'Неверный логин или пароль.'
+            })
     return render(request, 'Core/auth/signin.html')

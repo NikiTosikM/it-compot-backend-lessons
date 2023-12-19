@@ -58,45 +58,86 @@
    
 2. ## Вход в систему `Sign in`
     После регистрации пользователь может войти в систему.<br>
-    В этом процессе Django проверяет предоставленные учетные данные и,<br>
-    в случае успеха, создает сессию для пользователя. Напомните, что такое сессия.
-     
+    В этом процессе Django проверяет предоставленные учетные данные и, <br>
+    в случае успеха, создает сессию для пользователя. Напомните, что такое сессия. <br>
+
     ```python
+    # Core/views.py
+    ...
     from django.contrib.auth import authenticate, login
      
     def signin(request):
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
+            user = authenticate(
+                request, username=username, password=password
+            )
             if user is not None:
                 login(request, user)
-                return redirect('dashboard')
+                return redirect('catalog')
             else:
-                # Обработка ситуации с неверными данными
-        return render(request, 'login.html')
+                return render(request, 'Core/auth/signup.html', {
+                    'error': 'Неверный логин или пароль.'
+                })
+        return render(request, 'Core/auth/signin.html')
     ```
-  Управление доступом и правами пользователей
-  После аутентификации пользователя можно применять различные уровни доступа. Django предлагает гибкие инструменты для управления правами доступа, включая группы и разрешения, а также декораторы для контроля доступа к представлениям.
-   
-  ```python
-  from django.contrib.auth.decorators import login_required
-   
-  @login_required
-  def secret_page(request):
-      # Страница доступна только аутентифицированным пользователям
-      return render(request, 'secret_page.html')
-  ```
-   
-  Стоит рассказать на будущее, что существует множество пакетов расширяющих возможности django.
-  Например django-allauth <br>
-  django-allauth – это мощная библиотека для Django, предназначенная для облегчения процессов аутентификации, регистрации и управления учетными записями пользователей. Она предоставляет интеграцию с социальными сетями и другими внешними провайдерами аутентификации, что позволяет пользователям регистрироваться и входить в систему с помощью своих учетных записей в этих сервисах. Основные особенности:
-   
-  Поддержка множества провайдеров социальной аутентификации (например, Google, GitHub, Telegram, Vk, Twitter и т.д.).
-  Интеграция с системой аутентификации Django.
-  Расширенная обработка электронной почты, включая подтверждение электронной почты.
-  Возможность совместного использования с другими приложениями и плагинами Django.
+    Добавьте отображение ошибки в шаблоне как только что делали.
+    
+    #### Проверьте, что все работает, при неверных данных выдает ошибку, иначе нас перенаправляет в catalog.
 
+3. ## Шаблонизация в зависимости от аутентифицированности 
+    ### Добавим в шапку 4 ссылки. `Профиль` `Вход` `Регистрация` `Выход`<br>
+    
+    ![](imgs/header.png)
+    ```html
+    <!-- header.html -->
+    {% load static %}
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            ...
+                ...
+                    <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link py-0"
+                               href="{% url 'catalog' %}">
+                                Каталог
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link py-0"
+                               href="{% url 'profile' %}">
+                                Профиль
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signin' %}">
+                                Вход
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signup' %}">
+                                Регистрация
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="py-0"
+                               href="{% url 'signup' %}">
+                                <!-- Добавьте картинку вместо надписи, если есть время -->
+                                <img width="24" height="24"
+                                     style="filter: invert(0.75)"
+                                     src="{% static 'Core/img/logout.png' %}" alt="Выход">
+                            </a>
+                        </li>
+                    </ul>
+                ...
+            ...
+        </nav>
+    </header>
+    ```
+## На следующем занятии мы сделаем корректное отображение этих кнопок и научимся немного работать с распределением доступа.
 
 ## Шифрование pbkdf2_sha256
 `pbkdf2_sha256` относится к алгоритму хеширования паролей,<br>

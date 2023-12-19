@@ -61,7 +61,7 @@
     > Не забываем добавить в `INSTALLED_APPS`
 
 
-2. ## Сделаем базовы действия для создания страниц `SignUp` `SignIn`
+2. ## Сделаем базовы действия для создания страниц `SignUp` `SignIn` `Profile`
    Чтобы пользователь мог войти в систему, он сначала должен зарегистрироваться.<br>
    Регистрация обычно включает сбор необходимой информации, такой как имя пользователя и пароль..., <br>
    и создание нового объекта пользователя в базе данных.<br>
@@ -70,11 +70,12 @@
       ```python
       # Core/urls.py
       from django.urls import path
-      from .views import signup, signin
+      from .views import signup, signin, profile
       
       urlpatterns = [
           path('signup/', signup, name='signup'),
           path('signin/', signin, name='signin'),
+          path('profile/', profile, name='profile'),
       ]
       ```
    * ### Подключите эти адреса к корневым.
@@ -91,6 +92,7 @@
       Для логичности создайте дополнительную папку auth.<br>
       `Core/templates/Core/auth/signup.html`<br>
       `Core/templates/Core/auth/signin.html`<br>
+      `Core/templates/Core/auth/profile.html`<br>
    
    * ### Создайте контроллеры (функции обрабатывающие запросы)
       ```python
@@ -102,6 +104,9 @@
       
       def signin(request):
           return render(request, 'Core/auth/signin.html')
+      
+      def profile(request):
+          return render(request, 'Core/auth/profile.html')
 
       ```
    ### Проверьте, что все работает и страницы открываются.
