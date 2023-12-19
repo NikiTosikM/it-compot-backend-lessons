@@ -1,4 +1,4 @@
-# Работа с Пользователями в Django
+# Начало работы с пользователями в Django
 Сегодня мы начнем изучить как работает аутентификация и система пользователей в Django.
 Сразу скажу, что целиком скорее всего не успеем.
 
@@ -17,8 +17,8 @@
    при старте проекта оно уже есть в `INSTALLED_APPS`. <br><br>
    
    &nbsp;&nbsp;&nbsp;&nbsp;Это приложение включает в себя модель `User`, которая содержит основную информацию о пользователях, <br>
-   и механизмы для работы с паролями, сессиями и разрешениями.<br>
-   То есть создавать отдельную модель нам не нужно. (Однако если мы захотим дополнить эту модель, то нужно...)<br><br>
+   и механизмы для работы с паролями, сессиями и правами доступа.<br>
+   То есть создавать отдельную модель нам не нужно. (Однако если мы захотим дополнить/изменить поля модели пользователя, то нужно...)<br><br>
    
    &nbsp;&nbsp;&nbsp;&nbsp;Покажите ученикам это приложение и модели по следующему пути:<br>
    `venv\Lib\site-packages\django\contrib\auth\models.py`<br>
@@ -94,6 +94,7 @@
    
    * ### Создайте контроллеры (функции обрабатывающие запросы)
       ```python
+      # Core/views.py
       from django.shortcuts import render
 
       def signup(request):
@@ -153,7 +154,7 @@
       {% block title %}Shop | SignIn{% endblock %}
       
       {% block content %}
-          <h1 class="text-body text-center fw-bold mb-4">Регистрация</h1>
+          <h1 class="text-body text-center fw-bold mb-4">Вход</h1>
           <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto">
               <form class="d-flex flex-column gap-2" method="post">
                   {% csrf_token %}
