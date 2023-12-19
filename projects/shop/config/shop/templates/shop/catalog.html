@@ -1,9 +1,9 @@
-{% extends 'shop/base.html' %}
+{% extends 'Core/base.html' %}
 {% load static %}
 {% block title %}Shop | CATALOG{% endblock %}
 
 {% block content %}
-    <h1 class="text-dark text-center fw-bold mb-4">Каталог</h1>
+    <h1 class="text-body text-center fw-bold mb-4">Каталог</h1>
     <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto"
          style="max-width: 800px;">
         {% for product in products %}
@@ -35,11 +35,11 @@
                         {% endfor %}
                     </div>
                     {% if product.is_available %}
-                        <button class="btn btn-outline-secondary text-dark">Подробнее</button>
+                        <button class="btn btn-outline-secondary">Подробнее</button>
                     {% else %}
-                        <button class="btn btn-outline-secondary text-dark" disabled>Нет в наличии</button>
+                        <button class="btn btn-outline-secondary" disabled>Нет в наличии</button>
                     {% endif %}
-                    <small class="text-black-50 mt-2">
+                    <small class="mt-2 text-secondary">
                         {{ product.desc }}<br>
                     </small>
                 </div>

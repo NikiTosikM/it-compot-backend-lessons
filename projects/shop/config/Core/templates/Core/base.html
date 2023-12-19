@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-">
     <meta charset="utf-8"/>
     <link type="text/css" rel="stylesheet"
-          href="{% static 'shop/css/bootstrap.min.css' %}"/>
-    <script src="{% static 'shop/js/bootstrap.bundle.min.js' %}"></script>
+          href="{% static 'Core/css/bootstrap.min.css' %}"/>
+    <script defer src="{% static 'Core/js/bootstrap.bundle.min.js' %}"></script>
     <title>{% block title %}Artasov{% endblock %}</title>
 </head>
 <body class="d-flex flex-column" data-bs-theme="dark" style="min-height: 100vh;">
-{% include 'shop/includes/header.html' %}
+{% include 'Core/includes/header.html' %}
 <main class="my-4">
     {% block content %}{% endblock %}
 </main>
-{% include 'shop/includes/footer.html' %}
+{% include 'Core/includes/footer.html' %}
 </body>
 </html>
