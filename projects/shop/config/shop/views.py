@@ -13,8 +13,12 @@ def orders(request):
 
 
 def order_create(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect('signin')
+
     if request.method == 'POST':
         Order.objects.create(
+            user=request.user,
             product_id=product_id,
             delivery_address=request.POST.get('delivery_address')
         )

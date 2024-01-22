@@ -126,8 +126,47 @@ return render(request, 'example.html')
    ...
        
    ```
-## Если осталось время можете сделать страницу пользователя или доделайте что-нибудь другое.
-> Немного свободного времени, чтобы догнать, если опаздывали.
+   
+
+
+> Немного свободного времени должно остаться, чтобы догнать, если опаздывали.
+
+Можете сделать страницу профиля, но это не обязательно.
+Можно примерно так...
+```html
+{% extends 'Core/base.html' %}
+{% load static %}
+{% block title %}Shop | Profile{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-column mx-auto" style="width: min-content">
+        <div class="d-flex align-items-center">
+            <img src="{% static 'Core/img/user.png' %}"
+                 style="filter: invert(.9)"
+                 width="50" height="50"
+                 alt="">
+            <h1 class="text-body text-center fw-bold">
+                {{ request.user.username }}
+            </h1>
+        </div>
+        <ul>
+            {% if request.user.first_name %}
+                <li>{{ request.user.first_name }}</li>
+            {% endif %}
+            {% if request.user.last_name %}
+                <li>{{ request.user.last_name }}</li>
+            {% endif %}
+            {% if request.user.email %}
+                <li>{{ request.user.email }}</li>
+            {% endif %}
+        </ul>
+        <a href="{% url 'orders' %}"
+           class="btn border-secondary mx-auto">
+            My orders
+        </a>
+    </div>
+{% endblock %}
+```
 
 Можно рассказать, что существует множество пакетов расширяющих возможности django.<br>
 Например `django-allauth` – это мощная библиотека для Django, предназначенная для облегчения 
