@@ -77,3 +77,25 @@
    * Asia/Seoul - Корейское стандартное время (UTC+9)
    * Asia/Singapore - Сингапурское стандартное время (UTC+8)
    * Africa/Johannesburg - Южноафриканское стандартное время (UTC+2)
+   
+5. ## Управление доступом и правами пользователей
+   Мы можем проверять есть ли в сессии аутентифицированный пользователь и опираясь на
+   это рендерить страницу или перенаправлять или еще что-то.
+   
+   ```python
+   def example(request):                        
+       if not request.user.is_authenticated:
+           return redirect('login')
+       return render(request, 'example.html')
+   ```
+   
+   Однако в django есть встроенный декоратор, делающий то же самое за нас.<br>
+   Объясните вкратце, что такое декоратор и как он работает.
+   ```python
+   from django.contrib.auth.decorators import login_required
+   
+   # Указываем имя патерна на который нас перенаправит если мы не аутентифицированы.
+   @login_required(login_url='pattern_name')
+   def example(request):
+       return render(request, 'example.html')
+   ```

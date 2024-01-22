@@ -16,35 +16,40 @@
                     <li class="nav-item">
                         <a class="nav-link py-0"
                            href="{% url 'catalog' %}">
-                            Каталог
+                            Catalog
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link py-0"
-                           href="{% url 'profile' %}">
-                            Профиль
-                        </a>
-                    </li>
-                    <li class="nav-item my-auto">
-                        <a class="btn btn-secondary py-0"
-                           href="{% url 'signin' %}">
-                            Вход
-                        </a>
-                    </li>
-                    <li class="nav-item my-auto">
-                        <a class="btn btn-secondary py-0"
-                           href="{% url 'signup' %}">
-                            Регистрация
-                        </a>
-                    </li>
-                    <li class="nav-item my-auto">
-                        <a class="py-0"
-                           href="{% url 'signup' %}">
-                            <img width="24" height="24"
-                                 style="filter: invert(0.75)"
-                                 src="{% static 'Core/img/logout.png' %}" alt="Выход">
-                        </a>
-                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="py-0"
+                               href="{% url 'profile' %}">
+                                <img width="20" height="20"
+                                     style="filter: invert(0.75)"
+                                     src="{% static 'Core/img/user.png' %}" alt="profile">
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="py-0"
+                               href="{% url 'logout' %}">
+                                <img width="24" height="24"
+                                     style="filter: invert(0.75)"
+                                     src="{% static 'Core/img/logout.png' %}" alt="logout">
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signin' %}">
+                                Sign In
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signup' %}">
+                                Sing Up
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

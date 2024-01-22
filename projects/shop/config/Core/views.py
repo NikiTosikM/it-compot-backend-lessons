@@ -1,13 +1,18 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 
 def profile(request):
+    if not request.user.is_authenticated:
+        return redirect('signin')
     return render(request, 'Core/auth/profile.html')
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
@@ -27,6 +32,8 @@ def signup(request):
 
 
 def signin(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -41,3 +48,9 @@ def signin(request):
                 'error': 'Неверный логин или пароль.'
             })
     return render(request, 'Core/auth/signin.html')
+
+
+def logout(request):
+    from django.contrib.auth import logout
+    logout(request)
+    return redirect('signin')
