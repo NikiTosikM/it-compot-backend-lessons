@@ -8,7 +8,10 @@ def catalog(request):
 
 
 def orders(request):
-    orders_ = Order.objects.all()
+    if not request.user.is_authenticated:
+        return redirect('signin')
+
+    orders_ = Order.objects.filter(user=request.user)
     return render(request, 'shop/orders.html', {'orders': orders_})
 
 
