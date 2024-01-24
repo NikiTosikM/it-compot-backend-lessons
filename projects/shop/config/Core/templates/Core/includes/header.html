@@ -23,7 +23,7 @@
                         <li class="nav-item">
                             <a class="py-0"
                                href="{% url 'profile' %}">
-                                <img width="20" height="20"
+                                <img width="25" height="25"
                                      style="filter: invert(0.75)"
                                      src="{% static 'Core/img/user.png' %}" alt="profile">
                             </a>
@@ -31,7 +31,7 @@
                         <li class="nav-item my-auto">
                             <a class="py-0"
                                href="{% url 'logout' %}">
-                                <img width="24" height="24"
+                                <img width="25" height="25"
                                      style="filter: invert(0.75)"
                                      src="{% static 'Core/img/logout.png' %}" alt="logout">
                             </a>
@@ -50,6 +50,11 @@
                             </a>
                         </li>
                     {% endif %}
+                    <li class="nav-item">
+                        <img width="25" height="25"
+                             id="btn-change-theme"
+                             src="{% static 'Core/img/moon.png' %}" alt="theme">
+                    </li>
                 </ul>
             </div>
         </div>
