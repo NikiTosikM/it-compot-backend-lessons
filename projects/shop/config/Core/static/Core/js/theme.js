@@ -7,7 +7,9 @@ function isLightTheme() {
 
 function setTheme(isLight) {
     const theme = isLight ? 'light' : 'dark';
-    btnChangeTheme.src = isLight ? '/static/Core/img/sun.png' : '/static/Core/img/moon.png';
+    btnChangeTheme.src = isLight ?
+        '/static/Core/img/sun.png' :
+        '/static/Core/img/moon.png';
     document.body.setAttribute('data-bs-theme', theme);
     localStorage.setItem('theme', isLight);
 }

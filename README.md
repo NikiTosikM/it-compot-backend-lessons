@@ -1,4 +1,8 @@
-[Additional](lessons/additionally/additionally.md)
+# Base Django Backend
+
+## [About course](lessons/additionally/about.md)<br>
+## [Additional](lessons/additionally/additionally.md)
+## Lessons
 1. [Lesson](lessons/lesson-1/tutorial.md)
 2. [Lesson](lessons/lesson-2/tutorial.md)
 3. [Lesson](lessons/lesson-3/tutorial.md)
