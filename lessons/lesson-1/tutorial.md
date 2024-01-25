@@ -37,9 +37,8 @@
      * x32 - https://disk.yandex.ru/d/d-Mby94JASvlig
      * x64 - https://disk.yandex.ru/d/pRh2xVPo86MFpQ
    
-     Или с официального сайта.
+     Или с официального сайта.<br><br>
    
-     
    ![](imgs/downloadpy.png)
 6. ### Добавляем путь до python в переменные среды и нажимаем установить.
    ![](imgs/addtopathpy.png)
