@@ -13,17 +13,33 @@
 научимся запускать собственный локальный сервер на нашем компьютере и сделаем наш первый 
 простой сайт с backend'ом.
 
-## Устанавливаем [VSCode](https://code.visualstudio.com/), [Python](https://www.python.org/downloads/). 
+## Устанавливаем `VSCode` и `Python`. 
 >Естественно объясняем зачем и что такое python, vscode.
-1. ### Скачиваем [VSCode](https://code.visualstudio.com/) и запускаем установщик.
+1. ### Скачиваем VSCode и запускаем установщик.
    ![](imgs/downloadVSCode.png)
-   * ### Если есть проблемы с установкой `Vs Code` на `Windows 8` <br>скачивайте **[эту](https://code.visualstudio.com/updates/v1_71)** версию
+   * Windows 10/11 - https://code.visualstudio.com/
+   * Windows 8 - https://code.visualstudio.com/updates/v1_79
+   * Windows 7 - https://code.visualstudio.com/updates/v1_70
+  
 2. ### Принимаем пользовательское соглашение.
    ![](imgs/acceptVSCode.png)
 3. ### Нажимаем `Далее` и `Установить`
 4. ### После установки закрываем окно.
 
-5. ### Скачиваем [Python](https://www.python.org/downloads/) и запускаем установщик.
+5. ### Скачиваем `Python` и запускаем установщик.
+   Windows 8/10/11 - Python 3.12<br>
+   Windows 7 - Python 3.8<br><br>
+   
+   * Python 3.8
+     * x32 - https://disk.yandex.ru/d/JUwas1C27xAqAw
+     * x64 - https://disk.yandex.ru/d/mlsAGCdBBVzvaw
+   * Python 3.12
+     * x32 - https://disk.yandex.ru/d/d-Mby94JASvlig
+     * x64 - https://disk.yandex.ru/d/pRh2xVPo86MFpQ
+   
+     Или с официального сайта.
+   
+     
    ![](imgs/downloadpy.png)
 6. ### Добавляем путь до python в переменные среды и нажимаем установить.
    ![](imgs/addtopathpy.png)
