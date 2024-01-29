@@ -4,11 +4,19 @@
 
 {% block content %}
     <div class="d-flex flex-column mx-auto" style="width: min-content">
-        <div class="d-flex align-items-center">
-            <img src="{% static 'Core/img/user.png' %}"
-                 style="filter: invert(.9)"
-                 width="50" height="50"
-                 alt="">
+        <div class="d-flex align-items-center gap-3">
+            {% if request.user.avatar %}
+                <img src="{{ request.user.avatar.url }}"
+                     width="50" height="50"
+                     class="rounded-5 object-fit-cover"
+                     alt="">
+            {% else %}
+                <img src="{% static 'Core/img/user.png' %}"
+                     style="filter: invert(.9)"
+                     width="50" height="50"
+                     alt="">
+            {% endif %}
+
             <h1 class="text-body text-center fw-bold">
                 {{ request.user.username }}
             </h1>

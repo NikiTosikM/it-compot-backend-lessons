@@ -6,6 +6,7 @@ SECRET_KEY = 'django-insecure-64@b^tvti9t55kzsxfbp13*x2sts1)r5%!#7sl3@u@yx5*zv06
 
 DEBUG = True
 
+AUTH_USER_MODEL = 'Core.User'
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -18,7 +19,6 @@ INSTALLED_APPS = [
     'Core',
     'shop'
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
