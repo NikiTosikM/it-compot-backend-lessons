@@ -194,3 +194,6 @@
    
    setTheme(isLightTheme());
    ```
+
+## Подведите итоги.
+># git push...

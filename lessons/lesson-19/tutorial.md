@@ -78,3 +78,6 @@
         orders_ = Order.objects.filter(user=request.user) # стало
         return render(request, 'shop/orders.html', {'orders': orders_})
     ```
+
+## Подведите итоги.
+># git push...
