@@ -82,10 +82,12 @@
         biography = models.TextField()
         photo = models.ImageField(
             upload_to="kinopoisk/images/person/photos/",
-            blank=True, null=True)
+            blank=True, null=True
+        )
         role = models.CharField(
             max_length=20, choices=RoleType.choices,
-            blank=True, null=True)
+            blank=True, null=True
+        )
     
     
     class Genre(models.Model):
@@ -103,21 +105,26 @@
         genres = models.ManyToManyField(Genre, related_name='movies')
         director = models.ForeignKey(
             MoviePerson, on_delete=models.SET_NULL,
-            null=True, related_name='directed_movies')
+            null=True, related_name='directed_movies'
+        )
         actors = models.ManyToManyField(
-            MoviePerson, related_name='acted_in_movies')
+            MoviePerson, related_name='acted_in_movies'
+        )
         poster = models.ImageField(
             upload_to="kinopoisk/images/movies/posters/",
-            blank=True, null=True)
+            blank=True, null=True
+        )
     
     
     class MovieReview(models.Model):
         author = models.ForeignKey(
             User, on_delete=models.SET_NULL,
-            null=True, related_name='reviews')
+            null=True, related_name='reviews'
+        )
         movie = models.ForeignKey(
             Movie, on_delete=models.CASCADE,
-            related_name='reviews')
+            related_name='reviews'
+        )
         text = models.TextField()
         likes = models.PositiveIntegerField(default=0)
         created_at = models.DateTimeField(auto_now_add=True)
