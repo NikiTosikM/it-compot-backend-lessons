@@ -63,7 +63,7 @@
     > Не забываем добавить в `INSTALLED_APPS`
 
 
-2. ## Сделаем базовые действия для создания страниц `SignUp` `SignIn` `Logout` `Profile`
+2. ## Сделаем базовые действия для создания страниц `SignUp` `SignIn` `SignOut` `Profile`
    Чтобы пользователь мог войти в систему, он сначала должен зарегистрироваться.<br>
    Регистрация обычно включает сбор необходимой информации, такой как имя пользователя и пароль..., <br>
    и создание нового объекта пользователя в базе данных по этим данным. Так же должна быть возможность выйти.<br>
@@ -72,12 +72,12 @@
       ```python
       # Core/urls.py
       from django.urls import path
-      from .views import signup, signin, profile, logout
+      from .views import signup, signin, profile, signout
       
       urlpatterns = [
           path('signup/', signup, name='signup'),
           path('signin/', signin, name='signin'),
-          path('logout/', logout, name='logout'),
+          path('signout/', signout, name='signout'),
           path('profile/', profile, name='profile'),
       ]
       ```
@@ -96,7 +96,7 @@
       `Core/templates/Core/auth/signup.html`<br>
       `Core/templates/Core/auth/signin.html`<br>
       `Core/templates/Core/auth/profile.html`<br>
-      > Для `logout` страницы не будет.
+      > Для `signout` страницы не будет.
    
    * ### Создайте контроллеры (функции обрабатывающие запросы)
       ```python
@@ -109,7 +109,7 @@
       def signin(request):
           return render(request, 'Core/auth/signin.html')
      
-      def logout(request):
+      def signout(request):
           # Пока пусто
           pass 
       
@@ -215,13 +215,13 @@
       from django.contrib import admin
       from django.urls import path, include
       
-      from .views import signup, signin, logout
+      from .views import signup, signin, signout
       
       urlpatterns = [
           path('admin/', admin.site.urls),
           path('signup/', signup, name='signup'),
           path('signin/', signin, name='signin'),
-          path('logout/', logout, name='logout'),
+          path('signout/', signout, name='signout'),
       
           path('shop/', include('shop.urls')),
       ]

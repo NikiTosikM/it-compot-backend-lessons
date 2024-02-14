@@ -1,5 +1,6 @@
 # Создаем свою модель пользователя.
 
+
 У нас осталась незаполненная страница профиля.
 Вспомните существующие поля модели `User`, а лучше покажите наглядно
 класс `AbstructUser`.
@@ -138,13 +139,16 @@
 
 6. ## Настроим отображение модели `User` в админке.
     ```python
-    class User(AbstractUser):
-        avatar = models.ImageField(
-            upload_to='avatars/', 
-            null=True, blank=True
-        )
+    # Core/admin.py
+    from django.contrib import admin
+    from Core.models import User
+   
+    @admin.register(User)
+    class UserAdmin(admin.ModelAdmin):
+        list_display = ('id', 'username', 'email')
+        list_editable = ('email',)
     ```
-    ### Установить аватарку через админку, проверьте, что все работает.
+    ### Установите аватарку через админку, проверьте, что все работает.
 
 
 ## Подведите итоги.

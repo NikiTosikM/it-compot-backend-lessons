@@ -1,9 +1,9 @@
 # Шаблонизация в зависимости от аутентифицированности и права доступа 
 
 Вспомним, что в предыдущий раз мы сделали 4 кнопки в header
-`signup`, `signin`, `profile`, `logout`.  <br>
+`signup`, `signin`, `profile`, `signout`.  <br>
 
-Очевидно, что нам нужно видеть `profile` и `logout` только когда мы **_вошли_**.<br>
+Очевидно, что нам нужно видеть `profile` и `signout` только когда мы **_вошли_**.<br>
 А `signup` и `signin` только когда **_не вошли_**.
 
 Вспомним, что мы передаем объект `request` в функцию `render`.
@@ -65,10 +65,10 @@ return render(request, 'example.html')
            </li>
            <li class="nav-item my-auto">
                <a class="py-0"
-                  href="{% url 'logout' %}">
+                  href="{% url 'signout' %}">
                    <img width="24" height="24"
                         style="filter: invert(0.75)"
-                        src="{% static 'Core/img/logout.png' %}" alt="logout">
+                        src="{% static 'Core/img/signout.png' %}" alt="signout">
                </a>
            </li>
        {% else %}

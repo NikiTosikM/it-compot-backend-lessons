@@ -94,13 +94,11 @@
 
     * **_Изменение cookie_**: Django использует cookies для идентификации сессии пользователя. Функция `logout` изменяет соответствующие `cookies` таким образом, чтобы они больше не были связаны с текущей сессией пользователя.
     
-    >Импортируем эту функцию внутри нашей чтобы не было конфликта имен, т.к. 
-    наша и импортированная функция имеют одинаковые названия.
     ```python
     # Core/views.py
+    from django.contrib.auth import logout
     ...
-    def logout(request):
-        from django.contrib.auth import logout
+    def signout(request):
         logout(request)
         return redirect('signin')
     ```
@@ -147,10 +145,10 @@
                         </li>
                         <li class="nav-item my-auto">
                             <a class="py-0"
-                               href="{% url 'logout' %}">
+                               href="{% url 'signout' %}">
                                 <img width="24" height="24"
                                      style="filter: invert(0.75)"
-                                     src="{% static 'Core/img/logout.png' %}" alt="logout">
+                                     src="{% static 'Core/img/signout.png' %}" alt="signout">
                             </a>
                         </li>
                     </ul>
