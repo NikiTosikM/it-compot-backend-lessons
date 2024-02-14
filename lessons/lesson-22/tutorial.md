@@ -17,7 +17,7 @@
 
 2. ## Продумаем наш проект
    Я в методичке буду придерживаться следующей идеи:
-   сначала придумать логику, потом делать красиво.<br><br>
+   сначала придумать логику, потом делать красивый дизайн.<br><br>
 
    Лучше брать с чего-то пример: [Шрек? https://www.kinopoisk.ru/film/430/](https://www.kinopoisk.ru/film/430/)<br>
    Заметим, что в ссылке, как и у нас было, передается `id` фильма.
@@ -67,6 +67,10 @@
         favorite_movies = models.ManyToManyField('Movie')
         avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     ```
+    Здесь мы будем использовать `related_name`. Нужно очень подробно, а желательно с конкретными
+    примерами, если вы в состоянии их привести, объяснить, что это такое `related_name`.<br>
+    [Раздел про `related_name` в шпаргалке]()
+    
     ```python
     # kinopoisk/models.py
     from django.db import models
@@ -96,24 +100,22 @@
     
     
     class Movie(models.Model):
-        title = models.CharField(max_length=255)
+        title = models.CharField(max_length=355)
         description = models.TextField()
         release_date = models.DateField(null=True, blank=True)
         rating = models.FloatField(null=True, blank=True)
         # Продолжительность в минутах
-        duration = models.PositiveSmallIntegerField()  
+        duration = models.PositiveSmallIntegerField()
         genres = models.ManyToManyField(Genre, related_name='movies')
-        director = models.ForeignKey(
-            MoviePerson, on_delete=models.SET_NULL,
-            null=True, related_name='directed_movies'
+        directors = models.ManyToManyField(
+            MoviePerson, related_name='directed_movies'
         )
+        budget = models.PositiveIntegerField()
         actors = models.ManyToManyField(
-            MoviePerson, related_name='acted_in_movies'
-        )
+            MoviePerson, related_name='acted_in_movies')
         poster = models.ImageField(
             upload_to="kinopoisk/images/movies/posters/",
-            blank=True, null=True
-        )
+            blank=True, null=True)
     
     
     class MovieReview(models.Model):
@@ -144,6 +146,7 @@
     * Второе значение `Actor` — это человекочитаемая строка, которая отображается в пользовательском интерфейсе. Это
       может быть полезно, когда вы хотите, чтобы в формах выбора или на страницах административной панели отображалось
       понятное человеку описание варианта.
+   ### Таким образом таблица `MoviePerson` будет содержать и актеров и режиссеров. А если нам захочется ввести новую роль, то мы просто дополним класс `RoleType`
 
 4. ## Проведите миграции
    > Не забудьте почистить старые миграции приложения Core.
@@ -173,6 +176,6 @@
 
 6. ## Создайте суперюзера и проверьте, что таблицы появились в админке.
 
-
 ## Подведите итоги.
->### Гит на следующем уроке. Если успеваете, загрузите на этом.
+
+> ### GitHub потом. Или сейчас если успеваете. Его нужно сделать за первые 3 занятия с кинопоиском.

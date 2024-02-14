@@ -25,16 +25,17 @@ class Genre(models.Model):
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=355)
     description = models.TextField()
     release_date = models.DateField(null=True, blank=True)
     rating = models.FloatField(null=True, blank=True)
     # Продолжительность в минутах
     duration = models.PositiveSmallIntegerField()
     genres = models.ManyToManyField(Genre, related_name='movies')
-    director = models.ForeignKey(
-        MoviePerson, on_delete=models.SET_NULL,
-        null=True, related_name='directed_movies')
+    directors = models.ManyToManyField(
+        MoviePerson, related_name='directed_movies'
+    )
+    budget = models.PositiveIntegerField()
     actors = models.ManyToManyField(
         MoviePerson, related_name='acted_in_movies')
     poster = models.ImageField(
