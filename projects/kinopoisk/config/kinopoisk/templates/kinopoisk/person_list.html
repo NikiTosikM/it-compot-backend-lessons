@@ -1,0 +1,8 @@
+{% extends 'Core/base.html' %}
+{% block title %}Кинопоиск | {{ title }}{% endblock %}
+{% block content %}
+    <h2>{{ title }}</h2>
+    {% for person in people %}
+        <p>{{ person.name }}</p>
+    {% endfor %}
+{% endblock %}

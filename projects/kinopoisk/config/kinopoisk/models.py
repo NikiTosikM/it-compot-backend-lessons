@@ -9,8 +9,7 @@ class MoviePerson(models.Model):
         DIRECTOR = 'director', 'Director'
 
     name = models.CharField(max_length=255)
-    birth_date = models.DateField()
-    biography = models.TextField()
+    birth_date = models.DateField(blank=True, null=True)
     photo = models.ImageField(
         upload_to="kinopoisk/images/person/photos/",
         blank=True, null=True)

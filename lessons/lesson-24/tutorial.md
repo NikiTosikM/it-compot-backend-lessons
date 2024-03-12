@@ -8,7 +8,8 @@
 1. ## Контроллеры.
     Я прокомментировал, что в теории можно `подсказать`, а что ученики должны сделать `сами`.
     Просто обсуждайте с учениками, что должно передаваться в тот или иной шаблон,
-    и поглядывайте в раздел `ORM` в шпаргалке.
+    и поглядывайте в раздел **[ORM](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)**
+    в шпаргалке.
     ```python
     from django.shortcuts import render, get_object_or_404
     from .models import Movie, MoviePerson, Genre
@@ -50,9 +51,7 @@
             'movie': movie
         })
     
-    # Тут нужно детально повторно проговорить, что такое related_name
-    # и каким образом мы получаем все фильмы актера.
-    def actor_detail(request, actor_id):  
+    def actor_detail(request, actor_id):  # Напомнить, про раздел Related Name в шпаргалке.
         actor = MoviePerson.objects.get(id=actor_id, role=MoviePerson.RoleType.ACTOR)
         movies = actor.acted_in_movies.all()
         return render(request, 'kinopoisk/person_detail.html', {
@@ -75,3 +74,8 @@
             'genre': genre, 'movies': movies
         })
     ```
+
+## Место для загрузки на гит или для доделать что-либо.
+
+## Подведите итоги.
+># git push...
