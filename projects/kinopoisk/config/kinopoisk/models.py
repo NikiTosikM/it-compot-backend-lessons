@@ -47,6 +47,9 @@ class Movie(models.Model):
         upload_to="kinopoisk/images/movies/posters/",
         blank=True, null=True)
 
+    def __str__(self):
+        return self.title
+
 
 class MovieReview(models.Model):
     author = models.ForeignKey(

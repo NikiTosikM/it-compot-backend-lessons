@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from kinopoisk.parse_kinopoisk import parse_and_save_movie_data, fetch_movies_data
 
 from .models import Movie, MoviePerson, Genre
 
@@ -16,16 +15,18 @@ def movie_list(request):
 
 
 def actor_list(request):
-    actors = MoviePerson.objects.filter(role=MoviePerson.RoleType.ACTOR)
+    actors = MoviePerson.objects.filter(
+        role=MoviePerson.RoleType.ACTOR
+    ).order_by('-id')
     return render(request, 'kinopoisk/person_list.html', {
-        'people': actors, 'title': 'Actors'
+        'persons': actors, 'title': 'Актеры'
     })
 
 
 def director_list(request):
     directors = MoviePerson.objects.filter(role=MoviePerson.RoleType.DIRECTOR)
     return render(request, 'kinopoisk/person_list.html', {
-        'people': directors, 'title': 'Directors'
+        'persons': directors, 'title': 'Режиссеры'
     })
 
 
@@ -47,7 +48,7 @@ def actor_detail(request, actor_id):
     actor = MoviePerson.objects.get(id=actor_id, role=MoviePerson.RoleType.ACTOR)
     movies = actor.acted_in_movies.all()
     return render(request, 'kinopoisk/person_detail.html', {
-        'person': actor, 'movies': movies, 'title': 'Actor'
+        'person': actor, 'movies': movies,
     })
 
 
@@ -55,7 +56,7 @@ def director_detail(request, director_id):
     director = MoviePerson.objects.get(id=director_id, role=MoviePerson.RoleType.DIRECTOR)
     movies = director.directed_movies.all()
     return render(request, 'kinopoisk/person_detail.html', {
-        'person': director, 'movies': movies, 'title': 'Director'
+        'person': director, 'movies': movies,
     })
 
 
