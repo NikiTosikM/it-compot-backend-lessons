@@ -1,59 +1,79 @@
 {% load static %}
-<header>
+<header class="bg-black bg-opacity-25 py-2">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid justify-content-center" style="max-width: 800px">
             <img src="https://github.com/Artasov/resources/blob/main/ava-dark.jpg?raw=true"
                  alt="Logo" width="40" height="40" class="d-inline-block rounded-circle">
-            <a class="ms-2 navbar-brand fw-bold" href="#">Artasov</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            <a class="ms-2 navbar-brand fw-bold" href="#" style="padding-top: 2px;">Artasov</a>
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
-                <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
-                    <li class="nav-item">
+                <ul class="navbar-nav mb-2 mb-lg-0 gap-3 gap-md-1 align-items-center">
+                    <li class="nav-item mt-3 mt-md-0">
                         <a class="nav-link py-0"
-                           href="">
-                            Catalog
+                           href="{% url 'movie_list' %}">
+                            Фильмы
                         </a>
                     </li>
-                    {% if request.user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="py-0"
-                               href="{% url 'profile' %}">
-                                <img width="25" height="25"
-                                     style="filter: invert(0.75)"
-                                     src="{% static 'Core/img/user.png' %}" alt="profile">
-                            </a>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <a class="py-0"
-                               href="{% url 'signout' %}">
-                                <img width="25" height="25"
-                                     style="filter: invert(0.75)"
-                                     src="{% static 'Core/img/signout.png' %}" alt="signout">
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item my-auto">
-                            <a class="btn btn-secondary py-0"
-                               href="{% url 'signin' %}">
-                                Sign In
-                            </a>
-                        </li>
-                        <li class="nav-item my-auto">
-                            <a class="btn btn-secondary py-0"
-                               href="{% url 'signup' %}">
-                                Sing Up
-                            </a>
-                        </li>
-                    {% endif %}
                     <li class="nav-item">
-                        <img width="25" height="25"
-                             id="btn-change-theme"
-                             src="{% static 'Core/img/moon.png' %}" alt="theme">
+                        <a class="nav-link py-0"
+                           href="{% url 'genre_list' %}">
+                            Жанры
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link py-0"
+                           href="{% url 'actor_list' %}">
+                            Актёры
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link py-0"
+                           href="{% url 'director_list' %}">
+                            Режиссёры
+                        </a>
+                    </li>
+                    <li class="d-flex justify-content-center gap-2">
+                        {% if request.user.is_authenticated %}
+                            <div class="nav-item">
+                                <a class="py-0"
+                                   href="{% url 'profile' %}">
+                                    <img width="25" height="25"
+                                         style="filter: invert(0.5)"
+                                         src="{% static 'Core/img/user.png' %}" alt="profile">
+                                </a>
+                            </div>
+                            <div class="nav-item my-auto">
+                                <a class="py-0"
+                                   href="{% url 'signout' %}">
+                                    <img width="25" height="25"
+                                         style="filter: invert(0.5)"
+                                         src="{% static 'Core/img/signout.png' %}" alt="signout">
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="nav-item my-auto">
+                                <a class="btn btn-secondary py-0"
+                                   href="{% url 'signin' %}">
+                                    Sign In
+                                </a>
+                            </div>
+                            <div class="nav-item my-auto">
+                                <a class="btn btn-secondary py-0"
+                                   href="{% url 'signup' %}">
+                                    Sing Up
+                                </a>
+                            </div>
+                        {% endif %}
+                        <div class="nav-item">
+                            <img width="25" height="25"
+                                 id="btn-change-theme"
+                                 src="{% static 'Core/img/moon.png' %}" alt="theme">
+                        </div>
                     </li>
                 </ul>
             </div>

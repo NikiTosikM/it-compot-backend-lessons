@@ -9,8 +9,9 @@
    
    * Удалите файл базы данных `db.sqlite3`
    
-   * Скачайте архив `kinopoisk_data.rar` из репозитория со [шпаргалками](https://github.com/xlartas/it-compot-backend-methods) 
+   * Скачайте архив `kinopoisk_data.zip` из репозитория со [шпаргалками](https://github.com/xlartas/it-compot-backend-methods) 
    и поместите содержимое в папку по пути `MEDIA_ROOT`.
+      > Файл `models.py` просто на всякий случай. Его переносить не надо.
    
    **Таким, образом у вас будет база данных с уже 
    заполненными фильмами, актерами и режиссерами и медиа-файлы для них.**
@@ -32,7 +33,7 @@
     {% extends 'Core/base.html' %}
     {% block title %}Кинопоиск | Главная{% endblock %}
     {% block content %}
-        {# Тут переменных нет #}
+        {# Тут переменных пока нет #}
     {% endblock %}
     ```
     ```html
@@ -53,7 +54,7 @@
     {% block title %}Кинопоиск | {{ title }}{% endblock %}
     {% block content %}
         <h2>{{ title }}</h2>
-        {% for person in people %}
+        {% for person in persons %}
             <p>{{ person.name }}</p>
         {% endfor %}
     {% endblock %}

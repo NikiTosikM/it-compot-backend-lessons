@@ -6,6 +6,7 @@ from .models import MoviePerson, Genre, Movie, MovieReview
 @admin.register(MoviePerson)
 class MoviePersonAdmin(admin.ModelAdmin):
     list_display = ('name', 'photo', 'birth_date', 'role')
+    list_editable = ('photo', 'birth_date', 'role')
 
 
 @admin.register(Genre)

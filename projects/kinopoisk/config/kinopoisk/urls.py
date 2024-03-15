@@ -10,8 +10,8 @@ urlpatterns = [
     path('directors/', director_list, name='director_list'),  # Список всех режиссеров.
     path('genres/', genre_list, name='genre_list'),  # Список всех жанров.
 
-    path('movies/<int:movie_id>/', movie_detail, name='movie_detail'),  # Детали фильма.
-    path('actors/<int:actor_id>/', actor_detail, name='actor_detail'),  # Детали актера + его фильмы.
-    path('directors/<int:director_id>/', director_detail, name='director_detail'),  # Детали режиссера + его фильмы.
-    path('genres/<int:genre_id>/', genre_detail, name='genre_detail'),  # Фильмы по жанру.
+    path('movie/<int:movie_id>/', movie_detail, name='movie_detail'),  # Детали фильма.
+    path('actor/<int:actor_id>/', actor_detail, name='actor_detail'),  # Детали актера + его фильмы.
+    path('director/<int:director_id>/', director_detail, name='director_detail'),  # Детали режиссера + его фильмы.
+    path('genre/<int:genre_id>/', genre_detail, name='genre_detail'),  # Фильмы по жанру.
 ]

@@ -1,0 +1,17 @@
+{# kinopoisk/templates/kinopoisk/includes/movie_card.html #}
+<div class="fc mw-300px w-100 hover-scale-2">
+    <img src="{{ movie.poster.url }}" alt="">
+    <h3 class="mt-2">{{ movie.title }}</h3>
+    <span class="frsc gap-2">
+        <span>Рейтинг:</span>
+        <span class="fs-5" style="color: #ffe655; padding-bottom: 1px;">
+            {{ movie.rating }}
+        </span>
+    </span>
+    <p>
+        {% for genre in movie.genres.all %}
+            {{ genre.name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <span class="text-secondary mt-auto">{{ movie.release_date }}</span>
+</div>

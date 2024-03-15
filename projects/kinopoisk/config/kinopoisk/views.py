@@ -5,7 +5,6 @@ from .models import Movie, MoviePerson, Genre
 
 
 def main(request):
-    parse_and_save_movie_data(fetch_movies_data())
     return render(request, 'kinopoisk/main.html')
 
 

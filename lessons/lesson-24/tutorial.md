@@ -15,6 +15,7 @@
     from .models import Movie, MoviePerson, Genre
     
     def main(request):  # Сами
+        # В дальнейшем доделаем
         return render(request, 'kinopoisk/main.html')
     
     def movie_list(request):  # Сами
@@ -27,14 +28,14 @@
     def actor_list(request):  # Подсказываем
         actors = MoviePerson.objects.filter(role=MoviePerson.RoleType.ACTOR)
         return render(request, 'kinopoisk/person_list.html', {
-            'people': actors, 'title': 'Actors'
+            'persons': actors, 'title': 'Актёры'
         })
     
     
     def director_list(request):  # Сами
         directors = MoviePerson.objects.filter(role=MoviePerson.RoleType.DIRECTOR)
         return render(request, 'kinopoisk/person_list.html', {
-            'people': directors, 'title': 'Directors'
+            'persons': directors, 'title': 'Режиссёры'
         })
     
     
@@ -52,18 +53,18 @@
         })
     
     def actor_detail(request, actor_id):  # Напомнить, про раздел Related Name в шпаргалке.
-        actor = MoviePerson.objects.get(id=actor_id, role=MoviePerson.RoleType.ACTOR)
+        actor = MoviePerson.objects.get(id=actor_id)
         movies = actor.acted_in_movies.all()
         return render(request, 'kinopoisk/person_detail.html', {
-            'person': actor, 'movies': movies, 'title': 'Actor'
+            'person': actor, 'movies': movies
         })
     
     
     def director_detail(request, director_id):  # Сами
-        director = MoviePerson.objects.get(id=director_id, role=MoviePerson.RoleType.DIRECTOR)
+        director = MoviePerson.objects.get(id=director_id)
         movies = director.directed_movies.all()
         return render(request, 'kinopoisk/person_detail.html', {
-            'person': director, 'movies': movies, 'title': 'Director'
+            'person': director, 'movies': movies
         })
     
     

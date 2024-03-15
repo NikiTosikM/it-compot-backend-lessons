@@ -17,10 +17,16 @@ class MoviePerson(models.Model):
         max_length=20, choices=RoleType.choices,
         blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Movie(models.Model):

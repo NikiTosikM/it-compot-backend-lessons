@@ -1,8 +1,10 @@
 {% extends 'Core/base.html' %}
 {% block title %}Кинопоиск | Фильмы{% endblock %}
 {% block content %}
-    <h2>Фильмы</h2>
-    {% for movie in movies %}
-        <p class="justify-content-center">{{ movie.title }}</p>
-    {% endfor %}
+    <h1 class="text-center mb-4">Фильмы</h1>
+    <div class="frc flex-wrap gap-4 mw-1000px mx-auto">
+        {% for movie in movies %}
+            {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
+        {% endfor %}
+    </div>
 {% endblock %}
