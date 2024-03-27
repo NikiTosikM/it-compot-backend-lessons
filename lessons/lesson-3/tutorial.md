@@ -112,7 +112,7 @@
         # Генерируем случайное число от 1 до 5
         random_number = random.randint(1, 5)
         
-        if user_guess == random_number:
+        if number == random_number:
             result = "Поздравляем, вы угадали число!"
         else:
             result = f"К сожалению, было загаданно число {random_number}. Попробуйте ещё раз."
@@ -135,7 +135,7 @@
         if request.method == 'POST':
             number = int(request.POST['number'])
             random_number = random.randint(1, 5)
-            if magic_number == random_number:
+            if number == random_number:
                 result = "Поздравляем, вы угадали число!"
             else:
                 result = f"К сожалению, загаданное число было {random_number}. Попробуйте ещё раз."

@@ -61,7 +61,7 @@
     * Зайдите в админку и попробуйте добавить любой фильм.
        Вы столкнетесь с проблемой непонятных названия жанров и персон.
        > Предупреждать заранее не нужно, пусть сами увидят эту проблему
-    * Используйте [дополнительные материалы](https://github.com/Artasov/it-compot-backend-lessons/blob/main/lessons/additionally/additionally.md#%D1%83%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%BD%D0%B8%D0%B5-%D1%87%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8-%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B8-%D0%B5%D1%91-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%BE%D0%B2-%D0%B2-ui-user-interface) и исправьте ситуацию.
+    * Используйте [дополнительные материалы для уроков](https://github.com/Artasov/it-compot-backend-lessons/blob/main/lessons/additionally/additionally.md#%D1%83%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%BD%D0%B8%D0%B5-%D1%87%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8-%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B8-%D0%B5%D1%91-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%BE%D0%B2-%D0%B2-ui-user-interface) и исправьте ситуацию.
       ```python
       # kinopoisk/models.py
       class MoviePerson(models.Model):
