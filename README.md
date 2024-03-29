@@ -1,7 +1,9 @@
 # Base Django Backend
 
-## [About course](lessons/additionally/about.md)<br>
+## [About course](lessons/additionally/about.md)
 ## [Additional](lessons/additionally/additionally.md)
+## [Possible problems](lessons/additionally/possible_problems.md)
+
 ## Lessons
 1. [Lesson](lessons/lesson-1/tutorial.md) Установка, запуск сервера и первая страница
 2. [Lesson](lessons/lesson-2/tutorial.md) Статические файлы, тэг form, bootstrap
