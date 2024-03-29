@@ -52,6 +52,7 @@
                    class="fc gap-2 mw-150px w-100 text-light text-decoration-none hover-scale-2">
                     <img src="{{ person.photo.url }}" alt=""
                          class="h-max">
+                    <!-- h-max в не во всех браузерах одинаково отрабатывает, можно убрать -->
                     <h2 class="fs-6">{{ person.name }}</h2>
                 </a>
             {% endfor %}

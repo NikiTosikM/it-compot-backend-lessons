@@ -8,7 +8,7 @@ def main(request):
 
 
 def movie_list(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.all().order_by('-id')
     return render(request, 'kinopoisk/movie_list.html', {
         'movies': movies
     })
