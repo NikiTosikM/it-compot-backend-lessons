@@ -4,12 +4,13 @@
     <h1 class="text-center mb-3">Жанры</h1>
     <div class="frc flex-wrap mw-700px mx-auto gap-2">
         {% for genre in genres %}
-            <div class="px-3 py-2 fs-5 bg-black-25 rounded-3
-                        disable-tap-select hover-scale-4">
+            <a href="{% url 'genre_detail' genre_id=genre.id %}"
+               class="px-3 py-2 fs-5 bg-black-25 rounded-3 text-light
+                         text-decoration-none disable-tap-select hover-scale-4">
                 <!-- Используем так называемые фильтры,
                 чтобы каждый жанр выводился с большой буквы -->
-                {{ genre.name|capfirst }}
-            </div>
+                {{ genre.name|title }}
+            </a>
         {% endfor %}
     </div>
 {% endblock %}

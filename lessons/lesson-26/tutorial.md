@@ -99,9 +99,9 @@ _**очень слабые**_ знания об элементарном раз�
     
     > Естественно вы можете использовать просто классы bootstrap.
     Но согласитесь надпись <br>
-    `d-flex flex-column justify-content-center align-items-center`<br>
+    `d-flex flex-column justify-content-center align-items-center gap-2`<br>
     длиннее чем<br>
-    `fccc`<br>
+    `fccc gap-2`<br>
     Главное объяснить по какой логике строятся подобные классы.
 
     ```html
@@ -115,7 +115,9 @@ _**очень слабые**_ знания об элементарном раз�
         <h1 class="text-center mb-4">Фильмы</h1>
         <div class="frc flex-wrap gap-4 mw-1000px mx-auto">
             {% for movie in movies %}
-                <div class="fc mw-300px w-100 hover-scale-2">
+                <!-- Вспомните как формируются динамические маршруты в шаблонах -->
+                <a href="{% url 'movie_detail' movie_id=movie.id %}" 
+                   class="fc mw-300px w-100 text-light text-decoration-none hover-scale-2">
                     <img src="{{ movie.poster.url }}" alt="">
                     <h3 class="mt-2">{{ movie.title }}</h3>
                     <span class="frsc gap-2">
@@ -130,7 +132,7 @@ _**очень слабые**_ знания об элементарном раз�
                         {% endfor %}
                     </p>
                     <span class="text-secondary mt-auto">{{ movie.release_date }}</span>
-                </div>
+                </a>
             {% endfor %}
         </div>
     {% endblock %}
@@ -144,11 +146,11 @@ _**очень слабые**_ знания об элементарном раз�
     копипастить код, вынесем карточку в отдельный шаблон.
     ```html
     <!-- kinopoisk/templates/kinopoisk/includes/movie_card.html -->
-    <div class="fc mw-300px w-100 hover-scale-2">
+    <a href="{% url 'movie_detail' movie_id=movie.id %}" 
+       class="fc mw-300px w-100 text-light text-decoration-none hover-scale-2">
         <img src="{{ movie.poster.url }}" alt="">
         ...
-        <span class="text-secondary mt-auto">{{ movie.release_date }}</span>
-    </div>
+    </a>
     ```
     И используем его.
     ```html
@@ -158,14 +160,15 @@ _**очень слабые**_ знания об элементарном раз�
         <h1 class="text-center mb-4">Фильмы</h1>
         <div class="frc flex-wrap gap-4 mw-1000px mx-auto">
             {% for movie in movies %}
-                <!-- Передаем переменную с объектом фильма -->
+                <!-- Передаем переменную с объектом фильма, это не обязательно, 
+                     но в дальнейшем мы будем это использовать, поэтому лучше сделать -->
                 {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
             {% endfor %}
         </div>
     {% endblock %}
     ```
 
-Должно получиться примерно так.
+## Должно получиться примерно так.
 ![](imgs/img.png)
 ## Загрузите проект на гит если еще не загружали.
 

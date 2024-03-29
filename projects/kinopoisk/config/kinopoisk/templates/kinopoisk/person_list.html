@@ -1,14 +1,16 @@
+<!-- kinopoisk/person_list.html -->
 {% extends 'Core/base.html' %}
 {% block title %}Кинопоиск | {{ title }}{% endblock %}
 {% block content %}
     <h1 class="text-center mb-3">{{ title }}</h1>
     <div class="frc flex-wrap mw-700px mx-auto gap-2">
         {% for person in persons %}
-            <div class="fc gap-2 mw-150px w-100 hover-scale-2">
+            <a href="Оставляем пустым пока что"
+               class="fc gap-2 mw-150px w-100 text-light text-decoration-none hover-scale-2">
                 <img src="{{ person.photo.url }}" alt=""
                      class="h-max">
                 <h2 class="fs-6">{{ person.name }}</h2>
-            </div>
+            </a>
         {% endfor %}
     </div>
 {% endblock %}

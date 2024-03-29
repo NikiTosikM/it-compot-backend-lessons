@@ -44,19 +44,15 @@ def movie_detail(request, movie_id):
     })
 
 
-def actor_detail(request, actor_id):
-    actor = MoviePerson.objects.get(id=actor_id)
-    movies = actor.acted_in_movies.all()
+def person_detail(request, person_id):
+    person = MoviePerson.objects.get(id=person_id)
+    if person.role == MoviePerson.RoleType.ACTOR:
+        movies = person.acted_in_movies.all()
+    else:
+        movies = person.directed_movies.all()
     return render(request, 'kinopoisk/person_detail.html', {
-        'person': actor, 'movies': movies,
-    })
-
-
-def director_detail(request, director_id):
-    director = MoviePerson.objects.get(id=director_id)
-    movies = director.directed_movies.all()
-    return render(request, 'kinopoisk/person_detail.html', {
-        'person': director, 'movies': movies,
+        'person': person,
+        'movies': movies
     })
 
 
