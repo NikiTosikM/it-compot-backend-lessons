@@ -76,7 +76,7 @@
             )
             if user is not None:
                 login(request, user)
-                return redirect('catalog')
+                return redirect('profile')
             else:
                 return render(request, 'Core/auth/signup.html', {
                     'error': 'Неверный логин или пароль.'

@@ -32,7 +32,7 @@
 25. [Lesson](lessons/lesson-25/tutorial.md) Простые шаблоны
 26. [Lesson](lessons/lesson-26/tutorial.md) Шапка и страничка с фильмами
 27. [Lesson](lessons/lesson-27/tutorial.md) Жанры, актеры, режиссеры
-28. [Lesson](lessons/lesson-28/tutorial.md) Рефакторинг
+28. [Lesson](lessons/lesson-28/tutorial.md) Понятие Code refactoring, страница персоны и жанра
 29. [Lesson](lessons/lesson-29/tutorial.md) 
 30. [Lesson](lessons/lesson-30/tutorial.md) 
 31. [Lesson](lessons/lesson-31/tutorial.md) 
