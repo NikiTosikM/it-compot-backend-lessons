@@ -5,7 +5,7 @@
     <h1 class="text-center mb-3">{{ title }}</h1>
     <div class="frc flex-wrap mw-700px mx-auto gap-2">
         {% for person in persons %}
-            <a href="Оставляем пустым пока что"
+            <a href="{% url 'person_detail' person_id=person.id %}"
                class="fc gap-2 mw-150px w-100 text-light text-decoration-none hover-scale-2">
                 <img src="{{ person.photo.url }}" alt=""
                      class="h-max">

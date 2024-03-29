@@ -75,33 +75,57 @@
     {% extends "Core/base.html" %}
     {% load static %}
     {% block title %}Кинопоиск | {{ person.name|title }}{% endblock %}
-    {% block main %}
-        <div class="fccs justify-content-md-center flex-md-row m-sm-0 gap-5 w-90 mx-auto ">
-            <img class="h-min mx-md-0 mx-auto" src="{{ person.photo.url }}" alt="">
-            <div class="fc mx-auto mx-md-0">
-                <h1 class="mb-4 text-center me-md-auto d-inline">{{ person.name|title }}</h1>
-                <span class="text-center me-md-auto d-inline">Дата рождения: {{ person.birth_date }}</span>
-                <div class="mt-3 frc gap-3 mw-550px flex-wrap bg-black-30 p-4 rounded-4">
-                    {% for movie in movies %}
-                       {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
-                    {% endfor %}
+    {% block content %}
+        <div class="frc">
+            <div class="person_container fccs justify-content-md-center 
+                        flex-md-row m-sm-0 gap-5 w-90 mx-auto ">
+                <img class="h-min mx-md-0 mx-auto" 
+                     src="{{ person.photo.url }}" alt="">
+                <div class="fc mx-auto mx-md-0">
+                    <h1 class="mb-4 text-center me-md-auto d-inline">
+                        {{ person.name|title }}
+                    </h1>
+                    <span class="text-center me-md-auto d-inline">
+                        Дата рождения: {{ person.birth_date }}
+                    </span>
+                    <div class="mt-3 frc gap-3 mw-550px flex-wrap bg-black-30 
+                                p-4 rounded-4">
+                        {% for movie in movies %}
+                            {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     {% endblock %}
     ```
-
+    Добавьте ссылку в 
+    ```html
+    <!-- kinopoisk/person_list.html -->
+    ...
+    {% for person in persons %}
+        <a href="{% url 'person_detail' person_id=person.id %}" 
+           class="fc gap-2 mw-150px w-100 text-light text-decoration-none hover-scale-2">
+            <img src="{{ person.photo.url }}" alt=""
+                 class="h-max">
+            <h2 class="fs-6">{{ person.name }}</h2>
+        </a>
+    {% endfor %}
+    ...
+    ```
 3. ## Напишем `genre_detail.html`
     ```html
     {% extends "Core/base.html" %}
     {% load static %}
     {% block title %}Кинопоиск | {{ genre.name|title }}{% endblock %}
-    {% block main %}
-        <h1 class="mb-4">{{ genre.name|title }}</h1>
-        <div class="fr gap-3 mw-1000px flex-wrap">
-            {% for movie in movies %}
-                {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
-            {% endfor %}
+    {% block content %}
+        <div class="fccc">
+            <h1 class="mb-4">{{ genre.name|title }}</h1>
+            <div class="fr gap-3 mw-1000px flex-wrap">
+                {% for movie in movies %}
+                    {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
+                {% endfor %}
+            </div>
         </div>
     {% endblock %}
     ```
@@ -114,11 +138,14 @@
     ### Я вижу 2 решения:
     * ### 1
       Использовать общий класс у родителя, например `person_container`, и через него 
-      модифицировать максимальную ширину карточки.
+      модифицировать максимальную ширину карточки или что-то еще.
       ```css
       /* kinopoisk/static/kinopoisk/css/person_detail.css */
-      .person_container .movie_card{
+      .person_container .movie_card {
           max-width: 150px !important;
+      }
+      .person_container .movie_card h3 {
+          font-size: 1.5rem !important;
       }
       ```
       Нужно создать блок для подключения кастомных стилей для разных страниц в `base.html`.

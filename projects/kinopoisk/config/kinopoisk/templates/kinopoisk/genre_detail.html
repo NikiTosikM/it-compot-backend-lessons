@@ -1,8 +1,13 @@
-{% extends 'Core/base.html' %}
-{% block title %}Кинопоиск | {{ genre.name }}{% endblock %}
+{% extends "Core/base.html" %}
+{% load static %}
+{% block title %}Кинопоиск | {{ genre.name|title }}{% endblock %}
 {% block content %}
-    <h2>{{ genre.name }}</h2>
-    {% for movie in movies %}
-        <p>{{ movie.title }}</p>
-    {% endfor %}
+    <div class="fccc">
+        <h1 class="mb-4">{{ genre.name|title }}</h1>
+        <div class="fr gap-3 mw-1000px flex-wrap">
+            {% for movie in movies %}
+                {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
