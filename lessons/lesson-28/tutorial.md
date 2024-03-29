@@ -140,7 +140,7 @@
       Использовать общий класс у родителя, например `person_container`, и через него 
       модифицировать максимальную ширину карточки или что-то еще.
       ```css
-      /* kinopoisk/static/kinopoisk/css/person_detail.css */
+      /* kinopoisk/css/person_detail.css */
       .person_container .movie_card {
           max-width: 150px !important;
       }
@@ -154,7 +154,7 @@
      
       Добавим новый блок `head`, который мы сможем заполнять в дочерних страницах.
       ```html
-      <!-- Core\templates\Core\base.html -->
+      <!-- Core\base.html -->
       ...
       <head>
           ...
@@ -176,13 +176,13 @@
     * ### 2
       Передавать классы через переменную сквозь `include`.
       ```html
-      <!-- kinopoisk/templates/kinopoisk/person_detail.html -->                                           
+      <!-- kinopoisk/person_detail.html -->                                           
       ...
       {% include 'kinopoisk/includes/movie_card.html' with movie=movie movie_card_classes='mw-150px' %}
       ...
       ```
       ```html
-      <!-- kinopoisk/templates/kinopoisk/includes/movie_card.html -->
+      <!-- kinopoisk/includes/movie_card.html -->
       <a href="{% url 'movie_detail' movie_id=movie.id %}" 
          class="{{ movie_card_classes }} fc mw-300px w-100 text-light text-decoration-none hover-scale-2">
           <img src="{{ movie.poster.url }}" alt="">
