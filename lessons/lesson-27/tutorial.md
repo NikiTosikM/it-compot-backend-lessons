@@ -1,94 +1,175 @@
-# Жанры, актеры, режиссеры
+# Кинопоиск. Шапка и страничка с фильмами
+
+Не используем готовую карточку `bootstrap`, напишите её самостоятельно. 
+
+С Frontend курса, у довольно _**сильных**_ учеников, на мой взгляд,
+_**очень слабые**_ знания об элементарном размещении элементов.
+
+Достаточно объяснить 4 свойства:
+* `display: flex` - включает использование `flex-direction` `justify-content-center` `gap` `align-items`
 
 
-1. ## Жанры
-    Страничка с жанрами сегодня будет самая простая, нужно просто 
-    вывести их названия в более менее красивом виде.
+1. ## Немного переделаем шапку
+    Сделаем ссылки на все фильмы, жанры актеров и режиссеров.
+    Мы уже это делали, единственное новое, что я тут использовал это
+    `gap-md` и `mt-md`, но для слабых учеников это не сильно нужно на данном этапе.
+    Так же я объединил иконки профиля, выхода и смены темы в один блок с `d-flex` чтобы
+    на телефоне при разворачивании меню они стояли в ряд. Все делать необязательно.
     ```html
-   {% extends 'Core/base.html' %}
-   {% block title %}Кинопоиск | Жанры{% endblock %}
-   {% block content %}
-       <h1 class="text-center mb-3">Жанры</h1>
-       <div class="frc flex-wrap mw-700px mx-auto gap-2">
-           {% for genre in genres %}
-               <a href="{% url 'genre_detail' genre_id=genre.id  %}" 
-                  class="px-3 py-2 fs-5 bg-black-25 rounded-3 text-light 
-                         text-decoration-none disable-tap-select hover-scale-4">
-                   <!-- Используем так называемые фильтры,
-                   чтобы каждый жанр выводился с большой буквы -->
-                   {{ genre.name|title }}
-               </a>
-           {% endfor %}
-       </div>
-   {% endblock %}
+    <!-- Core/includes/header.html -->
+    <header>
+        ..........
+        <div class="collapse navbar-collapse flex-grow-0" 
+             id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0 gap-3 gap-md-1 align-items-center">
+                <li class="nav-item mt-3 mt-md-0">
+                    <a class="nav-link py-0"
+                       href="{% url 'movie_list' %}">
+                        Фильмы
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link py-0"
+                       href="{% url 'genre_list' %}">
+                        Жанры
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link py-0"
+                       href="{% url 'actor_list' %}">
+                        Актёры
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link py-0"
+                       href="{% url 'director_list' %}">
+                        Режиссёры
+                    </a>
+                </li>
+                <li class="d-flex justify-content-center gap-2">
+                    {% if request.user.is_authenticated %}
+                        <div class="nav-item">
+                            <a class="py-0"
+                               href="{% url 'profile' %}">
+                                <img width="25" height="25"
+                                     style="filter: invert(0.5)"
+                                     src="{% static 'Core/img/user.png' %}" alt="profile">
+                            </a>
+                        </div>
+                        <div class="nav-item my-auto">
+                            <a class="py-0"
+                               href="{% url 'signout' %}">
+                                <img width="25" height="25"
+                                     style="filter: invert(0.5)"
+                                     src="{% static 'Core/img/signout.png' %}" alt="signout">
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signin' %}">
+                                Sign In
+                            </a>
+                        </div>
+                        <div class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signup' %}">
+                                Sing Up
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="nav-item">
+                        <img width="25" height="25"
+                             id="btn-change-theme"
+                             src="{% static 'Core/img/moon.png' %}" alt="theme">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        ...
+    </header>
     ```
+    * ### Сейчас страница с фильмами должна выглядеть как-то так:
+        ![](imgs/1.png)
 
-2. ## Актеры и режиссеры
-    Помним, что мы передаем заголовок и персон в функцию `render`.
-    Расскажите, что можно делать сортировку при использовании ORM.
-    > По умолчанию сортировка выполняется по id
-    ```python
-    def actor_list(request):
-        # Выполним сортировку в обратном порядке, но тоже по id.
-        # Можете использовать и другие поля, не принцыпиально.
-        actors = MoviePerson.objects.filter(
-            role=MoviePerson.RoleType.ACTOR
-        ).order_by('-id') 
-        return render(request, 'kinopoisk/person_list.html', {
-            'persons': actors, 'title': 'Актеры'
-        })
-    ```
-    ### Оформляем страничку
-    > Ничего сложного, ученики, наверное, справятся сами.
+2. ## Пишем карточку
+    Скачайте `addon` к `bootstrap` для более быстрой верстки
+    **[wide-classes](https://artasov.github.io/wide-classes/)**.<br>
+    Переместите `wide-classes.css` в `Core/static/Core/css/` и подключите в `base.html`    
+    
+    > Естественно вы можете использовать просто классы bootstrap.
+    Но согласитесь надпись <br>
+    `d-flex flex-column justify-content-center align-items-center gap-2`<br>
+    длиннее чем<br>
+    `fccc gap-2`<br>
+    Главное объяснить по какой логике строятся подобные классы.
+
     ```html
-    <!-- kinopoisk/person_list.html -->
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'Core/css/wide-classes.css' %}"/>
+    ```
+    ```html
     {% extends 'Core/base.html' %}
-    {% block title %}Кинопоиск | {{ title }}{% endblock %}
+    {% block title %}Кинопоиск | Фильмы{% endblock %}
     {% block content %}
-        <h1 class="text-center mb-3">{{ title }}</h1>
-        <div class="frc flex-wrap mw-700px mx-auto gap-2">
-            {% for person in persons %}
-                <a href="Оставляем пустым пока что" 
-                   class="fc gap-2 mw-150px w-100 text-light text-decoration-none hover-scale-2">
-                    <img src="{{ person.photo.url }}" alt=""
-                         class="h-max">
-                    <!-- h-max в не во всех браузерах одинаково отрабатывает, можно убрать -->
-                    <h2 class="fs-6">{{ person.name }}</h2>
+        <h1 class="text-center mb-4">Фильмы</h1>
+        <div class="frc flex-wrap gap-4 mw-1000px mx-auto">
+            {% for movie in movies %}
+                <!-- Вспомните как формируются динамические маршруты в шаблонах -->
+                <a href="{% url 'movie_detail' movie_id=movie.id %}" 
+                   class="fc mw-300px w-100 text-light text-decoration-none hover-scale-2">
+                    <img src="{{ movie.poster.url }}" alt="">
+                    <h3 class="mt-2">{{ movie.title }}</h3>
+                    <span class="frsc gap-2">
+                        <span>Рейтинг:</span>
+                        <span class="fs-5" style="color: #ffe655; padding-bottom: 1px;">
+                            {{ movie.rating }}
+                        </span>
+                    </span>
+                    <p>
+                        {% for genre in movie.genres.all %}
+                            {{ genre.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <span class="text-secondary mt-auto">{{ movie.release_date }}</span>
                 </a>
             {% endfor %}
         </div>
     {% endblock %}
     ```
+    Чтобы дата отображалась на русском установите русский язык в `settings.py`
+    ```python
+    # settings.py
+    LANGUAGE_CODE = 'ru-RU'
+    ```
+    Так как карточки фильмов будут не только на этой странице, дабы не
+    копипастить код, вынесем карточку в отдельный шаблон.
+    ```html
+    <!-- kinopoisk/templates/kinopoisk/includes/movie_card.html -->
+    <a href="{% url 'movie_detail' movie_id=movie.id %}" 
+       class="fc mw-300px w-100 text-light text-decoration-none hover-scale-2">
+        <img src="{{ movie.poster.url }}" alt="">
+        ...
+    </a>
+    ```
+    И используем его.
+    ```html
+    {% extends 'Core/base.html' %}
+    {% block title %}Кинопоиск | Фильмы{% endblock %}
+    {% block content %}
+        <h1 class="text-center mb-4">Фильмы</h1>
+        <div class="frc flex-wrap gap-4 mw-1000px mx-auto">
+            {% for movie in movies %}
+                <!-- Передаем переменную с объектом фильма, это не обязательно, 
+                     но в дальнейшем мы будем это использовать, поэтому лучше сделать -->
+                {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
+            {% endfor %}
+        </div>
+    {% endblock %}
+    ```
 
-3. ## Добавим новый фильм, улучшим читаемость объектов моделей 
-    * Зайдите в админку и попробуйте добавить любой фильм.
-       Вы столкнетесь с проблемой непонятных названия жанров и персон.
-       > Предупреждать заранее наверное, не нужно, а может и нужно 🙃
-    * Используйте [дополнительные материалы для уроков](https://github.com/Artasov/it-compot-backend-lessons/blob/main/lessons/additionally/additionally.md#%D1%83%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%BD%D0%B8%D0%B5-%D1%87%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8-%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B8-%D0%B5%D1%91-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%BE%D0%B2-%D0%B2-ui-user-interface) и исправьте ситуацию.
-      ```python
-      # kinopoisk/models.py
-      class MoviePerson(models.Model):
-          ...
-          def __str__(self):
-              return self.name
-      
-      class Genre(models.Model):
-          ...
-          def __str__(self):
-              return self.name
-      
-      class Movie(models.Model):
-          ...
-          def __str__(self):
-              return self.title
-      ```
-    * Добавьте фильм его актеров и режиссеров.
-
-## Должно получиться как-то так:
+## Должно получиться примерно так.
 ![](imgs/img.png)
-
-### Можете сделать что-то из доп. материалов, либо поработать над пробелами в знаниях, либо идти дальше.
-
 ## Загрузите проект на гит если еще не загружали.
 
 ## Подведите итоги.

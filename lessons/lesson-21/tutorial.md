@@ -1,155 +1,199 @@
-# Создаем свою модель пользователя.
+# Вспоминаем JS и меняем тему на сайте
+## ❗️Если ученики слабые или вы отстаёте сильно, можете не делать сохранение темы в локальное хранилище.
 
+## [Скидываем ученикам и пробегаемся вместе с ними по строчкам этого файла](https://github.com/xlartas/it-compot-backend-methods/blob/main/js_lesson_change_theme_cheat_sheet.md).
 
-У нас осталась незаполненная страница профиля.
-Вспомните существующие поля модели `User`, а лучше покажите наглядно
-класс `AbstructUser`.
+Если вы уже меняли тему через `bootstrap`, то вспомните как, 
+если нет, то...
+```html
+<body data-bs-theme="dark"></body>
+или
+<body data-bs-theme="light"></body>
+```
+Этого файла про js должно хватить, чтобы ученики сами:
+сделали кнопку-картинку луну-солнце которая будет
+при клике менять изображение и аттрибут `data-bs-theme`,
+а после перезагрузки страницы подгружалась последняя 
+выбранная тема.
 
-1. ## Допишем `profile.html`
-   ```html
-   <!-- Core/auth/profile.html -->
-   {% extends 'Core/base.html' %}
-   {% load static %}
-   {% block title %}Shop | Profile{% endblock %}
-   
-   {% block content %}
-       <div class="d-flex flex-column mx-auto" style="width: min-content">
-           <div class="d-flex align-items-center gap-3">
-               <img src="{% static 'Core/img/user.png' %}"
-                    style="filter: invert(.9)"
-                    width="50" height="50"
-                    alt="">
-               <h1 class="text-body text-center fw-bold">
-                   {{ request.user.username }}
-               </h1>
-           </div>
-           <ul>
-               <!-- Выводим только существующие поля -->
-               {% if request.user.first_name %}
-                   <li>{{ request.user.first_name }}</li>
-               {% endif %}
-               {% if request.user.last_name %}
-                   <li>{{ request.user.last_name }}</li>
-               {% endif %}
-               {% if request.user.email %}
-                   <li>{{ request.user.email }}</li>
-               {% endif %}
-           </ul>
-           <a href="{% url 'orders' %}"
-              class="btn border-secondary mx-auto">
-               My orders
-           </a>
-       </div>
-   {% endblock %}
-   ```
-   Сейчас аватар у всех пользователей будет одна и та же картинка. <br>
-   Что нужно сделать, чтобы у каждого пользователя могла быть своя ава?<br>
-   Нужно добавить в модель ещё одно поле которое будет хранить путь 
-   до картинки пользователя.
-
-2. ## Создадим свою модель пользователя.
-    Мы не можем изменять исходный код библиотек(можем, но лучше не надо),
-    поэтому мы не можем добавить новое поле в `AbstractUser` напрямую.
-    Однако мы можем унаследоваться от `AbstractUser`, создав
-    новую модель `User`. <br>
-    Пусть ученики догадаются где мы будем создавать эту модель.
-    ```python
-    # Core/models.py
-    from django.contrib.auth.models import AbstractUser
-    from django.db import models
-   
-    class User(AbstractUser):
-       pass  # объясните что это
-    ```
-    Так же нужно указать какую модель пользователя `django` будет использовать.
-    ```python
-    # settings.py
-    ...
-    AUTH_USER_MODEL = 'Core.User'
-    ...
-    ```
-    Поменяем `import` модели пользователя для модели заказа.
-    ```python
-    # shop/models.py
-    # from django.contrib.auth.models import User <---- Было
-    from Core.models import User  #               <---- Стало
-    ```
-    Нужно создать файлы миграций и выполнить их, чтобы класс в `python` 
-    смапился на бд.<br>
-    `python manage.py makemigrations`<br>
-    `python manage.py migrate`<br><br>
-
-    Сейчас мы столкнемся с проблемой, когда миграции модели 
-    пользователя из базового приложения django и наша начнут конфликтовать.
-    В этом случае можно пытаться изменить файлы миграций руками,
-    но для нас это будет пока что сложновато. Мы выполним сброс бд.
-    * Удалям файлы миграций внутри каждого нашего приложени внутри папки
-    `migrations`.<br>
-      Осторожно, не удалите `__init__.py` файлы.
-    * Удаляем `db.sqlite`
-    * Повторно выполняем:<br>
-    `python manage.py makemigrations`<br>
-    `python manage.py migrate`<br><br>
-   
-    **Теперь миграция пройдет успешно.**<br>
-    Важно понимать, что такие радикальные методы, как удаление базы данных,
-    можно сказать, никогда не применяется, такие ситуации продумываются
-    заранее, либо редактируются файлы миграций. <br><br>
-
-    Желательно, чтобы ученики хотя бы примерно понимали,
-    что при наследовании, функции и переменные содержащиеся в родителе, так же
-    будут и у дочернего класса если мы их не переопределим, а значит сейчас у
-    **нового User** есть все те же поля, что и у '**старого**'.
-
-3. ## Добавим `avatar` в модель пользователя
-    ```python
-    class User(AbstractUser):
-        avatar = models.ImageField(
-            upload_to='avatars/', 
-            null=True, blank=True
-        )
-    ```
-    `python manage.py makemigrations`<br>
-    `python manage.py migrate`
-
-4. ## Исправим отображение картинки в профиле.
-    Если аватарка есть, то отображаем ее, если нет, 
-    то стандартную картинку.
+1. ## Добавим кнопку в `header`
+    Кнопкой будет обычная картинка.<br>
+    Скачайте и поместите в папку для статических файлов иконки 
+    для кнопок темной и светлой тем.
     ```html
-    <!-- Core/auth/profile.html -->
-    {% if request.user.avatar %} 
-        <img src="{{ request.user.avatar.url }}"
-             width="50" height="50"
-             class="rounded-5 object-fit-cover"
-             alt="">
-    {% else %}
-        <img src="{% static 'Core/img/user.png' %}"
-             style="filter: invert(.9)"
-             width="50" height="50"
-             alt="">
-    {% endif %}
+    <!-- Core/includes/header.html -->
+    {% load static %}
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            ....
+                ....
+                    <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
+                        ....
+                        <li class="nav-item">
+                            <img width="20" height="20"
+                                 id="btn-change-theme"
+                                 src="{% static 'Core/img/moon.png' %}" alt="theme">
+                            <!-- src мы потом удалим, но пока пусть
+                                 будет для наглядности. -->
+                        </li>
+                    </ul>
+                ....
+            ....
+        </nav>
+    </header>
     ```
-    ### Зайдем в админку
-    ммм...
+2. ## Создадим js файл для смены темы и подключим его
+    ```html
+    <!-- Core/base.html -->
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        ....
+        <!-- Вспомните, что такое defer -->
+        <script defer src="{% static 'Core/js/theme.js' %}"></script>
+        ....
+    </head>
+    <body class="d-flex flex-column" data-bs-theme="dark" style="min-height: 100vh;">
+        ....
+    </body>
+    </html>
+    ```
+3. ## Напишем обработку смены картинки при клике.
+    * Получим кнопку и сделаем функцию `setTheme` которая по задумке будем 
+      принимать `false` или `true` и пока что просто менять картинку кнопки.<br><br>
+      
+      Повторите как устроены **[статические и медиа файлы](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#static--media-files)**
+      и как правильно подобрать верный `url` до нужной картинки.<br><br>
+      * `http`://`127.0.0.1:8000`/`STATIC_URL`/`path_like_in_static_folder`/
+      ```js
+      // Core/js/theme.js
+      const btnChangeTheme = document.querySelector('#btn-change-theme');
+      function setTheme(value) {
+          if (value === true) {
+              // Меняем изображение на кнопке
+              btnChangeTheme.src = '/static/Core/img/sun.png';
+          } else {
+              // Меняем изображение на кнопке
+              btnChangeTheme.src = '/static/Core/img/moon.png';
+          }
+      }
+      ```
+      ```js  
+      // Проверьте, что работает
+      setTheme(false) // темная тема
+      setTheme(true) // светлая тема
+      ```
+    
+    * Добавим изменение атрибута `data-bs-theme` у `body`
+      ```js
+      // Core/js/theme.js
+      const btnChangeTheme = document.querySelector('#btn-change-theme');
+      const body = document.querySelector('body');
+      
+      function setTheme(value) {
+          if (value === true) {
+              btnChangeTheme.src = '/static/Core/img/sun.png';
+              document.body.setAttribute('data-bs-theme', 'light');
+          } else {
+              btnChangeTheme.src = '/static/Core/img/moon.png';
+              document.body.setAttribute('data-bs-theme', 'dark');
+          }
+      }
+      // Проверьте, что работает
+      ```
+    * Чтобы отслеживать текущее состояние темы нужно завести переменную,
+      она будет хранить `false` или `true`. Сделаем функцию переключатель темы 
+      и свяжем её с событием клика у кнопки.
+      ```js
+      const body = document.querySelector('body');
+      
+      const btnChangeTheme = document.querySelector('#btn-change-theme');
+      // При каждом клике переключаем тему
+      btnChangeTheme.addEventListener('click', toggleTheme);
+      
+      let currentTheme = true;
+      
+      function setTheme(value) {
+          if (value === true) {
+              // Меняем изображение на кнопке
+              btnChangeTheme.src = '/static/Core/img/sun.png';
+              document.body.setAttribute('data-bs-theme', 'light');
+          } else {
+              // Меняем изображение на кнопке
+              btnChangeTheme.src = '/static/Core/img/moon.png';
+              document.body.setAttribute('data-bs-theme', 'dark');
+          }
+      }
+      
+      function toggleTheme() {
+          // Устанавливаем тему в противоположную
+          currentTheme = !currentTheme
+          setTheme(currentTheme);
+      }
+      // Проверьте, что работает
+      ```
+    * Добавим сохранение темы в локальное хранилище и загрузку из него.
+      ```js
+      const body = document.querySelector('body');
+      const btnChangeTheme = document.querySelector('#btn-change-theme');
+      btnChangeTheme.addEventListener('click', toggleTheme);
+      let currentTheme = true;
+      loadTheme();
+      
+      function setTheme(value) {
+          if (value === true) {
+              // Меняем изображение на кнопке
+              btnChangeTheme.src = '/static/Core/img/sun.png';
+              document.body.setAttribute('data-bs-theme', 'light');
+          } else {
+              // Меняем изображение на кнопке
+              btnChangeTheme.src = '/static/Core/img/moon.png';
+              document.body.setAttribute('data-bs-theme', 'dark');
+          }
+          localStorage.setItem('theme', value);
+      }
+      
+      function loadTheme() {
+          const loaded_theme = localStorage.getItem('theme');
+          if (loaded_theme !== null) { // Если функция вернула null, то сохраненного значения не существует.
+              if (loaded_theme === 'true') {  // Помним, что локальное хранилище сохраняет только строки.
+                  setTheme(true);
+                  currentTheme = true;
+              } else {
+                  setTheme(false);
+                  currentTheme = false;
+              }
+          }
+      }
+      
+      function toggleTheme() {
+          setTheme(!currentTheme);
+          currentTheme = !currentTheme
+      }
+      ```
+    ### Проверьте, что все работает
 
-5. ## Создадим пользователя с правами администратора.
-    `python manage.py createsuperuser`
-    ### Зайдем в админку
-    ммм... Где юзеры?
+# Удалите атрибут `src` у кнопки.
 
-6. ## Настроим отображение модели `User` в админке.
-    ```python
-    # Core/admin.py
-    from django.contrib import admin
-    from Core.models import User
+4. ## Для сильных учеников можно попробовать объяснить оптимизированный код:
+   ```javascript
+   const btnChangeTheme = document.querySelector('#btn-change-theme');
+   btnChangeTheme.addEventListener('click', () => setTheme(!isLightTheme()));
    
-    @admin.register(User)
-    class UserAdmin(admin.ModelAdmin):
-        list_display = ('id', 'username', 'email')
-        list_editable = ('email',)
-    ```
-    ### Установите аватарку через админку, проверьте, что все работает.
-
+   function isLightTheme() {
+       return localStorage.getItem('theme') === 'true';
+   }
+   
+   function setTheme(isLight) {
+       const theme = isLight ? 'light' : 'dark';
+       btnChangeTheme.src = isLight ? '/static/Core/img/sun.png' : '/static/Core/img/moon.png';
+       document.body.setAttribute('data-bs-theme', theme);
+       localStorage.setItem('theme', isLight);
+   }
+   
+   setTheme(isLightTheme());
+   ```
 
 ## Подведите итоги.
 ># git push...

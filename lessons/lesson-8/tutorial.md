@@ -1,94 +1,166 @@
-# Оценки на посты. Повторение.
+# Сохранение данных с клиента в БД и углубление в шаблонизацию.
+В этом руководстве мы создадим новую страницу с формой для добавления 
+видео в плейлист и постов в блог, научимся расширять шаблоны.
+>![img.png](imgs/result.png)
 
-В данной методичке, мы сделаем, чтобы на каждый пост можно было поставить лайк.
->Можете если хотите показать, что примерно мы будем делать.<br><br>
-![result.png](imgs/result.png)
+>А зачем нам страничка для добавления, если есть такая же в админке?"<br><br>
+>***Если у нас будет много-пользовательское приложение, мы не дадим*** 
+>***доступ в админку всем желающим.***
 
-### Доделываем если не успели шаблоны с предыдущего урока, а если успели то повторяем хотя бы устно
+1. ## Создаем страничку с формой для добавления видео
+   >Ученики должны справиться сами.
+   ```python
+   # project_name/urls.py
+   from playlist.views import video_create
+   urlpatterns = [
+       ...
+       path('playlist/video_create/', video_create),
+   ]
+   ```
+   ```python
+   # playlist/views.py
+   from .models import Video
+   def video_create(request):
+       return render(request, 'playlist/video_create.html')
+   ```
+   ```html
+   <!-- playlist/templates/playlist/video_create.html -->
+   {% include 'playlist/includes/header.html' %}
+   <h1 class="text-center fw-bold my-4">Новое видео</h1>
+   <form class="d-flex flex-column gap-2 mx-auto"
+         style="max-width: 300px;">
+       <input class="form-control" type="text"
+              placeholder="Название" name="title">
+       <input class="form-control" type="text"
+              placeholder="Код вставки" name="embed_code">
 
-## Оценки на посты
-* ### Вспоминаем как мы отправляем данные на сервер. 
-  Покажите на примере шпаргалки ([Обмен данными</u> клиент <--> сервер](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82----%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80)).
+       <button style="max-width: 90%; min-width: 200px;"
+               class="btn btn-danger mx-auto my-2"
+               type="submit">Добавить
+       </button>
+   </form>
+   {% include 'playlist/includes/footer.html' %}
+   ```
+2. ## Создание view для добавления видео
 
-* ### Вместе думаем, как мы можем сделать функциональность лайков.
-     * Где будем хранить количество лайков? _В модели **Post** в поле **likes**._<br>
-     * Где будет кнопка отправки формы лайка? _В карточке поста._<br>
-     * Мы же должны отправлять что-то, по чему мы сможем понять, <br>на какой пост был поставлен лайк. Что это? _post_id_<br>
-     * Какой тип input будет использоваться для передачи post_id? _**hidden** с **value="id поста"**. <br>Можете вспомнить_ ([Виды input](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B2%D0%B8%D0%B4%D1%8B-%D0%BF%D0%BE%D0%BB%D0%B5%D0%B9-%D0%B2%D0%B2%D0%BE%D0%B4%D0%B0-input))<br>
-     * Что будет кнопкой отправки? _Кнопка (**button**) в которой скорее всего будет картинка._<br>
+   * Показываем ученикам как создавать объекты в базе данных 
+     [шпаргалка ORM Django метод create](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm).<br>
+   * Вспоминаем как получать данные из `request.POST`.<br>
+   * Вспоминаем под какими именами мы передаем данные (*имена input в форме*). <br>
+   * Даем время ученикам попробовать самим доделать view, 
+   чтобы она смогла принимать нужные поля (`'title', 'embed_code'`) 
+   и создавать по ним объект в DB, то есть обрабатывать и `GET` и `POST` запросы.<br>
+   Пусть пробуют, задают вопросы и т.д.<br>
+   * Через несколько минут, смотря по ситуации, показываем как должно выглядеть. <br>
+   <br>
+   
+   **Обьясняем каждую строчку** <br>
+   Доделываем до правильного варианта.
+   ```python
+   # playlist/views.py
+   from .models import Video
+   
+   def video_create(request):
+       if request.method == "POST":
+           # Тут нужно использовать .get('key') вместо ['key'], 
+           # но ученикам это рано использовать.
+           # + будут видеть сразу ошибки в debug если что-то не верно.
+           title = request.POST['title']
+           embed_code = request.POST['embed_code']
+           Video.objects.create(title=title, embed_code=embed_code)
+       return render(request, 'playlist/video_create.html')
+   ```
+   Теперь, мы можем протестировать это.
 
-* ### Пусть ученики напишут сами.
-  * #### Создадим новое поле `likes` в модели `Post` если еще нет.    
-    ```python
-    # blog/models.py
-    class Post(models.Model):
-        ...
-        likes = models.IntegerField(default=0)
-    ```
-    Мигрируем изменения модели в db<br>
-    `python manage.py makemigrations`<br>
-    `python manage.py migrate`<br><br>
-  
-  * #### Добавим кнопку лайка и количество лайков в карточку поста.
-    ```html
-    <!-- blog/posts_list.html-->
-    {% for post in posts %}
-        <div class="card" style="width: 250px;">
-            <img src="{{ post.image.url }}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ post.title }}</h5>
-                <p class="card-text">{{ post.text }}</p>
-                <!-- Добавляем форму для отпарвки лайка с картинкой и отображаем текущее количество лайков.-->
-                <form method="post" class="d-flex flex-row">{% csrf_token %}
-                    <!-- Скрытое поля для отправки id того поста, на лайк которого нажмем.-->
-                    <input type="hidden" name="post_id" value="{{ post.id }}">
-                    <button type="submit" class="bg-transparent border-0">
-                        <img height="30" width="30" src="{% static 'blog/like.png' %}">
-                    </button>
-                    <span class="text-secondary">{{ post.likes }}</span>
-                </form> 
-            </div>
-        </div>
-    {% endfor %}
-    ```
-  * #### Добавим функцию обработчик лайка.
-    Смотрим шпаргалку ([Изменение полей объекта](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm))
-    > Используем принты если, что-то не получается.
-    ```python
-    # blog/views.py
-    def post_like(request):
-        print('LIKE setter')
-        if request.method == 'POST':
-            post_id = request.POST['post_id'] # получаем id нужного поста
-            # или post_id = request.POST.get('post_id') более корректный вариант
-            post = Post.objects.get(id=post_id)  # получаем объект поста по полученному id
-            post.likes = post.likes + 1  # или короче post.likes += 1
-            post.save()  # Сохраняем изменения
-    ```
-    ```python
-    from blog.views import post_like
-    urlpatterns = [
-        ...
-        path('blog/post_like/', post_like),
-    ]
-    ```    
 
-  * #### Пробуем нажать на кнопку лайка.
-    Страница просто перезагружается. Почему?<br>
-    Возможно кто-то догадается в чем проблема.<br>
-    _Форма отправляется не на тот адрес и соответственно обрабатывается не тем view_.<br>
-    Вспоминаем, что существует атрибут `action=""`.<br>
-    Добавим его в форму.
-    ```html
-    <!-- blog/posts_list.html-->
-    ...
-    <form action="http://127.0.0.1:8000/blog/post_like/" method="post" class="d-flex flex-row">
-    ...
-    ```
-    Теперь форма отправляется куда нужно, лайк прибавляется,<br>
-    но у нас не рендерится страница после отправки формы лайка,<br> 
-    приходится вручную переходить на страницу постов.
+3. ## Замечаем, что у нас повторяется на страницах одно и тоже
+   ```html
+   {% load static %}
+   <!DOCTYPE html>
+   <html lang="ru">
+       <head>
+           <meta http-equiv="Content-Type" content="text/html">
+           <meta name="viewport" content="width=device-width, initial-">
+           <meta charset="utf-8"/>
+           <link type="text/css" rel="stylesheet"
+                 href="{% static 'core/css/bootstrap.min.css'%}"/>
+           <title>Artasov</title>
+       </head>
+       <body class="bg-dark d-flex flex-column" style="min-height: 100vh;">
+           {% include 'playlist/includes/header.html' %}
+           <main class="my-4">
+               ...
+               ...
+           </main>
+           {% include 'playlist/includes/footer.html' %}
+       </body>
+   </html>
+   ```
+4. ## Углубление в шаблонизацию
+   Рекомендую вместе с учениками по демонстрации почитать, что написано в 
+   [шпаргалке про наследование шаблонов](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D1%80%D0%B0%D1%81%D1%88%D0%B8%D1%80%D0%B5%D0%BD%D0%B8%D0%B5%D0%BD%D0%B0%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%BE%D0%B2).
+   Рассказываем, что есть возможность сделать `базовый шаблон`,
+   куда мы можем `вынести эти повторящиеся части`, а дальше просто `расширять` 
+   этот `базовый шаблон` другими фрагментами кода.
+   Показываем пример, где в файле `base.html` создается общая 
+   структура страницы, которую затем можно расширять 
+   и переопределять в основных шаблонах.
+   
+   * Добавляем `project_root/core/templates/core/base.html`
+     >Помним, что bootstrap у нас лежит в самом первом приложении. 
+      Давайте там же добавим базовый шаблон.
+   * Напишем структуру объясняя и задавая вопросы.
+     ```html
+     <!-- Базовый шаблон project_root/core/templates/core/base.html -->
+     {% load static %}
+     <!DOCTYPE html>
+     <html lang="ru">
+     <head>
+         <meta http-equiv="Content-Type" content="text/html">
+         <meta name="viewport" content="width=device-width, initial-">
+         <meta charset="utf-8"/>
+         <link type="text/css" rel="stylesheet"
+               href="{% static 'core/css/bootstrap.min.css'%}"/>
+         <title>{% block title %}Artasov{% endblock %}</title>
+     </head>
+     <body class="bg-dark d-flex flex-column" style="min-height: 100vh;">
+         {% include 'playlist/includes/header.html' %}
+         <main class="my-4">
+             {% block content %}{% endblock %}
+         </main>
+         {% include 'playlist/includes/footer.html' %}
+     </body>
+     </html>
+     ```
+      Блоки `{% block NAME %}Content{% endblock %}`, 
+      мы сможем переопределять по надобности при расширении шаблона.<br><br>
+   
+   * Показываем пример наследования / расширения шаблона и начинаем переделывать
+     все странички(`все посты`, `все видео`, `добавление видео`), ученики должны хорошо понять принцип наследования.
+     ```html
+     <!-- Например страница со всеми постами blog/posts_list.html теперь будет выглядеть так.-->
+     {% extends 'core/base.html' %}
 
-> На следующем уроке мы доделаем ссылки для перехода на добавление видео и сделаем перенаправление (redirect) после добавления лайка.
+     {% block title %}Блог | Все посты{% endblock %}
+     
+     {% block content %}
+         <h1 class="text-light text-center fw-bold">Посты</h1>
+         <div class="posts_container d-flex gap-3 flex-wrap justify-content-center mx-auto" 
+              style="max-width: 800px;">
+             {% for post in posts %}
+                 {% if post.is_published == True %}
+                     <div class="card" style="width: 250px;">
+                         <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+                         <div class="card-body">
+                             <h5 class="card-title">{{ post.title }}</h5>
+                             <p class="card-text">{{ post.text }}</p>
+                         </div>
+                     </div>
+                 {% endif %}
+             {% endfor %}
+         </div>
+     {% endblock %}
+     ```
+### Скорее всего вы не успеете, поэтому как раз закрепите в начале следующего урока.
 
 ## Подведите итоги.

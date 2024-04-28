@@ -1,82 +1,110 @@
-# Кинопоиск. Доделываем контроллеры.
+# Кинопоиск. Адреса и страницы.
 
-На этом уроке мы должны доделать контроллеры, так чтобы они передавали внутрь
-шаблонов нужные нам данные.
+Продолжаем проектировать `Кинопоиск` и сегодня
+мы напишем ВСЕ нужные нам маршруты и создадим контроллеры для них.
 
-Похожих контроллеров много, а значит у учеников будет много личной практики. 
+**Все что мы будем сегодня делать, мы уже делали, это довольно банальные вещи.
+Просто направляйте учеников на правильные выводы, а они сами все должны сделать.**
 
-1. ## Контроллеры.
-    Я прокомментировал, что в теории можно `подсказать`, а что ученики должны сделать `сами`.
-    Просто обсуждайте с учениками, что должно передаваться в тот или иной шаблон,
-    и поглядывайте в раздел **[ORM](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)**
-    в шпаргалке.
+1. ## Подготовка
+    Первое, что нужно сделать это заменить `ROOT_URLCONF = 'config.urls'` на 
+    `ROOT_URLCONF = 'Core.urls'`, удалить `config.urls`, а в `Core.urls` подключить 
+    маршруты из приложения `kinopoisk`, которые кстати мы еще не создали.
     ```python
-    from django.shortcuts import render, get_object_or_404
-    from .models import Movie, MoviePerson, Genre
+    # Core/urls.py
+    from django.conf import settings
+    from django.conf.urls.static import static
+    from django.contrib import admin
+    from django.urls import path, include
     
-    def main(request):  # Сами
-        # В дальнейшем доделаем
-        return render(request, 'kinopoisk/main.html')
+    from .views import signup, signin, profile, signout
     
-    def movie_list(request):  # Сами
-        movies = Movie.objects.all()
-        return render(request, 'kinopoisk/movie_list.html', {
-            'movies': movies
-        })
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        path('signup/', signup, name='signup'),
+        path('signin/', signin, name='signin'),
+        path('signout/', signout, name='signout'),
+        path('profile/', profile, name='profile'),
     
+        path('', include('kinopoisk.urls')), <--------------
+    ]
+    if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ```
+    ### Вспомните про `MediaFiles`, что это такое и выполните их настройку.
+    > В шпаргалке все есть.
+
+2. ## Пишем маршруты.
+    Создайте `kinopoisk/urls.py`
+    ```python
+    # kinopoisk/urls.
+    from django.urls import path
+    from .views import *
+   
+    urlpatterns = [
+        path('', main, name='main'),  # Главная страница.
     
-    def actor_list(request):  # Подсказываем
-        actors = MoviePerson.objects.filter(role=MoviePerson.RoleType.ACTOR)
-        return render(request, 'kinopoisk/person_list.html', {
-            'persons': actors, 'title': 'Актёры'
-        })
+        path('movies/', movie_list, name='movie_list'),  # Список всех фильмов.
+        path('actors/', actor_list, name='actor_list'),  # Список всех актеров.
+        path('directors/', director_list, name='director_list'),  # Список всех режиссеров.
+        path('genres/', genre_list, name='genre_list'),  # Список всех жанров.
     
-    
-    def director_list(request):  # Сами
-        directors = MoviePerson.objects.filter(role=MoviePerson.RoleType.DIRECTOR)
-        return render(request, 'kinopoisk/person_list.html', {
-            'persons': directors, 'title': 'Режиссёры'
-        })
-    
-    
-    def genre_list(request):  # Сами
-        genres = Genre.objects.all()
-        return render(request, 'kinopoisk/genre_list.html', {
-            'genres': genres
-        })
-    
-    
-    def movie_detail(request, movie_id):  # Сами
-        movie = Movie.objects.get(id=movie_id)
-        return render(request, 'kinopoisk/movie_detail.html', {
-            'movie': movie
-        })
-    
-    def actor_detail(request, actor_id):  # Напомнить, про раздел Related Name в шпаргалке.
-        actor = MoviePerson.objects.get(id=actor_id)
-        movies = actor.acted_in_movies.all()
-        return render(request, 'kinopoisk/person_detail.html', {
-            'person': actor, 'movies': movies
-        })
-    
-    
-    def director_detail(request, director_id):  # Сами
-        director = MoviePerson.objects.get(id=director_id)
-        movies = director.directed_movies.all()
-        return render(request, 'kinopoisk/person_detail.html', {
-            'person': director, 'movies': movies
-        })
-    
-    
-    def genre_detail(request, genre_id):  # Сами
-        genre = Genre.objects.get(id=genre_id)
-        movies = genre.movies.all()
-        return render(request, 'kinopoisk/genre_detail.html', {
-            'genre': genre, 'movies': movies
-        })
+        path('movie/<int:movie_id>/', movie_detail, name='movie_detail'),  # Детали фильма.
+        path('actor/<int:actor_id>/', actor_detail, name='actor_detail'),  # Детали актера + его фильмы.
+        path('director/<int:director_id>/', director_detail, name='director_detail'),  # Детали режиссера + его фильмы.
+        path('genre/<int:genre_id>/', genre_detail, name='genre_detail'),  # Фильмы по жанру.
+    ]
+    ```
+3. ## Создадим шаблоны
+    Страница с режиссерами будет содержать информацию о режиссере и о его фильмах.
+    Кстати то же самое будет и с актерами. А значит нам не нужно делать
+    `actor_detail` и `director_detail`, достаточно `person_detail`.
+    И то же самое со страницей списка актеров и страницей списка режиссеров, 
+    понадобится лишь 1 шаблон.<br>
+    Маршрутов 9, а шаблонов всего 7.
+    ```javascript
+    kinopoisk/tempaltes/kinopoisk/main.html.html
+   
+    kinopoisk/tempaltes/kinopoisk/movie_list.html
+    kinopoisk/tempaltes/kinopoisk/person_list.html
+    kinopoisk/tempaltes/kinopoisk/genre_list.html
+   
+    kinopoisk/tempaltes/kinopoisk/movie_detail.html
+    kinopoisk/tempaltes/kinopoisk/person_detail.html
+    kinopoisk/tempaltes/kinopoisk/genre_detail.html
     ```
 
-## Место для загрузки на гит или для доделать что-либо.
+4. ## Создадим примерный вид контроллеров.
+    Тут важно не забыть про дополнительные аргументы из динамических маршрутов.
+    ```python
+    # kinopoisk/views.py
+    def main(request):
+        return render(request, 'kinopoisk/main.html')
+    
+    def movie_list(request):
+        return render(request, 'kinopoisk/movie_list.html')
+    
+    def actor_list(request):
+        return render(request, 'kinopoisk/person_list.html')
+    
+    def director_list(request):
+        return render(request, 'kinopoisk/person_list.html')
+    
+    def genre_list(request):
+        return render(request, 'kinopoisk/genre_list.html')
+    
+    def movie_detail(request, movie_id):
+        return render(request, 'kinopoisk/movie_detail.html')
+    
+    def actor_detail(request, actor_id):
+        return render(request, 'kinopoisk/person_detail.html')
+    
+    def director_detail(request, director_id):
+        return render(request, 'kinopoisk/person_detail.html')
+    
+    def genre_detail(request, genre_id):
+        return render(request, 'kinopoisk/genre_detail.html')
+    ```
 
 ## Подведите итоги.
-># git push...
+>### GitHub потом. Или сейчас если успеваете. Его нужно сделать за первые 3 занятия с кинопоиском.

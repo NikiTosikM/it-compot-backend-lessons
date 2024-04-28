@@ -1,83 +1,144 @@
-# Вспомнаем про модели и продолжаем работать с пользователями
+# Шаблонизация в зависимости от аутентифицированности и права доступа 
+
+Вспомним, что в предыдущий раз мы сделали 4 кнопки в header
+`signup`, `signin`, `profile`, `signout`.  <br>
+
+Очевидно, что нам нужно видеть `profile` и `signout` только когда мы **_вошли_**.<br>
+А `signup` и `signin` только когда **_не вошли_**.
+
+Вспомним, что мы передаем объект `request` в функцию `render`.
+```python
+return render(request, 'example.html')
+```
+Объект `request` содержит информацию о текущей 
+сессии и аутентифицированном пользователе(и не только). Это позволяет 
+отображать пользовательские данные и изменять содержимое 
+страницы в зависимости от состояния пользователя.
+Мы можем использовать его в шаблоне как обычную переменную и выводить разные поля этого объекта.
+```html
+<!-- В вашем шаблоне (template.html) -->
+<!-- Можете ради интереса все это вывести и посмотреть на настоящие данные -->
+<p>{{ request.method }}</p>
+<p>{{ request.GET }}</p>
+<p>{{ request.POST }}</p>
+<p>{{ request.COOKIES }}</p>
+<p>{{ request.session }}</p>
+<p>{{ request.user }}</p>
+<p>{{ request.user.username }}</p>
+<p>{{ request.user.first_name }}</p>
+<p>{{ request.user.is_authenticated }}</p>
+```
+> Можете заскринить и кинуть ученикам почитать
 
 
-1. ## Доделаем систему заказов
-   * Очевидно, что заказ должен быть связан не только с продуктом, а еще и с пользователем.<br>
-     Вспомните, как вы привязывали продукт(через `ForeignKey`) к заказу и как импортировали 
-     модель пользователя в `Core/views.py`<br>
-     Напомните ученикам основную информацию про модели и таблицы в бд.
-     В теории ученики должны сами написать это.
-     ```python
-     # shop/models.py
-     from django.contrib.auth.models import User
-     ...
-     class Order(models.Model):
-         user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-         product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-         delivery_address = models.CharField(max_length=255)
-         created_at = models.DateTimeField(auto_now_add=True)
-     ```
-     Напомните зачем и что такое миграционные файлы. Сделайте и примените их.<br>
-     ```python manage.py makemigrations```<br>
-     ```python manage.py migrate```<br><br>
+1. ## Исправим отображение ссылок в `header`.
+   Напомните ученикам об [использовании условий в шаблонах](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)
+   и скажите, что `request.user.is_authenticated` возвращает
+   `True`/`False`, пусть попробуют сами условно отображать ссылки.
+   ```html
+   <!-- Вот так -->
+   {% if request.user.is_authenticated %} 
    
-   * Отмечаем, что заказ теперь будет создаваться неправильно, т.к.
-     в _**order_create**_ мы не учитываем новое поле.
-     Исправляем. Заодно сделаем, чтобы оформлять заказ и просматривать 
-     страницу с заказами мог только авторизированный пользователь.
-     ```python
-     # shop/views.py
-     ...
-     def orders(request):
-         if not request.user.is_authenticated: <-------------
-             return redirect('signin')         <-------------
-     
-         orders_ = Order.objects.all()
-         return render(request, 'shop/orders.html', {'orders': orders_})
+   {% else %}
+   
+   {% endif %}
+   ```
+   `{% if request.user.is_authenticated == Ture %}` для ученика понятнее. 
+   ```html
+   <!-- header.html -->
+   ...
+   <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
+       <li class="nav-item">
+           <a class="nav-link py-0"
+              href="{% url 'catalog' %}">
+               Catalog
+           </a>
+       </li>
+       {% if request.user.is_authenticated %}
+           <li class="nav-item">
+               <a class="py-0"
+                  href="{% url 'profile' %}">
+                   <img width="20" height="20"
+                        style="filter: invert(0.75)"
+                        src="{% static 'Core/img/user.png' %}" alt="profile">
+               </a>
+           </li>
+           <li class="nav-item my-auto">
+               <a class="py-0"
+                  href="{% url 'signout' %}">
+                   <img width="24" height="24"
+                        style="filter: invert(0.75)"
+                        src="{% static 'Core/img/signout.png' %}" alt="signout">
+               </a>
+           </li>
+       {% else %}
+           <li class="nav-item my-auto">
+               <a class="btn btn-secondary py-0"
+                  href="{% url 'signin' %}">
+                   Sign In
+               </a>
+           </li>
+           <li class="nav-item my-auto">
+               <a class="btn btn-secondary py-0"
+                  href="{% url 'signup' %}">
+                   Sing Up
+               </a>
+           </li>
+       {% endif %}
+   </ul>
+   ```
+   Проверьте, что все корректно отображается.
 
-     def order_create(request, product_id):
-         if not request.user.is_authenticated: <-------------
-             return redirect('signin')         <-------------
-         
-         if request.method == 'POST':
-             Order.objects.create(
-                 user=request.user,            <------------- 
-                 # user=request.user.id,       <------------- 
-                 # user_id=request.user,       <-------------
-                 # user_id=request.user.id,    <-------------
-                 # Разное написание одного и того же
-                 product_id=product_id,
-                 delivery_address=request.POST.get('delivery_address')
-             )
-             return redirect('orders')
-         return render(request, 'shop/order_create.html', {
-             'product': Product.objects.get(id=product_id)
-         })
-     ```
-     Стоит напомнить, что в `ForeignKey` поле хранятся первичные ключи 
-     связанной таблицы, в нашем случае цифры, и когда мы пишем `user=request.user` 
-     django 'понимает', что в поле `user` нужно положить не весь объект, а его первичный ключ(`id`).
-     Можете скинуть скриншоты разных вариаций написания. Для понимания как это работает нужно хорошо 
-     понимать python и как работают менеджеры в django.
-     
-    
-2. ## Используем `filter`
-    Создайте заказы от имени разных пользователей. <br>
-    Вы увидите, что на странице с заказами пользователь видит все заказы. <br>
-    А должен только свои.<br>
-    Используя раздел [ORM](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)
-    в шпаргалке пусть ученики сами попытаются добиться верного поведения.
-    ```python
-    # shop/views.py
-    ...
-    def orders(request):
-        if not request.user.is_authenticated: 
-            return redirect('signin')        
-        
-        # orders_ = Order.objects.all() было
-        orders_ = Order.objects.filter(user=request.user) # стало
-        return render(request, 'shop/orders.html', {'orders': orders_})
-    ```
+2. ## Управление доступом и правами пользователей
+   Сейчас после входа в аккаунт мы можем перейти на адреса `signup` и `signin`, 
+   а если разлогинимся, то сможем перейти в профиль, что неправильно.<br>
+   Мы можем проверять есть ли в сессии аутентифицированный пользователь и опираясь на
+   это рендерить страницу или перенаправлять или еще что-то.
+   
+   ```python
+   def example(request):                        
+       if not request.user.is_authenticated:
+           return redirect('login')
+       return render(request, 'example.html')
+   ```
+   ### Применяем эти знания
+   > Ставьте `not` где нужно, и не ставьте, где не нужно
+   ```python
+   # Core/views.py
+   ...
+   def profile(request):
+       if not request.user.is_authenticated:
+           return redirect('signin')
+       return render(request, 'Core/auth/profile.html')
+
+
+   def signup(request):
+       if request.user.is_authenticated:
+           return redirect('profile')
+       if request.method == 'POST':
+           ...
+       return render(request, 'Core/auth/signup.html')
+   
+   
+   def signin(request):
+       if request.user.is_authenticated:
+           return redirect('profile')
+   ...
+       
+   ```
+
+> Немного свободного времени должно остаться, чтобы догнать, если опаздывали.
+
+Можете пройтись по основам программирования на python.
+
+Можно рассказать, что существует множество пакетов расширяющих возможности django.<br>
+Например `django-allauth` – это мощная библиотека для Django, предназначенная для облегчения 
+процессов аутентификации, регистрации и управления учетными записями пользователей. 
+Она предоставляет интеграцию с социальными сетями и другими внешними провайдерами 
+аутентификации, что позволяет пользователям регистрироваться и входить в систему с 
+помощью своих учетных записей в этих сервисах 
+(например, **Google**, **GitHub**, **Telegram**, **Vk**, **Twitter** и т.д.).
+Расширенная обработка электронной почты, включая подтверждение электронной почты.
 
 ## Подведите итоги.
 ># git push...

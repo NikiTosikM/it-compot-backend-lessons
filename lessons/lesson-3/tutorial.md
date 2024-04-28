@@ -1,16 +1,16 @@
-# Static, post, request, условия.
+# Static, post, request, условия. Магическое число 1.
 На этом занятии мы реализуем игру с угадыванием числа.
 
 1.  ## Создаем страничку для игры MagicNumber.
     Желательно чтобы ученики сделали сами.
     ```python
-        # app_name/views.py
+        # Core/views.py
         def magic_number(request):
-            return render(request, 'app_name/magic_number.html')
+            return render(request, 'Core/magic_number.html')
     ```
     ```python
-        # project_name/urls.py
-        from app_name.views import magic_number  # импортируем функцию
+        # config/urls.py
+        from Core.views import magic_number  # импортируем функцию
         
         urlpatterns = [
             path('magic_number/', magic_number),  # связываем маршрут и функцию
@@ -20,6 +20,7 @@
     Тоже ученики должны сделать сами.<br>
     После добавляем `method="post"` `{% csrf_token %}` объясняем, что это.
     ```html
+    <!-- Core/magic_number.html -->
     <h1>Магическое число</h1>
     <form method="post"> {% csrf_token %} 
         <input type="number" placeholder="Угадай число" name="number">
@@ -35,6 +36,7 @@
 
     Подключаем `.css` файл.
     ```html
+    <!-- Core/magic_number.html -->
     {% load static %}
     <head>
         <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}"> 
@@ -44,11 +46,12 @@
 
 3.  ## Получение данных во view
     ```python
-    # app_name/views.py
+    # Core/views.py
     def magic_number(request):
-        return render(request, 'app_name/magic_number.html', {'result': 'Победа'})
+        return render(request, 'Core/magic_number.html', {'result': 'Победа'})
     ```
     ```html
+    <!-- Core/magic_number.html -->
     <h1 class="text-light text-center ">Магическое число</h1>
     <p>{{ result }}</p>
     <form method="post" class="d-flex flex-column gap-2 mx-auto"
@@ -71,80 +74,36 @@
         и возвращает результат как HTTP-ответ с готовой HTML-страницей.<br><br>
         Попробуйте `распечатать render()` ради интереса.
         ```python
-        # app_name/views.py
+        # Core/views.py
         def magic_number(request):
             print(
-                render(request, 'app_name/magic_number.html', {'result': number})
+                render(request, 'Core/magic_number.html', {'result': number})
             )
-            return render(request, 'app_name/magic_number.html', {'result': 'Победа'})
+            return render(request, 'Core/magic_number.html', {'result': 'Победа'})
         ```
         Раздел про это есть в 
         **[шпаргалке](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BE%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82%D1%83)**.
-        
-        
+
 4.  ## Передача данных в шаблон.
     Показываем как получать данные из запроса и предложите самим попробовать вывести на страницу их число.<br>
     Объясняем, что такое request.
     ##### Учим использовать `print()`
        > С помощью print можно тестировать какие данные присутствуют на том или ином этапе выполнения кода.<br>
-       > В дальнейшем используйте, если что-то не понятно или что-то не работает.
+       В дальнейшем используйте, если что-то не понятно или что-то не работает.
     ```python
-    # app_name/views.py
+    # Core/views.py
     import random
     def magic_number(request):
         # Получаем данные из request
         number = request.POST['number']
         print(request.POST)
         print(number)
-        # вместо [] правильнее использовать .get(), ошибка допущена специально.
-        return render(request, 'app_name/magic_number.html', {'result': number})
-    ```
+        # познакомьте учеников с полями обьекта request: WSGIRequest 
+        # print(request.method) как пример, мы его будем использовать далее.
     
-     Генерируем число и сравниваем его со случайным. Отправляем результат в шаблон.
-    ```python
-    # app_name/views.py
-    import random
-    def magic_number(request):
-        # Получаем данные из request
-        number = request.POST['number']
-        # Преобразуем строку в число
-        number = int(number)
-        # Генерируем случайное число от 1 до 5
-        random_number = random.randint(1, 5)
+        # вместо [] правильнее использовать .get() и использовать дополнительные проверки, 'ошибка' допущена специально.
+        return render(request, 'Core/magic_number.html', {'result': number})
+    ```
+    ### Не идете дальше если возникают трудности, не спешите, оставьте на следующий урок. Повторите пройденное целиком лучше.
         
-        if number == random_number:
-            result = "Поздравляем, вы угадали число!"
-        else:
-            result = f"К сожалению, было загаданно число {random_number}. Попробуйте ещё раз."
-            
-        return render(request, 'app_name/magic_number.html', {'result': number})
-    ```
-    Теперь без `post` запроса мы не можем загрузить страницу из-за ошибки.<br>
-    Знакомим немного с тем как отображаются ошибки django.<br>
-    Когда мы просто загружаем страницу мы выполняем `GET`, <br>
-    а обрабатываем корректно только `POST`.<br>
-    Нужно отдельно обрабатывать эти запросы.
-    Значит нужно сделать проверку `if request.method == 'POST':`<br>
-    Даем время подумать куда ее вставить и как это все организовать.<br>
-    ```python
-    from django.shortcuts import render
-    import random
     
-    def magic_number(request):
-        # Если POST
-        if request.method == 'POST':
-            number = int(request.POST['number'])
-            random_number = random.randint(1, 5)
-            if number == random_number:
-                result = "Поздравляем, вы угадали число!"
-            else:
-                result = f"К сожалению, загаданное число было {random_number}. Попробуйте ещё раз."
-            
-            return render(request, 'magic_number.html', {'result': result})
-        
-        # Если GET
-        return render(request, 'magic_number.html')
-    ```
-    
-Проверяем, радуемся.
-## Подведите итоги.

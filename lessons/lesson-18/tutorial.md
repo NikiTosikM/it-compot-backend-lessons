@@ -1,144 +1,198 @@
-# Шаблонизация в зависимости от аутентифицированности и права доступа 
+# Продолжаем работать с пользователями.
 
-Вспомним, что в предыдущий раз мы сделали 4 кнопки в header
-`signup`, `signin`, `profile`, `signout`.  <br>
+Вспомните начало предыдущего урока и чем вообще на нем занимались.
 
-Очевидно, что нам нужно видеть `profile` и `signout` только когда мы **_вошли_**.<br>
-А `signup` и `signin` только когда **_не вошли_**.
-
-Вспомним, что мы передаем объект `request` в функцию `render`.
-```python
-return render(request, 'example.html')
-```
-Объект `request` содержит информацию о текущей 
-сессии и аутентифицированном пользователе(и не только). Это позволяет 
-отображать пользовательские данные и изменять содержимое 
-страницы в зависимости от состояния пользователя.
-Мы можем использовать его в шаблоне как обычную переменную и выводить разные поля этого объекта.
-```html
-<!-- В вашем шаблоне (template.html) -->
-<!-- Можете ради интереса все это вывести и посмотреть на настоящие данные -->
-<p>{{ request.method }}</p>
-<p>{{ request.GET }}</p>
-<p>{{ request.POST }}</p>
-<p>{{ request.COOKIES }}</p>
-<p>{{ request.session }}</p>
-<p>{{ request.user }}</p>
-<p>{{ request.user.username }}</p>
-<p>{{ request.user.first_name }}</p>
-<p>{{ request.user.is_authenticated }}</p>
-```
-> Можете заскринить и кинуть ученикам почитать
-
-
-1. ## Исправим отображение ссылок в `header`.
-   Напомните ученикам об [использовании условий в шаблонах](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)
-   и скажите, что `request.user.is_authenticated` возвращает
-   `True`/`False`, пусть попробуют сами условно отображать ссылки.
-   ```html
-   <!-- Вот так -->
-   {% if request.user.is_authenticated %} 
+1. ## Допишем контроллер для регистрации
+   Все кроме строчки с create_user ученики уже делали, <br>
+   постарайтесь минимально участвовать в написании.<br><br>
    
-   {% else %}
-   
-   {% endif %}
-   ```
-   `{% if request.user.is_authenticated == Ture %}` для ученика понятнее. 
-   ```html
-   <!-- header.html -->
-   ...
-   <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
-       <li class="nav-item">
-           <a class="nav-link py-0"
-              href="{% url 'catalog' %}">
-               Catalog
-           </a>
-       </li>
-       {% if request.user.is_authenticated %}
-           <li class="nav-item">
-               <a class="py-0"
-                  href="{% url 'profile' %}">
-                   <img width="20" height="20"
-                        style="filter: invert(0.75)"
-                        src="{% static 'Core/img/user.png' %}" alt="profile">
-               </a>
-           </li>
-           <li class="nav-item my-auto">
-               <a class="py-0"
-                  href="{% url 'signout' %}">
-                   <img width="24" height="24"
-                        style="filter: invert(0.75)"
-                        src="{% static 'Core/img/signout.png' %}" alt="signout">
-               </a>
-           </li>
-       {% else %}
-           <li class="nav-item my-auto">
-               <a class="btn btn-secondary py-0"
-                  href="{% url 'signin' %}">
-                   Sign In
-               </a>
-           </li>
-           <li class="nav-item my-auto">
-               <a class="btn btn-secondary py-0"
-                  href="{% url 'signup' %}">
-                   Sing Up
-               </a>
-           </li>
-       {% endif %}
-   </ul>
-   ```
-   Проверьте, что все корректно отображается.
-
-2. ## Управление доступом и правами пользователей
-   Сейчас после входа в аккаунт мы можем перейти на адреса `signup` и `signin`, 
-   а если разлогинимся, то сможем перейти в профиль, что неправильно.<br>
-   Мы можем проверять есть ли в сессии аутентифицированный пользователь и опираясь на
-   это рендерить страницу или перенаправлять или еще что-то.
-   
+   Пишите код медленно с пониманием, используйте **print** если требуется.<br>
+   Обратите внимание, что мы импортируем стандартного пользователя из **auth** приложения.<br>
+   Вспомните что такое `objects.create`.<br>
+   Так же мы используем `objects.create_user` вместо `objects.create`, это не просто так.<br>
+   `create_user` это обычный `create`, но дополнительно сделана шифровка пароля.<br>
    ```python
-   def example(request):                        
-       if not request.user.is_authenticated:
-           return redirect('login')
-       return render(request, 'example.html')
-   ```
-   ### Применяем эти знания
-   > Ставьте `not` где нужно, и не ставьте, где не нужно
-   ```python
-   # Core/views.py
-   ...
-   def profile(request):
-       if not request.user.is_authenticated:
-           return redirect('signin')
-       return render(request, 'Core/auth/profile.html')
-
-
-   def signup(request):
-       if request.user.is_authenticated:
-           return redirect('profile')
-       if request.method == 'POST':
-           ...
-       return render(request, 'Core/auth/signup.html')
+    # Core/views.py
+    from django.contrib.auth.models import User
+    from django.shortcuts import render, redirect
    
+    def signup(request):
+        if request.method == 'POST':
+            username = request.POST['username']
+            email = request.POST['email']
+            password = request.POST['password']
+            r_password = request.POST['repeat_password']
+            if password != r_password:
+                return render(request, 'Core/signup.html', {
+                    'error': 'Пароли не совпадают.'
+                })
+            User.objects.create_user(
+                username=username, 
+                email=email,
+                password=password,
+            )
+            return redirect('signin')
+        return render(request, 'Core/signup.html')
+    ```
+    
+    * Сделайте отображение ошибки в случае неверно введенных паролей.
+        ```html
+        <!-- signup.html -->
+        ...
+        <h1 class="text-body text-center fw-bold mb-4">Регистрация</h1>
+        {% if error %}
+            <p class="text-center text-danger fw-bold">{{ error }}</p>
+        {% endif %}
+        ...
+        ```
+    Создайте пользователя через форму, перейдите в админку и откройте объект нового пользователя.<br>
+    Вы увидите в поле password зашифрованный пароль и неполный хэш для расшифровки.<br>
+    ```
+    algorithm: pbkdf2_sha256
+    iterations: 600000 
+    salt: HcopBX**************** 
+    hash: ZMUUCk**************************************
+    ```
+    Так как мы видим не полную соль и хэш, то даже администратор сайте не знает пароли своих пользователей.
+    #### В конце методички подробно описано<br>как работает подобное шифрование, если будет время можете рассказать.<br> Это даст ученикам минимальное представление о шифровании.
+    
    
-   def signin(request):
-       if request.user.is_authenticated:
-           return redirect('profile')
-   ...
-       
-   ```
+2. ## Вход в систему `Sign in`
+    После регистрации пользователь может войти в систему.<br>
+    В этом процессе Django проверяет предоставленные учетные данные и, <br>
+    в случае успеха, создает сессию для пользователя. Напомните, что такое сессия. <br>
 
-> Немного свободного времени должно остаться, чтобы догнать, если опаздывали.
+    ```python
+    # Core/views.py
+    ...
+    from django.contrib.auth import authenticate, login
+     
+    def signin(request):
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(
+                request, username=username, password=password
+            )
+            if user is not None:
+                login(request, user)
+                return redirect('profile')
+            else:
+                return render(request, 'Core/auth/signup.html', {
+                    'error': 'Неверный логин или пароль.'
+                })
+        return render(request, 'Core/auth/signin.html')
+    ```
+    Добавьте отображение ошибки в шаблоне как только что делали.
 
-Можете пройтись по основам программирования на python.
+3. ## Logout
+    Функция `logout` из модуля `django.contrib.auth` используется для управления процессом выхода пользователя из системы. Когда эта функция вызывается, она выполняет следующие действия:
 
-Можно рассказать, что существует множество пакетов расширяющих возможности django.<br>
-Например `django-allauth` – это мощная библиотека для Django, предназначенная для облегчения 
-процессов аутентификации, регистрации и управления учетными записями пользователей. 
-Она предоставляет интеграцию с социальными сетями и другими внешними провайдерами 
-аутентификации, что позволяет пользователям регистрироваться и входить в систему с 
-помощью своих учетных записей в этих сервисах 
-(например, **Google**, **GitHub**, **Telegram**, **Vk**, **Twitter** и т.д.).
-Расширенная обработка электронной почты, включая подтверждение электронной почты.
+    * **_Удаление сессии пользователя_**: Django использует сессии для отслеживания состояния пользователя. Когда пользователь входит в систему, Django создает специальную запись сессии. Функция `logout` удаляет эту запись, что приводит к тому, что следующий запрос пользователя не будет ассоциирован с его предыдущей учетной записью.
+
+    * **_Очистка данных сессии_**: Помимо удаления записи сессии, `logout` также очищает все данные, связанные с текущей сессией пользователя.
+
+    * **_Изменение cookie_**: Django использует cookies для идентификации сессии пользователя. Функция `logout` изменяет соответствующие `cookies` таким образом, чтобы они больше не были связаны с текущей сессией пользователя.
+    
+    ```python
+    # Core/views.py
+    from django.contrib.auth import logout
+    ...
+    def signout(request):
+        logout(request)
+        return redirect('signin')
+    ```
+    **Проверьте, что все работает, при неверных данных выдает ошибку, 
+    иначе нас перенаправляет в catalog. Если выйти из аккаунта через 
+    админку, а после зайти через нашу форму, то при повторном заходе в 
+    админку мы уже будем аутентифицированы.**
+3. ## Добавим в шапку 4 ссылки: `Профиль` `Вход` `Регистрация` `Выход`<br>
+    
+    ![](imgs/header.png)
+    ```html
+    <!-- header.html -->
+    {% load static %}
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            ...
+                ...
+                    <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link py-0"
+                               href="{% url 'catalog' %}">
+                                Catalog
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="py-0"
+                               href="{% url 'profile' %}">
+                                <img width="20" height="20"
+                                     style="filter: invert(0.75)"
+                                     src="{% static 'Core/img/user.png' %}" alt="profile">
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signin' %}">
+                                Sign In
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="btn btn-secondary py-0"
+                               href="{% url 'signup' %}">
+                                Sing Up
+                            </a>
+                        </li>
+                        <li class="nav-item my-auto">
+                            <a class="py-0"
+                               href="{% url 'signout' %}">
+                                <img width="24" height="24"
+                                     style="filter: invert(0.75)"
+                                     src="{% static 'Core/img/signout.png' %}" alt="signout">
+                            </a>
+                        </li>
+                    </ul>
+                ...
+            ...
+        </nav>
+    </header>
+    ```
+## На следующем занятии мы сделаем корректное отображение этих кнопок и научимся немного работать с распределением доступа.
+
+## Шифрование pbkdf2_sha256
+`pbkdf2_sha256` относится к алгоритму хеширования паролей,<br>
+который используется для обеспечения безопасности хранения паролей.<br>
+
+Разберем этот термин по частям:<br>
+
+`PBKDF2`: Это сокращение от "Password-Based Key Derivation Function 2". <br>
+Это функция, используемая для преобразования пароля в ключ. <br>
+Она применяется для увеличения сложности взлома паролей методом тупого перебора(`brute-force`).<br>
+Это когда какой-то скрипт перебирает всевозможные пароли и пытается условно угадать настоящий пароль <br>
+(такой процесс может длиться много дней).<br>
+
+`PBKDF2` повторно применяет хеш-функцию многократно, что увеличивает время, необходимое для взлома пароля.<br>
+Проще говоря зашифровал, потом зашифровал зашифрованное, потом это еще раз зашифровал и т.д.<br>
+
+`SHA256`: Это алгоритм хеширования, который генерирует уникальный, фиксированный размер хеша (256 бит) из входных данных. SHA256 относится к семейству алгоритмов SHA-2, разработанных Национальным институтом стандартов и технологий США (NIST).
+
+Процесс шифрования обычно включает следующие шаги:
+
+`Соль (Salt)`: Сначала к паролю добавляется случайная строка (соль... перец...), <br>
+чтобы сделать результат хеширования уникальным даже для одинаковых паролей.
+Предположим, 2 пользователя сделают пароль 123, но при добавлении соли получится<br>
+`123ngeoroi343#@` и `123WOIsgGNign334h`, это очевидно разные пароли, хотя изначально были одинаковы.
+
+`Хеширование`: Пароль с солью подвергается многократному хешированию с использованием SHA256.<br>
+Количество итераций хеширования обычно достаточно велико (тысячи, десятки тысяч раз..),<br>
+что делает процесс более устойчивым к атакам методом `brute-force`.
+
+`Хранение`: Результат хеширования (вместе с использованной солью и информацией о количестве итераций)<br>
+сохраняется в базе данных.<br>
+**_Это как раз то, что мы и видели в нашей базе данных._**<br>
+
+Когда пользователь пытается войти в систему, введенный пароль обрабатывается тем же способом,<br>
+и результат сравнивается с хранимым хешем. Если они совпадают, доступ предоставляется.
 
 ## Подведите итоги.
 ># git push...

@@ -1,108 +1,94 @@
-# Использование URL-имен и редиректов
+# Оценки на посты. Повторение.
 
-В этом руководстве мы углубимся в работу с URL-именами и редиректами, <br>
-а также создим рабочую навигацию в шапке.
+В данной методичке, мы сделаем, чтобы на каждый пост можно было поставить лайк.
+>Можете если хотите показать, что примерно мы будем делать.<br><br>
+![result.png](imgs/result.png)
 
-1. ## URL naming & redirect
-   Рассказываем, что такое имена `для url`, `redirect'ы` и зачем это нужно.<br>
-   Показываем раздел _**шпаргалки**_ ([Именование маршрутов и перенаправления](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#url-naming--redirects-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%BE%D0%B2-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5))
-   
-      * #### Зададим имя для url установки лайка.
-           ```python
-           # project_name/urls.py
-           urlpatterns = [
-               path('blog/post_like/', post_like, name='post_like'),
-           ]
-           ```
-      * #### Используем это имя в форме для отправки лайка.
-           ```html
-           <!-- blog/posts_list.html-->
-           <!-- Заменим это -->  
-           <form action="http://127.0.0.1:8000/blog/post_like/" method="post" class="d-flex flex-row">
-           <!-- На это -->     
-           <form action="{% url 'post_like' %}" method="post" class="d-flex flex-row">   
-           ```
-      * #### Используем redirect после обработки лайка.
-           ```python
-           # blog/views.py
-           def post_like(request):
-               if request.method == 'POST':
-                   post_id = request.POST['post_id']
-                   post = Post.objects.get(id=post_id)
-                   post.likes += 1
-                   post.save()
-               return redirect('post_like')
-           ```
-   
-2. ## Много самостоятельной работы.
-   Напоминаем, что мы все еще переходим по ссылкам вписывая их в адресную строку руками.<br>
-   Хотелось бы реализовать рабочую навигацию в шапке <br>
-   и сделать отдельную кнопку для добавления видео на странице со всеми видео.<br>
-   Так же после добавления видео нас должно перенаправлять на страницу со всеми видео.<br>
-   Дальше, используя полученные знания об именовании и шаблонизации маршрутов, пусть ребята сами реализуют этот функционал.<br><br>
-   ### По итогу должно получиться что-то такое:
-   
-   * Кнопка на странице со всеми видео для перехода к странице добавления видео.<br><br>
-   
-      ![](imgs/result.png)
-      ```python
-      # project_name/urls.py
-      urlpatterns = [
-          ...
-          path('playlist/video_list/', views.video_list, name='video_list'),
-          path('playlist/video_create/', video_create, name='video_create'),
-          path('blog/posts_list/', posts_list, name='posts_list'),
-          ...
-      ]
-      ```
-      ```python
-      # playlist/views.py
-      from .models import Video
-      
-      def video_create(request):
-          if request.method == "POST":
-              title = request.POST['title']
-              embed_code = request.POST['embed_code']
-              Video.objects.create(title=title, embed_code=embed_code)
-              return redirect('video_list')  # перенаправляем на страницу со всеми видео.
-          return render(request, 'playlist/video_create.html')
-      ```
-      ```html
-      <!-- core/templates/core/includes/header.html -->
-      ...
-      <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-              <a class="nav-link active" aria-current="page" 
-                 href="{% url 'posts_list' %}">
-                 Блог</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" aria-current="page" 
-                 href="{% url 'video_list' %}">
-                 Плейлист</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Профиль</a>
-          </li>
-      </ul>
-      ...
-      ```
-      ```html
-      <!-- playlist/templates/playlist/video_list.html -->
-      {% block content %}
-          <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
-              <h1 class="text-light text-center fw-bold">Личный плейлист</h1>
-              <a href="{% url 'video_create' %}" <!-- Используем имя -->
-                 class="btn btn-danger my-auto mx-auto mx-sm-0"
-                 style="max-width: 150px;">
-                  Добавить
-              </a>
-          </div>
-          <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto" style="max-width: 800px;">
-              <div class="card......
-      {% endblock %}
-      ```
+### Доделываем если не успели шаблоны с предыдущего урока, а если успели то повторяем хотя бы устно
 
-## В этом руководстве мы научились использовать URL-имена для создания читаемых и гибких ссылок, а также реализовали переходы после лайка и добавления видео. Рабочая навигация в шапке теперь обеспечит удобство перемещения по сайту.
+## Оценки на посты
+* ### Вспоминаем как мы отправляем данные на сервер. 
+  Покажите на примере шпаргалки ([Обмен данными</u> клиент <--> сервер](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BE%D0%B1%D0%BC%D0%B5%D0%BD-%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8-%D0%BA%D0%BB%D0%B8%D0%B5%D0%BD%D1%82----%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80)).
 
-## На следующем занятии мы начнем новый проект "Магазин".
+* ### Вместе думаем, как мы можем сделать функциональность лайков.
+     * Где будем хранить количество лайков? _В модели **Post** в поле **likes**._<br>
+     * Где будет кнопка отправки формы лайка? _В карточке поста._<br>
+     * Мы же должны отправлять что-то, по чему мы сможем понять, <br>на какой пост был поставлен лайк. Что это? _post_id_<br>
+     * Какой тип input будет использоваться для передачи post_id? _**hidden** с **value="id поста"**. <br>Можете вспомнить_ ([Виды input](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B2%D0%B8%D0%B4%D1%8B-%D0%BF%D0%BE%D0%BB%D0%B5%D0%B9-%D0%B2%D0%B2%D0%BE%D0%B4%D0%B0-input))<br>
+     * Что будет кнопкой отправки? _Кнопка (**button**) в которой скорее всего будет картинка._<br>
+
+* ### Пусть ученики напишут сами.
+  * #### Создадим новое поле `likes` в модели `Post` если еще нет.    
+    ```python
+    # blog/models.py
+    class Post(models.Model):
+        ...
+        likes = models.IntegerField(default=0)
+    ```
+    Мигрируем изменения модели в db<br>
+    `python manage.py makemigrations`<br>
+    `python manage.py migrate`<br><br>
+  
+  * #### Добавим кнопку лайка и количество лайков в карточку поста.
+    ```html
+    <!-- blog/posts_list.html-->
+    {% for post in posts %}
+        <div class="card" style="width: 250px;">
+            <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.text }}</p>
+                <!-- Добавляем форму для отпарвки лайка с картинкой и отображаем текущее количество лайков.-->
+                <form method="post" class="d-flex flex-row">{% csrf_token %}
+                    <!-- Скрытое поля для отправки id того поста, на лайк которого нажмем.-->
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <button type="submit" class="bg-transparent border-0">
+                        <img height="30" width="30" src="{% static 'blog/like.png' %}">
+                    </button>
+                    <span class="text-secondary">{{ post.likes }}</span>
+                </form> 
+            </div>
+        </div>
+    {% endfor %}
+    ```
+  * #### Добавим функцию обработчик лайка.
+    Смотрим шпаргалку ([Изменение полей объекта](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm))
+    > Используем принты если, что-то не получается.
+    ```python
+    # blog/views.py
+    def post_like(request):
+        print('LIKE setter')
+        if request.method == 'POST':
+            post_id = request.POST['post_id'] # получаем id нужного поста
+            # или post_id = request.POST.get('post_id') более корректный вариант
+            post = Post.objects.get(id=post_id)  # получаем объект поста по полученному id
+            post.likes = post.likes + 1  # или короче post.likes += 1
+            post.save()  # Сохраняем изменения
+    ```
+    ```python
+    from blog.views import post_like
+    urlpatterns = [
+        ...
+        path('blog/post_like/', post_like),
+    ]
+    ```    
+
+  * #### Пробуем нажать на кнопку лайка.
+    Страница просто перезагружается. Почему?<br>
+    Возможно кто-то догадается в чем проблема.<br>
+    _Форма отправляется не на тот адрес и соответственно обрабатывается не тем view_.<br>
+    Вспоминаем, что существует атрибут `action=""`.<br>
+    Добавим его в форму.
+    ```html
+    <!-- blog/posts_list.html-->
+    ...
+    <form action="http://127.0.0.1:8000/blog/post_like/" method="post" class="d-flex flex-row">
+    ...
+    ```
+    Теперь форма отправляется куда нужно, лайк прибавляется,<br>
+    но у нас не рендерится страница после отправки формы лайка,<br> 
+    приходится вручную переходить на страницу постов.
+
+> На следующем уроке мы доделаем ссылки для перехода на добавление видео и сделаем перенаправление (redirect) после добавления лайка.
+
+## Подведите итоги.

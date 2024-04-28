@@ -1,121 +1,165 @@
-# Создание личного плейлиста
+# ORM, for, if в шаблонах
 
-В данной методичке, мы создадим новое приложение, где пользователь сможет собрать свой личный плейлист видео.
->Можете если хотите показать, что примерно мы будем делать.<br><br>
+### Продолжаем _Блог_.<br>
+
+С этого момента советую поглядывать в код рядом с уроком.
+Например вот [полный вариант](index.html) 
+страницы которую мы сегодня сделаем. Бывает полезно 
+посмотреть на картину целиком.
+>Можете если хотите показать что примерно мы будем делать.<br><br>
 ![result.png](imgs/result.png)
+## Header, Footer и карточка товара.
 
-
-1. ## Cоздадим новое приложение `playlist`.
-
-   `python manage.py startapp playlist`
-2. ## Показываем как можно встроить видео с YouTube.
-   - ### Открываем видео, нажимаем поделиться.<br>
-      ![result.png](imgs/resend.png) <br><br>
-
-   - ### Нажимаем встроить.<br>
-      ![result.png](imgs/insert.png)<br><br>
-
-   - ### Объясняем, что такое `iframe`, и что нужно будет хранить в базе данных только `embed code`.<br><br>
-      ![result.png](imgs/iframe.png) <br><br>
-
-3. ## Создадим модель `Video`, где будут храниться название видео и ссылка для его встраивания в `iframe`.
+1. Создаем страницу, где будут отображаться все посты.
    ```python
-   # playlist/models.py
-   from django.db import models
-   
-   class Video(models.Model):
-       title = models.CharField(max_length=200)
-       embed_code = models.TextField()
-       created_at = models.DateTimeField(auto_now_add=True)
-   
-       def __str__(self):
-           return self.title
+   # blog/views.py
+   def posts_list(request):
+       return render(request, 'blog/posts_list.html')
    ```
-   #### Мигрируем модель в db
-   `python manage.py makemigrations`<br>
-   `python manage.py migrate`
-
-4. ## Зарегистрируем модель в `admin.py` для управления через административную панель.
-   ```python
-   # playlist/admin.py
-   from django.contrib import admin
-   from .models import Video
-   
-   admin.site.register(Video)
-   ```
-5. ## Создадим представление, которое будет отображать все видео из плейлиста.
-   > Используем print при недопонимании.
-   ```python
-   # playlist/views.py
-   from django.shortcuts import render
-   from .models import Video
-   
-   def video_list(request):
-       videos = Video.objects.all()
-       # print(videos) если нужно...
-       return render(request, 'playlist/video_list.html', {'videos': videos})
-   ```
-6. ## Свяжем `video_list()` с адресом `playlist/video_list/`.
    ```python
    # project_name/urls.py
-   from django.urls import path
-   from . import views
+   from blog.views import posts_list  # импортируем функцию
    
    urlpatterns = [
-       path('playlist/video_list/', views.video_list),
+       path('blog/posts_list/', posts_list),  # связываем маршрут и функцию
    ]
    ```
+2. Показываем ребятам документацию **Bootstrap**, 
+   а именно разделы ниже с готовыми элементами.<br>
+   Возьмем оттуда 
+   **[header](https://getbootstrap.com/docs/5.3/components/navbar/)**
+   и 
+   **[карточку](https://getbootstrap.com/docs/5.3/components/card/#images)**
+   для поста.
+   > Лучше взять карточку без кнопки. Не забываем подключить `bootstrap.min.css`, 
+   > как делали на прошлых уроках.
+   > ```html
+   > <!-- blog/posts_list.html -->
+   > {% load static %}
+   > ...
+   > <head>
+   >     ...
+   >     <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}"> 
+   > </head>
+   >```
    
-7. ## Создадим несколько объектов Video в админке.
-      > Обращаем внимание, что мы храним в бд только часть ссылки `embed_code`, 
-        вместо всей ссылки или всего `iframe`.
-
-8. ## Создадим шаблон для отображения видео используя `iframe` и шпаргалку [циклы](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5).  
-   >Используем Bootstrap, header, footer берем с предыдущей страницы. 
-
-   **`Когда сделаете`**, обратите внимание, что часть кода (*header, footer*) дублируется. 
-   Применим `include` для `повторного использования` header и footer.<br>
-   Подробно об `include` в [шпаргалке](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#Include-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B0%D1%85).
-      > Создайте в папке с шаблонами новую папку `includes` 
-      и поместите туда файлы `header.html` и `footer.html`. 
-      В эти файлы поместим код header'а и footer'а соответственно.
-      ### Результат
-      ```html
-      <!-- playlist/templates/playlist/video_list.html -->
-      {% include 'playlist/includes/header.html' %}
-      <main>
-          {% for video in videos %}
-              <div class="card" style="width: 275px;">
-                  <!-- iframe руками полностью писать не надо. Копиаруем с youtube. Убираем attrs width и height -->
-                  <iframe src="https://www.youtube.com/embed/{{ video.embed_code }}" 
-                          frameborder="0" 
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                          allowfullscreen></iframe>
-              </div>
-          {% endfor %}
-      </main>
-      {% include 'playlist/includes/footer.html' %}
-      ```
-      ### Более красивый вариант, который можно задать как домашнее задание.
-      > Добавляем отображение остальных полей, украшаем карточку.
-      ```html
-      <!-- playlist/templates/playlist/video_list.html -->
-      {% for video in videos %}
-          <div class="card rounded-top-3 border-5 border-secondary bg-dark" 
-               style="width: 275px;">
-              <iframe class="rounded-top-3"
-                      src="https://www.youtube.com/embed/{{ video.embed_code }}" 
-                      frameborder="0" 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-              <div class="card-body">
-                  <h5 class="card-title text-light">{{ video.title }}</h5>
-                  <p class="card-text text-secondary">{{ video.created_at }}</p>
-              </div>
-          </div>
-      {% endfor %}
-      ```
-
-
-Все готово!
-
+   > Шапку делаем не под `Блог`, а под всё приложение. 
+   > То есть в дальнейшем мы будем эту шапку использовать в других местах сайта.
+   ```html
+   <!-- blog/posts_list.html -->
+   <header>
+       <nav class="navbar navbar-expand-lg bg-body-tertiary">
+           ...
+       </nav>
+   </header>
+   <main>
+       <h1 class="text-light text-center fw-bold">Посты</h1>
+       <div class="card" style="width: 250px;">
+           <img src="..." class="card-img-top" alt="...">
+           <div class="card-body">
+               <h5 class="card-title">Заголовок</h5>
+               <p class="card-text">Текст текст текст текст</p>
+           </div>
+       </div>
+   </main>
+   <footer>
+   ...
+   </footer>
+   ```
+   
+3. Когда доверстали, даем подумать как можно передать в товар с `id=1` (можно подсмотреть в 
+   шпаргалке [ORM Django](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)).<br> 
+   Находим `objects.get(id=1)`, вспоминаем как мы передавали переменные в шаблон. Желательно чтобы ученики сами додумались.
+   > Можно использовать print для лучшего понимания.
+   ```python
+   # blog/views.py
+   from .models import Post
+   def posts_list(request):
+       post = Post.objects.get(id=1)
+       return render(request, 'blog/posts_list.html', {'post': post})
+   ```
+   
+4. Рассказываем как отобразить этот 1 пост.
+   ```html
+   <!-- blog/posts_list.html -->
+   ...
+   <div class="card" style="width: 250px;">
+       <img src="..." class="card-img-top" alt="...">
+       <div class="card-body">
+           <h5 class="card-title">{{ post.title }}</h5>
+           <p class="card-text">{{ post.text }}</p>
+       </div>
+   </div>
+   ...
+   ```
+5. Пусть сами попробуют по примеру в шпаргалке <br>
+   [Использование условий и циклов](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)
+   и
+   [ORM Django](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)
+   сделать отображение всех постов.
+   ```python
+   # blog/views.py
+   from .models import Post
+   def posts_list(request):
+       posts = Post.objects.all()
+       return render(request, 'blog/posts_list.html', {'posts': posts})
+   ```
+   ```html
+   <!-- blog/posts_list.html -->
+   <main>
+       <h1 class="text-light text-center fw-bold">Посты</h1>
+       <div class="posts_container d-flex gap-3 flex-wrap justify-content-center mx-auto" 
+            style="max-width: 800px;">
+           {% for post in posts %}
+               <div class="card" style="width: 250px;">
+                   <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+                   <div class="card-body">
+                       <h5 class="card-title">{{ post.title }}</h5>
+                       <p class="card-text">{{ post.text }}</p>
+                   </div>
+               </div>
+           {% endfor %}
+       </div>
+   </main>
+   ```
+6. Пусть ученики добавят проверку доступности поста по той же шпаргалке.
+   Тогда будут отображаться только опубликованные посты.
+   ```html
+   <!-- blog/posts_list.html -->
+   <main>
+       <h1 class="text-light text-center fw-bold">Посты</h1>
+       <div class="posts_container d-flex gap-3 flex-wrap justify-content-center mx-auto" 
+            style="max-width: 800px;">
+           {% for post in posts %}
+               {% if post.is_published == True %}
+                   <div class="card" style="width: 250px;">
+                       <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+                       <div class="card-body">
+                           <h5 class="card-title">{{ post.title }}</h5>
+                           <p class="card-text">{{ post.text }}</p>
+                       </div>
+                   </div>
+               {% endif %}
+           {% endfor %}
+       </div>
+   </main>
+   ```
+   
 ## Подведите итоги.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

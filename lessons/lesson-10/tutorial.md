@@ -1,119 +1,108 @@
-# Магазин
-Сегодня мы начнем создавать свой магазин. <br>
-Подумайте на какую тематику он будет.<br>
-Для закрепления процесса создания проекта, сделаем новый проект.
+# Использование URL-имен и редиректов
 
-1. ## Создание нового проекта и приложения `shop`
-    Проект желательно называть `config`, так папка с <br>
-    настройками синхронного, асинхронного серверов и <br>
-    настройками проекта будет в папке с корректным названием `config`.<br>
-    Приложение назовем `shop`.<br><br>
+В этом руководстве мы углубимся в работу с URL-именами и редиректами, <br>
+а также создим рабочую навигацию в шапке.
+
+1. ## URL naming & redirect
+   Рассказываем, что такое имена `для url`, `redirect'ы` и зачем это нужно.<br>
+   Показываем раздел _**шпаргалки**_ ([Именование маршрутов и перенаправления](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#url-naming--redirects-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%BE%D0%B2-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5))
    
-    Пусть ученики сами сделают это используя шпаргалку ([Старт проекта](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%BE%D0%B9-%D1%81%D1%82%D0%B0%D1%80%D1%82-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0))
-
-2. ## Создание моделей
-   Перейдем к созданию моделей в файле models.py вашего нового приложения.<br>
-   Пусть ученики продумают, какие модели нужны для магазина и какие поля у них будут.<br><br>
-
-   Заказ должен относится к определенному товару, поэтому мы будем использовать <br>
-   специальное поле (`ForeignKey / Внешний ключ`) которое будет `ссылаться` на определенный объект модели `Product`.<br>
-   В действительности в базе данных в этом поле будет лежать `primary_key`(в нашем случае `id`) связанного объекта.
-   >Посмотрите как мы отображаем рейтинг на следующем занятии, 
-   > это для слабых учеников будет сложно, поэтому чем слабее ученики тем меньше полей будет в их модели.
-   ```python
-   # shop/models.py
-   class Product(models.Model):
-       name = models.CharField(max_length=100)
-       image = models.ImageField(upload_to='images/Product/')
-       desc = models.TextField()
-       price = models.FloatField()
-       discount = models.PositiveIntegerField(default=0)
-       rating = models.PositiveIntegerField()
-       stock = models.PositiveIntegerField()  # в наличии кол-во
-       is_available = models.BooleanField(default=True)
+      * #### Зададим имя для url установки лайка.
+           ```python
+           # project_name/urls.py
+           urlpatterns = [
+               path('blog/post_like/', post_like, name='post_like'),
+           ]
+           ```
+      * #### Используем это имя в форме для отправки лайка.
+           ```html
+           <!-- blog/posts_list.html-->
+           <!-- Заменим это -->  
+           <form action="http://127.0.0.1:8000/blog/post_like/" method="post" class="d-flex flex-row">
+           <!-- На это -->     
+           <form action="{% url 'post_like' %}" method="post" class="d-flex flex-row">   
+           ```
+      * #### Используем redirect после обработки лайка.
+           ```python
+           # blog/views.py
+           def post_like(request):
+               if request.method == 'POST':
+                   post_id = request.POST['post_id']
+                   post = Post.objects.get(id=post_id)
+                   post.likes += 1
+                   post.save()
+               return redirect('post_like')
+           ```
    
-   class Order(models.Model):
-       product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-       delivery_address = models.CharField(max_length=255)
-       created_at = models.DateTimeField(auto_now_add=True)
-   ```
-   >Не забываем про миграции
-
-3. ## Пропишем маршруты к media
-    > Вспоминаем, что и зачем.
-    ### Шпаргалка [MediaFiles](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#Media-Files)
-
-4. ## Создание представлений, шаблонов и маршрутов.
-   Продумайте какие адреса и страницы у вас будут.
-   * ### Создание шаблонов
-      Cоздадим пока что пустые шаблоны HTML для каждой страницы. 
-      ```sh
-      shop/templates/shop/catalog.html
-      shop/templates/shop/orders.html
-      shop/templates/shop/order_create.html
+2. ## Много самостоятельной работы.
+   Напоминаем, что мы все еще переходим по ссылкам вписывая их в адресную строку руками.<br>
+   Хотелось бы реализовать рабочую навигацию в шапке <br>
+   и сделать отдельную кнопку для добавления видео на странице со всеми видео.<br>
+   Так же после добавления видео нас должно перенаправлять на страницу со всеми видео.<br>
+   Дальше, используя полученные знания об именовании и шаблонизации маршрутов, пусть ребята сами реализуют этот функционал.<br><br>
+   ### По итогу должно получиться что-то такое:
+   
+   * Кнопка на странице со всеми видео для перехода к странице добавления видео.<br><br>
+   
+      ![](imgs/result.png)
+      ```python
+      # project_name/urls.py
+      urlpatterns = [
+          ...
+          path('playlist/video_list/', views.video_list, name='video_list'),
+          path('playlist/video_create/', video_create, name='video_create'),
+          path('blog/posts_list/', posts_list, name='posts_list'),
+          ...
+      ]
       ```
-     
-   * ### Создание представлений (views)
-     ```python
-     # shop/views.py
-     def catalog(request):
-         # <h1>Каталог товаров</h1>
-         return render(request, 'shop/catalog.html')
-     
-     def orders(request):
-         # <h1>Заказы</h1>
-         return render(request, 'shop/orders.html')
-     
-     def order_create(request):
-         # <h1>Оформление заказа</h1>
-         return render(request, 'shop/order_create.html')
-     ```
-    
-   * ### Создание маршрутов
-       Обратите внимание, что в прошлом проекты в `project_name/urls.py` собраны все маршруты до разных приложений.<br>
-       Было бы гораздо лучше если бы у каждого приложения был свой urls.py, и это возможно.<br>
-       Создайте файл `urls.py` в папке приложения shop и добавьте в него маршруты `catalog` `orders` `order_create`.
-    
-       ```python
-       # shop/urls.py
-        # импортируем все из файла shop/views.py. Ученики в теории должны сами это смочь сделать.
-       from .views import * 
-       
-       urlpatterns = [
-           path('', catalog, name='catalog'),
-           path('orders/', orders, name='orders'),
-           path('order_create/', order_create, name='order_create'),
-       ]
-       ```
-       ####  Теперь, когда у нас есть свой файл shop/urls.py для приложения,<br>мы можем включить его в корневой файл urls.py проекта с помощью функции `include`.
-       ```python
-       # project_name/urls.py
-       from django.urls import path, include
-       urlpatterns = [
-           ...,
-           path('shop/', include('shop.urls')),  # включаем URL-адреса приложения shop
-       ]
-       # По итогу мы получим следующие адреса:
-       # http://127.0.0.1:8000/shop/
-       # http://127.0.0.1:8000/shop/orders/
-       # http://127.0.0.1:8000/shop/order_create/
-       ```
-       >Здесь мы используем include для включения URL-адресов приложения shop в общие URL-адреса проекта, что позволяет нам организовывать URL-адреса более структурированно и читаемо.
-     
-5. ## Скопируйте базовый шаблон, шапку и футер по аналогии со старым проектом.
-   Добавьте в `<head>` в `base.html` `bootstrap.bundle.min.js`,<br>
-   заодно вспомним где брать `bootstrap` файлы.
-   #### Это позволит работать js элементам bootstrap, <br> в частности бургер меню в шапке при ширине ниже 992px.
-   > В документации bootstrap раздел Download.
-   > ![](imgs/img.png) 
-   ```html
-   <head>
-       ...
-       <script defer src="{% static 'Core/js/bootstrap.bundle.min.js' %}"></script>
-   </head>
-   <!-- defer значит, что файл будет загруже после загрузки всей страницы -->
-   ```
+      ```python
+      # playlist/views.py
+      from .models import Video
+      
+      def video_create(request):
+          if request.method == "POST":
+              title = request.POST['title']
+              embed_code = request.POST['embed_code']
+              Video.objects.create(title=title, embed_code=embed_code)
+              return redirect('video_list')  # перенаправляем на страницу со всеми видео.
+          return render(request, 'playlist/video_create.html')
+      ```
+      ```html
+      <!-- core/templates/core/includes/header.html -->
+      ...
+      <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+              <a class="nav-link active" aria-current="page" 
+                 href="{% url 'posts_list' %}">
+                 Блог</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" aria-current="page" 
+                 href="{% url 'video_list' %}">
+                 Плейлист</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Профиль</a>
+          </li>
+      </ul>
+      ...
+      ```
+      ```html
+      <!-- playlist/templates/playlist/video_list.html -->
+      {% block content %}
+          <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
+              <h1 class="text-light text-center fw-bold">Личный плейлист</h1>
+              <a href="{% url 'video_create' %}" <!-- Используем имя -->
+                 class="btn btn-danger my-auto mx-auto mx-sm-0"
+                 style="max-width: 150px;">
+                  Добавить
+              </a>
+          </div>
+          <div class="d-flex gap-3 flex-wrap justify-content-center mx-auto" style="max-width: 800px;">
+              <div class="card......
+      {% endblock %}
+      ```
 
-> ### Если не успеете ничего страшного, на следующих 2-ух уроках будет время доделать.
+## В этом руководстве мы научились использовать URL-имена для создания читаемых и гибких ссылок, а также реализовали переходы после лайка и добавления видео. Рабочая навигация в шапке теперь обеспечит удобство перемещения по сайту.
 
-## Подведите итоги.
+## На следующем занятии мы начнем новый проект "Магазин".

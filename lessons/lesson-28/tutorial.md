@@ -1,194 +1,95 @@
-# Понятие `Code refactoring`, страница персоны и жанра.
+# Жанры, актеры, режиссеры
 
-Рефакторинг кода — это процесс улучшения существующего кода 
-без изменения его внешнего поведения. Цель рефакторинга — сделать 
-код более понятным, читаемым и эффективным, а также упростить 
-дальнейшую разработку и обслуживание программы.
-> Однако мы все же перепишем некоторую логику
 
-1. ## Исправляем код
-    Заметим, что зная `id` объекта `MoviePerson` мы можем его получить.
-    Нам не нужно знать его роль (актер или режиссер).
-    Исходя из этого, можно сделать вывод, что нам не нужно 2 контроллера
-    для отображения `actor_detail` и `director_detail`.
-    
-    * ### Urls
-        #### Поменяем это:
-        ```python
-        # kinopoisk/urls.py
-        urlpatterns = [
-            ...
-            path('actor/<int:actor_id>/', actor_detail, name='actor_detail'),
-            path('director/<int:director_id>/', director_detail, name='director_detail')
-        ]
-        ```
-        #### На это:
-        ```python
-        urlpatterns = [
-            ...
-            path('person/<int:person_id>/', person_detail, name='person_detail')
-        ]
-        ```
-   
-    * ### Controllers
-        #### Поменяем это:
-        ```python
-        # kinopoisk/views.py
-        ...
-        def actor_detail(request, actor_id):
-            actor = MoviePerson.objects.get(id=actor_id)
-            movies = actor.acted_in_movies.all()
-            return render(request, 'kinopoisk/person_detail.html', {
-                'person': actor, 'movies': movies,
-            })
-        
-        
-        def director_detail(request, director_id):
-            director = MoviePerson.objects.get(id=director_id)
-            movies = director.directed_movies.all()
-            return render(request, 'kinopoisk/person_detail.html', {
-                'person': director, 'movies': movies,
-            })
-        ```
-        #### На это:
-        ```python
-        # kinopoisk/views.py
-        ...
-        def person_detail(request, person_id):
-            person = MoviePerson.objects.get(id=person_id)
-            if person.role == MoviePerson.RoleType.ACTOR:
-                movies = person.acted_in_movies.all()
-            else:
-                movies = person.directed_movies.all()
-            return render(request, 'kinopoisk/person_detail.html', {
-                'person': person,
-                'movies': movies
-            })
-        ```
-    Логичный вопрос: `А разве не нужно сделать также со списками актеров и режиссеров?`<br>
-    Ответ: `Нужно! Но я не буду заострять на этом внимание, если останется время можете сделать.`
-
-2. ## Напишем `person_detail.html`
-    > Для Easy и Medium учеников шаблон сложный. Делайте проще.
+1. ## Жанры
+    Страничка с жанрами сегодня будет самая простая, нужно просто 
+    вывести их названия в более менее красивом виде.
     ```html
-    <!-- kinopoisk/person_detail.html -->
-    {% extends "Core/base.html" %}
-    {% load static %}
-    {% block title %}Кинопоиск | {{ person.name|title }}{% endblock %}
-    {% block content %}
-        <div class="frc">
-            <div class="person_container fccs justify-content-md-center 
-                        flex-md-row m-sm-0 gap-5 w-90 mx-auto ">
-                <img class="h-min mx-md-0 mx-auto" 
-                     src="{{ person.photo.url }}" alt="">
-                <div class="fc mx-auto mx-md-0">
-                    <h1 class="mb-4 text-center me-md-auto d-inline">
-                        {{ person.name|title }}
-                    </h1>
-                    <span class="text-center me-md-auto d-inline">
-                        Дата рождения: {{ person.birth_date }}
-                    </span>
-                    <div class="mt-3 frc gap-3 mw-550px flex-wrap bg-black-30 
-                                p-4 rounded-4">
-                        {% for movie in movies %}
-                            {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endblock %}
+   {% extends 'Core/base.html' %}
+   {% block title %}Кинопоиск | Жанры{% endblock %}
+   {% block content %}
+       <h1 class="text-center mb-3">Жанры</h1>
+       <div class="frc flex-wrap mw-700px mx-auto gap-2">
+           {% for genre in genres %}
+               <a href="{% url 'genre_detail' genre_id=genre.id  %}" 
+                  class="px-3 py-2 fs-5 bg-black-25 rounded-3 text-light 
+                         text-decoration-none disable-tap-select hover-scale-4">
+                   <!-- Используем так называемые фильтры,
+                   чтобы каждый жанр выводился с большой буквы -->
+                   {{ genre.name|title }}
+               </a>
+           {% endfor %}
+       </div>
+   {% endblock %}
     ```
-    Добавьте ссылку в 
+
+2. ## Актеры и режиссеры
+    Помним, что мы передаем заголовок и персон в функцию `render`.
+    Расскажите, что можно делать сортировку при использовании ORM.
+    > По умолчанию сортировка выполняется по id
+    ```python
+    def actor_list(request):
+        # Выполним сортировку в обратном порядке, но тоже по id.
+        # Можете использовать и другие поля, не принцыпиально.
+        actors = MoviePerson.objects.filter(
+            role=MoviePerson.RoleType.ACTOR
+        ).order_by('-id') 
+        return render(request, 'kinopoisk/person_list.html', {
+            'persons': actors, 'title': 'Актеры'
+        })
+    ```
+    ### Оформляем страничку
+    > Ничего сложного, ученики, наверное, справятся сами.
     ```html
     <!-- kinopoisk/person_list.html -->
-    ...
-    {% for person in persons %}
-        <a href="{% url 'person_detail' person_id=person.id %}" 
-           class="fc gap-2 mw-150px w-100 text-light text-decoration-none hover-scale-2">
-            <img src="{{ person.photo.url }}" alt=""
-                 class="h-max">
-            <h2 class="fs-6">{{ person.name }}</h2>
-        </a>
-    {% endfor %}
-    ...
-    ```
-3. ## Напишем `genre_detail.html`
-    ```html
-    {% extends "Core/base.html" %}
-    {% load static %}
-    {% block title %}Кинопоиск | {{ genre.name|title }}{% endblock %}
+    {% extends 'Core/base.html' %}
+    {% block title %}Кинопоиск | {{ title }}{% endblock %}
     {% block content %}
-        <div class="fccc">
-            <h1 class="mb-4">{{ genre.name|title }}</h1>
-            <div class="fr gap-3 mw-1000px flex-wrap">
-                {% for movie in movies %}
-                    {% include 'kinopoisk/includes/movie_card.html' with movie=movie %}
-                {% endfor %}
-            </div>
+        <h1 class="text-center mb-3">{{ title }}</h1>
+        <div class="frc flex-wrap mw-700px mx-auto gap-2">
+            {% for person in persons %}
+                <a href="Оставляем пустым пока что" 
+                   class="fc gap-2 mw-150px w-100 text-light text-decoration-none hover-scale-2">
+                    <img src="{{ person.photo.url }}" alt=""
+                         class="h-max">
+                    <!-- h-max в не во всех браузерах одинаково отрабатывает, можно убрать -->
+                    <h2 class="fs-6">{{ person.name }}</h2>
+                </a>
+            {% endfor %}
         </div>
     {% endblock %}
     ```
 
-4. ## Если осталось время
-    Заметим, что карточки фильмов на странице с актерами и режиссерами большеваты.<br>
-    > Может показаться, что высосано из пальца, однако часто нужно уметь контролировать
-      вид `include` элементов.
+3. ## Добавим новый фильм, улучшим читаемость объектов моделей 
+    * Зайдите в админку и попробуйте добавить любой фильм.
+       Вы столкнетесь с проблемой непонятных названия жанров и персон.
+       > Предупреждать заранее наверное, не нужно, а может и нужно 🙃
+    * Используйте [дополнительные материалы для уроков](https://github.com/Artasov/it-compot-backend-lessons/blob/main/lessons/additionally/additionally.md#%D1%83%D0%BB%D1%83%D1%87%D1%88%D0%B5%D0%BD%D0%B8%D0%B5-%D1%87%D0%B8%D1%82%D0%B0%D0%B1%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8-%D0%BD%D0%B0%D0%B7%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B8-%D0%B5%D1%91-%D0%BE%D0%B1%D1%8A%D0%B5%D0%BA%D1%82%D0%BE%D0%B2-%D0%B2-ui-user-interface) и исправьте ситуацию.
+      ```python
+      # kinopoisk/models.py
+      class MoviePerson(models.Model):
+          ...
+          def __str__(self):
+              return self.name
+      
+      class Genre(models.Model):
+          ...
+          def __str__(self):
+              return self.name
+      
+      class Movie(models.Model):
+          ...
+          def __str__(self):
+              return self.title
+      ```
+    * Добавьте фильм его актеров и режиссеров.
 
-    ### Я вижу 2 решения:
-    * ### 1
-      Использовать общий класс у родителя, например `person_container`, и через него 
-      модифицировать максимальную ширину карточки или что-то еще.
-      ```css
-      /* kinopoisk/css/person_detail.css */
-      .person_container .movie_card {
-          max-width: 150px !important;
-      }
-      .person_container .movie_card h3 {
-          font-size: 1.5rem !important;
-      }
-      ```
-      Нужно создать блок для подключения кастомных стилей для разных страниц в `base.html`.
-      > Если мы просто добавим `person_detail.css` в `base.html`, 
-        тогда на всех страницах будет этот файл, а это излишне. 
-     
-      Добавим новый блок `head`, который мы сможем заполнять в дочерних страницах.
-      ```html
-      <!-- Core\base.html -->
-      ...
-      <head>
-          ...
-          {% block head %}{% endblock %}
-          ...
-      </head>
-      ...
-      ```
-      Тогда в `person_detail.html`
-      ```html
-      <!-- kinopoisk/person_detail.html -->
-      {% extends "Core/base.html" %}
-      ...
-      {% block head %}
-          <link rel="stylesheet" href="{% static 'kinopoisk/css/person_detail.css' %}">
-      {% endblock %}
-      ...
-      ```
-    * ### 2
-      Передавать классы через переменную сквозь `include`.
-      ```html
-      <!-- kinopoisk/person_detail.html -->                                           
-      ...
-      {% include 'kinopoisk/includes/movie_card.html' with movie=movie movie_card_classes='mw-150px' %}
-      ...
-      ```
-      ```html
-      <!-- kinopoisk/includes/movie_card.html -->
-      <a href="{% url 'movie_detail' movie_id=movie.id %}" 
-         class="{{ movie_card_classes }} fc mw-300px w-100 text-light text-decoration-none hover-scale-2">
-          <img src="{{ movie.poster.url }}" alt="">
-          ...
-      </a>
-      ```
+## Должно получиться как-то так:
+![](imgs/img.png)
+
+### Можете сделать что-то из доп. материалов, либо поработать над пробелами в знаниях, либо идти дальше.
+
+## Загрузите проект на гит если еще не загружали.
 
 ## Подведите итоги.
 ># git push...

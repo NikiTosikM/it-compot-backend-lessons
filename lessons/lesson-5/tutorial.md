@@ -1,165 +1,94 @@
-# ORM, for, if в шаблонах
+# Введение в БД и административную панель Django
+### Будем начинать мини-проект **Блог**
 
-### Продолжаем _Блог_.<br>
+## Начало
+1. Создайте новое приложение `blog`
 
-С этого момента советую поглядывать в код рядом с уроком.
-Например вот [полный вариант](index.html) 
-страницы которую мы сегодня сделаем. Бывает полезно 
-посмотреть на картину целиком.
->Можете если хотите показать что примерно мы будем делать.<br><br>
-![result.png](imgs/result.png)
-## Header, Footer и карточка товара.
+    `python manage.py startapp blog`
+2. Объясните еще раз разницу между проектом и приложением в Django.
+3. Объясните, что такое база данных и какие задачи она решает в веб-разработке.
+4. Расскажите, как Django взаимодействует с базой данных `SQLite3` (она по умолчанию).
+5. Показываем и подробно объясняем [этот раздел](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BF%D1%80%D0%BE%D1%81%D1%82%D0%B5%D0%B9%D1%88%D0%B5%D0%B9-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B4%D0%BB%D1%8F-%D1%82%D0%BE%D0%B2%D0%B0%D1%80%D0%B0) на нашей вспомогательной страничке.
+## Модели
 
-1. Создаем страницу, где будут отображаться все посты.
+1. Создайте модель для постов, начиная с простейших полей, таких как заголовок и текст.
+    ```python
+    # blog/models.py
+    class Post(models.Model):
+        title = models.CharField(max_length=70)
+        text = models.TextField()
+    ```
+2. Создайте миграции для вашей модели с помощью команды <br>
+
+    `python manage.py makemigrations`
+
+3. Исполнение файлов миграций с помощью команды 
+
+   `python manage.py migrate.`
+
+4. Установим расширение `SQLite Viewer` в VS Code.
+5. Показываем, что произошло внутри базы данных.
+6. Объясните, зачем нужна административная панель, и как она облегчает управление данными.
+7. Зарегистрируем модель в `admin.py` для управления через административную панель.
    ```python
-   # blog/views.py
-   def posts_list(request):
-       return render(request, 'blog/posts_list.html')
-   ```
-   ```python
-   # project_name/urls.py
-   from blog.views import posts_list  # импортируем функцию
-   
-   urlpatterns = [
-       path('blog/posts_list/', posts_list),  # связываем маршрут и функцию
-   ]
-   ```
-2. Показываем ребятам документацию **Bootstrap**, 
-   а именно разделы ниже с готовыми элементами.<br>
-   Возьмем оттуда 
-   **[header](https://getbootstrap.com/docs/5.3/components/navbar/)**
-   и 
-   **[карточку](https://getbootstrap.com/docs/5.3/components/card/#images)**
-   для поста.
-   > Лучше взять карточку без кнопки. Не забываем подключить `bootstrap.min.css`, 
-   > как делали на прошлых уроках.
-   > ```html
-   > <!-- blog/posts_list.html -->
-   > {% load static %}
-   > ...
-   > <head>
-   >     ...
-   >     <link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}"> 
-   > </head>
-   >```
-   
-   > Шапку делаем не под `Блог`, а под всё приложение. 
-   > То есть в дальнейшем мы будем эту шапку использовать в других местах сайта.
-   ```html
-   <!-- blog/posts_list.html -->
-   <header>
-       <nav class="navbar navbar-expand-lg bg-body-tertiary">
-           ...
-       </nav>
-   </header>
-   <main>
-       <h1 class="text-light text-center fw-bold">Посты</h1>
-       <div class="card" style="width: 250px;">
-           <img src="..." class="card-img-top" alt="...">
-           <div class="card-body">
-               <h5 class="card-title">Заголовок</h5>
-               <p class="card-text">Текст текст текст текст</p>
-           </div>
-       </div>
-   </main>
-   <footer>
-   ...
-   </footer>
-   ```
-   
-3. Когда доверстали, даем подумать как можно передать в товар с `id=1` (можно подсмотреть в 
-   шпаргалке [ORM Django](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)).<br> 
-   Находим `objects.get(id=1)`, вспоминаем как мы передавали переменные в шаблон. Желательно чтобы ученики сами додумались.
-   > Можно использовать print для лучшего понимания.
-   ```python
-   # blog/views.py
+   # blog/admin.py
+   from django.contrib import admin
    from .models import Post
-   def posts_list(request):
-       post = Post.objects.get(id=1)
-       return render(request, 'blog/posts_list.html', {'post': post})
-   ```
    
-4. Рассказываем как отобразить этот 1 пост.
-   ```html
-   <!-- blog/posts_list.html -->
-   ...
-   <div class="card" style="width: 250px;">
-       <img src="..." class="card-img-top" alt="...">
-       <div class="card-body">
-           <h5 class="card-title">{{ post.title }}</h5>
-           <p class="card-text">{{ post.text }}</p>
-       </div>
-   </div>
-   ...
+   @admin.register(Post)
+   class PostAdmin(admin.ModelAdmin):
+       # Тут указываем в кортеже те поля которые будут видны при групповом отображении.
+       list_display = ('title', 'text')
    ```
-5. Пусть сами попробуют по примеру в шпаргалке <br>
-   [Использование условий и циклов](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D1%86%D0%B8%D0%BA%D0%BB%D0%BE%D0%B2-%D0%B8-%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D0%B9-%D0%B2-%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD%D0%B5)
-   и
-   [ORM Django](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#orm)
-   сделать отображение всех постов.
-   ```python
-   # blog/views.py
-   from .models import Post
-   def posts_list(request):
-       posts = Post.objects.all()
-       return render(request, 'blog/posts_list.html', {'posts': posts})
-   ```
-   ```html
-   <!-- blog/posts_list.html -->
-   <main>
-       <h1 class="text-light text-center fw-bold">Посты</h1>
-       <div class="posts_container d-flex gap-3 flex-wrap justify-content-center mx-auto" 
-            style="max-width: 800px;">
-           {% for post in posts %}
-               <div class="card" style="width: 250px;">
-                   <img src="{{ post.image.url }}" class="card-img-top" alt="...">
-                   <div class="card-body">
-                       <h5 class="card-title">{{ post.title }}</h5>
-                       <p class="card-text">{{ post.text }}</p>
-                   </div>
-               </div>
-           {% endfor %}
-       </div>
-   </main>
-   ```
-6. Пусть ученики добавят проверку доступности поста по той же шпаргалке.
-   Тогда будут отображаться только опубликованные посты.
-   ```html
-   <!-- blog/posts_list.html -->
-   <main>
-       <h1 class="text-light text-center fw-bold">Посты</h1>
-       <div class="posts_container d-flex gap-3 flex-wrap justify-content-center mx-auto" 
-            style="max-width: 800px;">
-           {% for post in posts %}
-               {% if post.is_published == True %}
-                   <div class="card" style="width: 250px;">
-                       <img src="{{ post.image.url }}" class="card-img-top" alt="...">
-                       <div class="card-body">
-                           <h5 class="card-title">{{ post.title }}</h5>
-                           <p class="card-text">{{ post.text }}</p>
-                       </div>
-                   </div>
-               {% endif %}
-           {% endfor %}
-       </div>
-   </main>
-   ```
+8. Создайте staff пользователя и откройте административную панель.
    
+   `python manage.py createsuperuser`
+
+9. Создайте объекты постов через административную панель, чтобы убедиться, что ваша <br>
+   модель функционирует.
+
+10. Доделываем до такого вида, постепенно обновляя уже созданные объекты. <br>
+    **Если easy уровень то 2-3 поля на первый раз более чем достаточно. class Meta и __str_\_ можно им тоже не показывать.**
+
+    ```python
+    class Post(models.Model):
+        title = models.CharField(max_length=70)
+        image = models.ImageField(upload_to='images/')
+        text = models.TextField()
+        likes = models.IntegerField(blank=True)
+        rating = models.FloatField(blank=True)
+        is_published = models.BooleanField(default=True)
+        created_at = models.DateTimeField(auto_now_add=True)
+    ```
+    > Не забываем создать и выполнить миграции
+
+    Скорее всего при миграциях будет ошибка о нехватке библиотеки Pillow для использования ImageField<br>
+    Установите эту библиотеку `pip install Pillow`<br><br>
+
+11. Рассказываем, что для корректного использования медиафайлов(картинок через imagefield),<br>
+    нужно определить адреса для этих медиафайлов. То есть сделать так, чтобы каждая картинка <br>
+    или любой другой медиафайл были доступны по своему маршруту.<br><br>
+
+12. Настроем сохранение media файлов. Отредактируем `settings.py` и `корневые urlpatterns`<br>
+    Подробно о том, что такое media files есть в шпаргалке 
+    [Media Files](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#Media-Files).
+    ```python
+    # project_name/settings.py
+    ...
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    ...
+    ```
+    ```python
+    # project_name/urls.py
+    urlpatterns = [
+        ...,
+        ...,
+        ...,
+    ]
+    if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    ```
+#### Если осталось время доделывайте git с прошлого занятия.
+
 ## Подведите итоги.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
