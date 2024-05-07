@@ -1,5 +1,6 @@
 {# kinopoisk/templates/kinopoisk/includes/movie_card.html #}
-<div class="movie_card fc mw-300px w-100 hover-scale-2">
+<a href="{% url 'movie_detail' movie_id=movie.id %}"
+   class="movie_card text-decoration-none text-light fc mw-300px w-100 hover-scale-2">
     <img src="{{ movie.poster.url }}" alt="">
     <h3 class="mt-2">{{ movie.title }}</h3>
     <span class="frsc gap-2">
@@ -14,4 +15,4 @@
         {% endfor %}
     </p>
     <span class="text-secondary mt-auto">{{ movie.release_date }}</span>
-</div>
+</a>

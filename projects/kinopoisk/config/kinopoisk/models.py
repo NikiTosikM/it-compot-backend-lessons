@@ -41,10 +41,13 @@ class Movie(models.Model):
         MoviePerson, related_name='directed_movies'
     )
     budget = models.PositiveIntegerField()
+    movie_file = models.FileField(
+        upload_to='kinopoisk/images/movies/movie_files/',
+        null=True, blank=True)
     actors = models.ManyToManyField(
         MoviePerson, related_name='acted_in_movies')
     poster = models.ImageField(
-        upload_to="kinopoisk/images/movies/posters/",
+        upload_to='kinopoisk/images/movies/posters/',
         blank=True, null=True)
 
     def __str__(self):

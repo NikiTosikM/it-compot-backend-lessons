@@ -1,0 +1,7 @@
+.rating-color {
+    background: #FCCF5D;
+    background: linear-gradient(to bottom, #FCCF5D 0%, #B39445 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: calc(1.375rem + 1.5vw) !important
+}
