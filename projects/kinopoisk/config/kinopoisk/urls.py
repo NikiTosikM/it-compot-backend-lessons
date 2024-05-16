@@ -13,4 +13,6 @@ urlpatterns = [
     path('movie/<int:movie_id>/', movie_detail, name='movie_detail'),  # Детали фильма.
     path('person/<int:person_id>/', person_detail, name='person_detail'),
     path('genre/<int:genre_id>/', genre_detail, name='genre_detail'),  # Фильмы по жанру.
+
+    path('add_movie_review/', add_movie_review, name='add_movie_review'),
 ]

@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from .models import Movie, MoviePerson, Genre
+from .models import Movie, MoviePerson, Genre, MovieReview
 
 
 def main(request):
@@ -38,9 +38,8 @@ def genre_list(request):
 
 
 def movie_detail(request, movie_id):
-    movie = Movie.objects.get(id=movie_id)
     return render(request, 'kinopoisk/movie_detail.html', {
-        'movie': movie
+        'movie': Movie.objects.get(id=movie_id),
     })
 
 
@@ -62,3 +61,22 @@ def genre_detail(request, genre_id):
     return render(request, 'kinopoisk/genre_detail.html', {
         'genre': genre, 'movies': movies
     })
+
+
+def add_movie_review(request):
+    if not request.user.is_authenticated:
+        return redirect('signin')
+    if request.method == 'POST':
+        # Получаем movie id из запроса в отдельную переменную,
+        # так как будем использовать его для создания отзыва и для редиректа.
+        movie_id = request.POST.get('movie_id')
+        MovieReview.objects.create(
+            author=request.user,
+            text=request.POST.get('review_text'),
+            movie=Movie.objects.get(id=movie_id)
+            # movie_id=movie_id
+            # Что бы не делать доп. запрос на получение объекта фильма
+            # достаточно передать его id, но это может запутать, так как
+            # поля movie_id в модели нет, а movie есть.
+        )
+        return redirect('movie_detail', movie_id=movie_id)

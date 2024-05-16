@@ -35,7 +35,7 @@
 28. [Lesson](lessons/lesson-28/tutorial.md) Жанры, актеры, режиссеры
 29. [Lesson](lessons/lesson-29/tutorial.md) Понятие Code refactoring, страница персоны и жанра
 30. [Lesson](lessons/lesson-30/tutorial.md) Плеер для фильмов
-31. [Lesson](lessons/lesson-31/tutorial.md) 
+31. [Lesson](lessons/lesson-31/tutorial.md) Отзывы для фильма
 32. [Lesson](lessons/lesson-32/tutorial.md) 
 33. [Lesson](lessons/lesson-33/tutorial.md) 
 34. [Lesson](lessons/lesson-34/tutorial.md) 
